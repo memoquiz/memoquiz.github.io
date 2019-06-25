@@ -1,1749 +1,1749 @@
-const entete = "Quelle est la signification de :";
+const entete = "Quelle est la sens de :";
 const nbr_choix = 6;
 const data = [
  {
-   "Prefixe": "acantho-",
-   "Sens": "épine",
-   "Exemple": "acanthacées, acanthe"
+   "FIELD1": "acantho-",
+   "FIELD2": "épine",
+   "FIELD3": "acanthacées, acanthe"
  },
  {
-   "Prefixe": "acou-",
-   "Sens": "entendre",
-   "Exemple": "acoustique, acouphène"
+   "FIELD1": "acou-",
+   "FIELD2": "entendre",
+   "FIELD3": "acoustique, acouphène"
  },
  {
-   "Prefixe": "acro-, acrie-",
-   "Sens": "extrémité",
-   "Exemple": "acrobate, acrostiche"
+   "FIELD1": "acro-, acrie-",
+   "FIELD2": "extrémité",
+   "FIELD3": "acrobate, acrostiche"
  },
  {
-   "Prefixe": "actino-",
-   "Sens": "rayon",
-   "Exemple": "actinique, actinomètre"
+   "FIELD1": "actino-",
+   "FIELD2": "rayon",
+   "FIELD3": "actinique, actinomètre"
  },
  {
-   "Prefixe": "ad-",
-   "Sens": "vers, ajouté à ",
-   "Exemple": "administré"
+   "FIELD1": "ad-",
+   "FIELD2": "vers, ajouté à ",
+   "FIELD3": "administré"
  },
  {
-   "Prefixe": "adén-",
-   "Sens": "glande, ganglion lymphatique",
-   "Exemple": "adénome, adénoïde"
+   "FIELD1": "adén-",
+   "FIELD2": "glande, ganglion lymphatique",
+   "FIELD3": "adénome, adénoïde"
  },
  {
-   "Prefixe": "aéro-",
-   "Sens": "air",
-   "Exemple": "aéronaute, aéronef, aérophagie, aérostat"
+   "FIELD1": "aéro-",
+   "FIELD2": "air",
+   "FIELD3": "aéronaute, aéronef, aérophagie, aérostat"
  },
  {
-   "Prefixe": "agro-",
-   "Sens": "champ",
-   "Exemple": "agronome"
+   "FIELD1": "agro-",
+   "FIELD2": "champ",
+   "FIELD3": "agronome"
  },
  {
-   "Prefixe": "all-, allo-",
-   "Sens": "étranger",
-   "Exemple": "allopathie, allophone"
+   "FIELD1": "all-, allo-",
+   "FIELD2": "étranger",
+   "FIELD3": "allopathie, allophone"
  },
  {
-   "Prefixe": "ambi-",
-   "Sens": "deux, autour, doublement",
-   "Exemple": "ambidextre, ambivalent"
+   "FIELD1": "ambi-",
+   "FIELD2": "deux, autour, doublement",
+   "FIELD3": "ambidextre, ambivalent"
  },
  {
-   "Prefixe": "amphi-",
-   "Sens": "autour, doublement",
-   "Exemple": "amphithéâtre, amphibie"
+   "FIELD1": "amphi-",
+   "FIELD2": "autour, doublement",
+   "FIELD3": "amphithéâtre, amphibie"
  },
  {
-   "Prefixe": "an-",
-   "Sens": "sans",
-   "Exemple": "analphabète, anarchie"
+   "FIELD1": "an-",
+   "FIELD2": "sans",
+   "FIELD3": "analphabète, anarchie"
  },
  {
-   "Prefixe": "ana-",
-   "Sens": "de bas en haut, à  l'inverse",
-   "Exemple": "anagramme, anachronisme, anastrophe"
+   "FIELD1": "ana-",
+   "FIELD2": "de bas en haut, à  l'inverse",
+   "FIELD3": "anagramme, anachronisme, anastrophe"
  },
  {
-   "Prefixe": "andro-",
-   "Sens": "homme (mâle)",
-   "Exemple": "androgyne"
+   "FIELD1": "andro-",
+   "FIELD2": "homme (mâle)",
+   "FIELD3": "androgyne"
  },
  {
-   "Prefixe": "anémo-",
-   "Sens": "vent",
-   "Exemple": "anémomètre"
+   "FIELD1": "anémo-",
+   "FIELD2": "vent",
+   "FIELD3": "anémomètre"
  },
  {
-   "Prefixe": "angio-",
-   "Sens": "vaisseau",
-   "Exemple": "angioplastie"
+   "FIELD1": "angio-",
+   "FIELD2": "vaisseau",
+   "FIELD3": "angioplastie"
  },
  {
-   "Prefixe": "anté-",
-   "Sens": "avant, précédent",
-   "Exemple": "antérieur, antédiluvien"
+   "FIELD1": "anté-",
+   "FIELD2": "avant, précédent",
+   "FIELD3": "antérieur, antédiluvien"
  },
  {
-   "Prefixe": "anth(o)-",
-   "Sens": "fleur, meilleur",
-   "Exemple": "anthémis, anthologie"
+   "FIELD1": "anth(o)-",
+   "FIELD2": "fleur, meilleur",
+   "FIELD3": "anthémis, anthologie"
  },
  {
-   "Prefixe": "anthrac-",
-   "Sens": "charbon",
-   "Exemple": "anthracite"
+   "FIELD1": "anthrac-",
+   "FIELD2": "charbon",
+   "FIELD3": "anthracite"
  },
  {
-   "Prefixe": "anthropo-",
-   "Sens": "homme (espèce)",
-   "Exemple": "anthropologie"
+   "FIELD1": "anthropo-",
+   "FIELD2": "homme (espèce)",
+   "FIELD3": "anthropologie"
  },
  {
-   "Prefixe": "anti-",
-   "Sens": "contre",
-   "Exemple": "antipathie, antireligieux"
+   "FIELD1": "anti-",
+   "FIELD2": "contre",
+   "FIELD3": "antipathie, antireligieux"
  },
  {
-   "Prefixe": "apo-",
-   "Sens": "éloignement",
-   "Exemple": "apogée"
+   "FIELD1": "apo-",
+   "FIELD2": "éloignement",
+   "FIELD3": "apogée"
  },
  {
-   "Prefixe": "apo-",
-   "Sens": "hors de, à  partir de, loin de",
-   "Exemple": "apostasie, apostrophe, apothéose"
+   "FIELD1": "apo-",
+   "FIELD2": "hors de, à  partir de, loin de",
+   "FIELD3": "apostasie, apostrophe, apothéose"
  },
  {
-   "Prefixe": "arch-",
-   "Sens": "qui commande, au-dessus",
-   "Exemple": "archevêque"
+   "FIELD1": "arch-",
+   "FIELD2": "qui commande, au-dessus",
+   "FIELD3": "archevêque"
  },
  {
-   "Prefixe": "archéo-",
-   "Sens": "ancien",
-   "Exemple": "archéologie"
+   "FIELD1": "archéo-",
+   "FIELD2": "ancien",
+   "FIELD3": "archéologie"
  },
  {
-   "Prefixe": "archi-",
-   "Sens": "supériorité, au plus haut degré",
-   "Exemple": "archiprêtre, archimillionnaire"
+   "FIELD1": "archi-",
+   "FIELD2": "supériorité, au plus haut degré",
+   "FIELD3": "archiprêtre, archimillionnaire"
  },
  {
-   "Prefixe": "arithm(o)-",
-   "Sens": "nombre",
-   "Exemple": "arithmétique"
+   "FIELD1": "arithm(o)-",
+   "FIELD2": "nombre",
+   "FIELD3": "arithmétique"
  },
  {
-   "Prefixe": "artério-",
-   "Sens": "artère",
-   "Exemple": "artériosclérose"
+   "FIELD1": "artério-",
+   "FIELD2": "artère",
+   "FIELD3": "artériosclérose"
  },
  {
-   "Prefixe": "arthr(o)-",
-   "Sens": "articulation",
-   "Exemple": "arthrite, arthropodes"
+   "FIELD1": "arthr(o)-",
+   "FIELD2": "articulation",
+   "FIELD3": "arthrite, arthropodes"
  },
  {
-   "Prefixe": "astér(o)-, astr(o)-",
-   "Sens": "astre, étoile",
-   "Exemple": "astérisque, astronaute"
+   "FIELD1": "astér(o)-, astr(o)-",
+   "FIELD2": "astre, étoile",
+   "FIELD3": "astérisque, astronaute"
  },
  {
-   "Prefixe": "audi-",
-   "Sens": "audition",
-   "Exemple": "audimat"
+   "FIELD1": "audi-",
+   "FIELD2": "audition",
+   "FIELD3": "audimat"
  },
  {
-   "Prefixe": "auto-",
-   "Sens": "de soi-même",
-   "Exemple": "autobiographie, autodidacte, automobile"
+   "FIELD1": "auto-",
+   "FIELD2": "de soi-même",
+   "FIELD3": "autobiographie, autodidacte, automobile"
  },
  {
-   "Prefixe": "bactéri(o)-",
-   "Sens": "bâton",
-   "Exemple": "bactéricide, bactériologie"
+   "FIELD1": "bactéri(o)-",
+   "FIELD2": "bâton",
+   "FIELD3": "bactéricide, bactériologie"
  },
  {
-   "Prefixe": "bar-, baro",
-   "Sens": "pression",
-   "Exemple": "baromètre"
+   "FIELD1": "bar-, baro",
+   "FIELD2": "pression",
+   "FIELD3": "baromètre"
  },
  {
-   "Prefixe": "béné-, bien-",
-   "Sens": "bien",
-   "Exemple": "bienfaiteur, bénéfique"
+   "FIELD1": "béné-, bien-",
+   "FIELD2": "bien",
+   "FIELD3": "bienfaiteur, bénéfique"
  },
  {
-   "Prefixe": "bi-, bis-, bes-",
-   "Sens": "deux fois",
-   "Exemple": "bipède"
+   "FIELD1": "bi-, bis-, bes-",
+   "FIELD2": "deux fois",
+   "FIELD3": "bipède"
  },
  {
-   "Prefixe": "biblio-",
-   "Sens": "livre",
-   "Exemple": "bibliographie, bibliothèque"
+   "FIELD1": "biblio-",
+   "FIELD2": "livre",
+   "FIELD3": "bibliographie, bibliothèque"
  },
  {
-   "Prefixe": "bio-",
-   "Sens": "vivant",
-   "Exemple": "biographie, biologie"
+   "FIELD1": "bio-",
+   "FIELD2": "vivant",
+   "FIELD3": "biographie, biologie"
  },
  {
-   "Prefixe": "blasto-",
-   "Sens": "germe",
-   "Exemple": "blastoderme"
+   "FIELD1": "blasto-",
+   "FIELD2": "germe",
+   "FIELD3": "blastoderme"
  },
  {
-   "Prefixe": "bléphar(o)-",
-   "Sens": "paupière",
-   "Exemple": "blépharite"
+   "FIELD1": "bléphar(o)-",
+   "FIELD2": "paupière",
+   "FIELD3": "blépharite"
  },
  {
-   "Prefixe": "brachy-",
-   "Sens": "court",
-   "Exemple": "brachycéphale"
+   "FIELD1": "brachy-",
+   "FIELD2": "court",
+   "FIELD3": "brachycéphale"
  },
  {
-   "Prefixe": "brady-",
-   "Sens": "lent",
-   "Exemple": "bradycardie, bradypsychie"
+   "FIELD1": "brady-",
+   "FIELD2": "lent",
+   "FIELD3": "bradycardie, bradypsychie"
  },
  {
-   "Prefixe": "brom(o)-",
-   "Sens": "puanteur",
-   "Exemple": "brome, bromure"
+   "FIELD1": "brom(o)-",
+   "FIELD2": "puanteur",
+   "FIELD3": "brome, bromure"
  },
  {
-   "Prefixe": "bronch(o)-",
-   "Sens": "gorge, bronche",
-   "Exemple": "bronche, bronchique"
+   "FIELD1": "bronch(o)-",
+   "FIELD2": "gorge, bronche",
+   "FIELD3": "bronche, bronchique"
  },
  {
-   "Prefixe": "bryo-",
-   "Sens": "mousse",
-   "Exemple": "bryophile"
+   "FIELD1": "bryo-",
+   "FIELD2": "mousse",
+   "FIELD3": "bryophile"
  },
  {
-   "Prefixe": "bucc-",
-   "Sens": "bouche",
-   "Exemple": "buccal"
+   "FIELD1": "bucc-",
+   "FIELD2": "bouche",
+   "FIELD3": "buccal"
  },
  {
-   "Prefixe": "butyr(o)-",
-   "Sens": "beurre",
-   "Exemple": "butyrique"
+   "FIELD1": "butyr(o)-",
+   "FIELD2": "beurre",
+   "FIELD3": "butyrique"
  },
  {
-   "Prefixe": "caco-, cach-",
-   "Sens": "mauvais",
-   "Exemple": "cacographie, cacophonie"
+   "FIELD1": "caco-, cach-",
+   "FIELD2": "mauvais",
+   "FIELD3": "cacographie, cacophonie"
  },
  {
-   "Prefixe": "calc-",
-   "Sens": "calcium",
-   "Exemple": "calcification"
+   "FIELD1": "calc-",
+   "FIELD2": "calcium",
+   "FIELD3": "calcification"
  },
  {
-   "Prefixe": "calli-",
-   "Sens": "beau",
-   "Exemple": "calligraphie, callipyge"
+   "FIELD1": "calli-",
+   "FIELD2": "beau",
+   "FIELD3": "calligraphie, callipyge"
  },
  {
-   "Prefixe": "cardi(o)-",
-   "Sens": "coeur",
-   "Exemple": "cardiaque, cardiogramme, cardiographie"
+   "FIELD1": "cardi(o)-",
+   "FIELD2": "coeur",
+   "FIELD3": "cardiaque, cardiogramme, cardiographie"
  },
  {
-   "Prefixe": "caryo-",
-   "Sens": "noyau cellulaire",
-   "Exemple": "caryopse"
+   "FIELD1": "caryo-",
+   "FIELD2": "noyau cellulaire",
+   "FIELD3": "caryopse"
  },
  {
-   "Prefixe": "cata-",
-   "Sens": "de haut en bas, complètement",
-   "Exemple": "cataracte, catastrophe"
+   "FIELD1": "cata-",
+   "FIELD2": "de haut en bas, complètement",
+   "FIELD3": "cataracte, catastrophe"
  },
  {
-   "Prefixe": "cata-",
-   "Sens": "en bas",
-   "Exemple": "catacombes"
+   "FIELD1": "cata-",
+   "FIELD2": "en bas",
+   "FIELD3": "catacombes"
  },
  {
-   "Prefixe": "cén(o)-",
-   "Sens": "commun",
-   "Exemple": "cenobite, cénesthésie"
+   "FIELD1": "cén(o)-",
+   "FIELD2": "commun",
+   "FIELD3": "cenobite, cénesthésie"
  },
  {
-   "Prefixe": "céno-",
-   "Sens": "vide",
-   "Exemple": "cénotaphe"
+   "FIELD1": "céno-",
+   "FIELD2": "vide",
+   "FIELD3": "cénotaphe"
  },
  {
-   "Prefixe": "céphal(o)-",
-   "Sens": "tête",
-   "Exemple": "céphalalgie, céphalopodes"
+   "FIELD1": "céphal(o)-",
+   "FIELD2": "tête",
+   "FIELD3": "céphalalgie, céphalopodes"
  },
  {
-   "Prefixe": "cérébell-",
-   "Sens": "cervelet",
-   "Exemple": "cérébelleux"
+   "FIELD1": "cérébell-",
+   "FIELD2": "cervelet",
+   "FIELD3": "cérébelleux"
  },
  {
-   "Prefixe": "cervic-",
-   "Sens": "cou, col",
-   "Exemple": "cervical"
+   "FIELD1": "cervic-",
+   "FIELD2": "cou, col",
+   "FIELD3": "cervical"
  },
  {
-   "Prefixe": "chalco-",
-   "Sens": "cuivre",
-   "Exemple": "chalcographie"
+   "FIELD1": "chalco-",
+   "FIELD2": "cuivre",
+   "FIELD3": "chalcographie"
  },
  {
-   "Prefixe": "cheir-, chir-",
-   "Sens": "main",
-   "Exemple": "chiromancie, chiropratique"
+   "FIELD1": "cheir-, chir-",
+   "FIELD2": "main",
+   "FIELD3": "chiromancie, chiropratique"
  },
  {
-   "Prefixe": "chimi-",
-   "Sens": "substance chimique",
-   "Exemple": "chimiothérapie"
+   "FIELD1": "chimi-",
+   "FIELD2": "substance chimique",
+   "FIELD3": "chimiothérapie"
  },
  {
-   "Prefixe": "chloro-",
-   "Sens": "vert",
-   "Exemple": "chlorate, chlorhydrique, chlorophyle"
+   "FIELD1": "chloro-",
+   "FIELD2": "vert",
+   "FIELD3": "chlorate, chlorhydrique, chlorophyle"
  },
  {
-   "Prefixe": "chol(é)-",
-   "Sens": "bile",
-   "Exemple": "cholagogue, cholémie"
+   "FIELD1": "chol(é)-",
+   "FIELD2": "bile",
+   "FIELD3": "cholagogue, cholémie"
  },
  {
-   "Prefixe": "chromat-, chrom(o)-",
-   "Sens": "couleur",
-   "Exemple": "chromatique, chromosome"
+   "FIELD1": "chromat-, chrom(o)-",
+   "FIELD2": "couleur",
+   "FIELD3": "chromatique, chromosome"
  },
  {
-   "Prefixe": "chron(o)-",
-   "Sens": "temps",
-   "Exemple": "chronique, chronographie, chronologie, chronomètre"
+   "FIELD1": "chron(o)-",
+   "FIELD2": "temps",
+   "FIELD3": "chronique, chronographie, chronologie, chronomètre"
  },
  {
-   "Prefixe": "chrys(o)-",
-   "Sens": "or",
-   "Exemple": "chrysostome, chrysolithe"
+   "FIELD1": "chrys(o)-",
+   "FIELD2": "or",
+   "FIELD3": "chrysostome, chrysolithe"
  },
  {
-   "Prefixe": "cinémat(o)-ciné-, cinét(o)-",
-   "Sens": "mouvement",
-   "Exemple": "cinématographe, cinétique"
+   "FIELD1": "cinémat(o)-ciné-, cinét(o)-",
+   "FIELD2": "mouvement",
+   "FIELD3": "cinématographe, cinétique"
  },
  {
-   "Prefixe": "circum-, circon-",
-   "Sens": "autour",
-   "Exemple": "circonvenir, circumpolaire,\n cironférence"
+   "FIELD1": "circum-, circon-",
+   "FIELD2": "autour",
+   "FIELD3": "circonvenir, circumpolaire,\n cironférence"
  },
  {
-   "Prefixe": "cis-",
-   "Sens": "en deçà  de",
-   "Exemple": "cisalpin"
+   "FIELD1": "cis-",
+   "FIELD2": "en deçà  de",
+   "FIELD3": "cisalpin"
  },
  {
-   "Prefixe": "co-, com-, con-, cor-",
-   "Sens": "avec",
-   "Exemple": "cohabiter"
+   "FIELD1": "co-, com-, con-, cor-",
+   "FIELD2": "avec",
+   "FIELD3": "cohabiter"
  },
  {
-   "Prefixe": "col-",
-   "Sens": "côlon (gros intestin)",
-   "Exemple": "colique"
+   "FIELD1": "col-",
+   "FIELD2": "côlon (gros intestin)",
+   "FIELD3": "colique"
  },
  {
-   "Prefixe": "colp-",
-   "Sens": "vagin",
-   "Exemple": "colpocèle"
+   "FIELD1": "colp-",
+   "FIELD2": "vagin",
+   "FIELD3": "colpocèle"
  },
  {
-   "Prefixe": "conch(o)-",
-   "Sens": "coquille",
-   "Exemple": "conchylien, conchyliologie"
+   "FIELD1": "conch(o)-",
+   "FIELD2": "coquille",
+   "FIELD3": "conchylien, conchyliologie"
  },
  {
-   "Prefixe": "contra-, contre-",
-   "Sens": "contre, en face de",
-   "Exemple": "contresens, contradiction"
+   "FIELD1": "contra-, contre-",
+   "FIELD2": "contre, en face de",
+   "FIELD3": "contresens, contradiction"
  },
  {
-   "Prefixe": "cosm(o)-",
-   "Sens": "monde",
-   "Exemple": "cosmique, cosmogonie, cosmopolite"
+   "FIELD1": "cosm(o)-",
+   "FIELD2": "monde",
+   "FIELD3": "cosmique, cosmogonie, cosmopolite"
  },
  {
-   "Prefixe": "cox-",
-   "Sens": "hanche",
-   "Exemple": "coxalgie"
+   "FIELD1": "cox-",
+   "FIELD2": "hanche",
+   "FIELD3": "coxalgie"
  },
  {
-   "Prefixe": "crâni-",
-   "Sens": "crâne",
-   "Exemple": "crâniopharyngiome"
+   "FIELD1": "crâni-",
+   "FIELD2": "crâne",
+   "FIELD3": "crâniopharyngiome"
  },
  {
-   "Prefixe": "cry-",
-   "Sens": "froid",
-   "Exemple": "cryogénique"
+   "FIELD1": "cry-",
+   "FIELD2": "froid",
+   "FIELD3": "cryogénique"
  },
  {
-   "Prefixe": "crypt(o)-",
-   "Sens": "caché",
-   "Exemple": "crypte, cryptogame"
+   "FIELD1": "crypt(o)-",
+   "FIELD2": "caché",
+   "FIELD3": "crypte, cryptogame"
  },
  {
-   "Prefixe": "cyan-, cyano-",
-   "Sens": "bleu",
-   "Exemple": "cyanure"
+   "FIELD1": "cyan-, cyano-",
+   "FIELD2": "bleu",
+   "FIELD3": "cyanure"
  },
  {
-   "Prefixe": "cycl(o)-",
-   "Sens": "cercle",
-   "Exemple": "cyclique, cyclone, cyclotourisme"
+   "FIELD1": "cycl(o)-",
+   "FIELD2": "cercle",
+   "FIELD3": "cyclique, cyclone, cyclotourisme"
  },
  {
-   "Prefixe": "cyst-",
-   "Sens": "vessie, poche",
-   "Exemple": "cystite, cystique"
+   "FIELD1": "cyst-",
+   "FIELD2": "vessie, poche",
+   "FIELD3": "cystite, cystique"
  },
  {
-   "Prefixe": "cyto-",
-   "Sens": "cellule",
-   "Exemple": "cytologie"
+   "FIELD1": "cyto-",
+   "FIELD2": "cellule",
+   "FIELD3": "cytologie"
  },
  {
-   "Prefixe": "dactyl(o)-",
-   "Sens": "doigt",
-   "Exemple": "dactylographie"
+   "FIELD1": "dactyl(o)-",
+   "FIELD2": "doigt",
+   "FIELD3": "dactylographie"
  },
  {
-   "Prefixe": "dé-, des-",
-   "Sens": "cessation",
-   "Exemple": "désunion"
+   "FIELD1": "dé-, des-",
+   "FIELD2": "cessation",
+   "FIELD3": "désunion"
  },
  {
-   "Prefixe": "déca-, déci-",
-   "Sens": "dix",
-   "Exemple": "décamètre, décimètre"
+   "FIELD1": "déca-, déci-",
+   "FIELD2": "dix",
+   "FIELD3": "décamètre, décimètre"
  },
  {
-   "Prefixe": "dém(o)-",
-   "Sens": "peuple",
-   "Exemple": "démocrate, démographie"
+   "FIELD1": "dém(o)-",
+   "FIELD2": "peuple",
+   "FIELD3": "démocrate, démographie"
  },
  {
-   "Prefixe": "derm(o)-, dermato-",
-   "Sens": "peau",
-   "Exemple": "derme, dermique, dermatologie"
+   "FIELD1": "derm(o)-, dermato-",
+   "FIELD2": "peau",
+   "FIELD3": "derme, dermique, dermatologie"
  },
  {
-   "Prefixe": "deut-",
-   "Sens": "second",
-   "Exemple": "deutéron"
+   "FIELD1": "deut-",
+   "FIELD2": "second",
+   "FIELD3": "deutéron"
  },
  {
-   "Prefixe": "di-",
-   "Sens": "deux fois",
-   "Exemple": "diptyque, disyllabe"
+   "FIELD1": "di-",
+   "FIELD2": "deux fois",
+   "FIELD3": "diptyque, disyllabe"
  },
  {
-   "Prefixe": "dia-",
-   "Sens": "à  travers, séparé de",
-   "Exemple": "diagonal, diaphane, diorama"
+   "FIELD1": "dia-",
+   "FIELD2": "à  travers, séparé de",
+   "FIELD3": "diagonal, diaphane, diorama"
  },
  {
-   "Prefixe": "didact-",
-   "Sens": "enseigner",
-   "Exemple": "didactique"
+   "FIELD1": "didact-",
+   "FIELD2": "enseigner",
+   "FIELD3": "didactique"
  },
  {
-   "Prefixe": "dis-, dif-, dis-",
-   "Sens": "séparation",
-   "Exemple": "diverger"
+   "FIELD1": "dis-, dif-, dis-",
+   "FIELD2": "séparation",
+   "FIELD3": "diverger"
  },
  {
-   "Prefixe": "disc-",
-   "Sens": "disque intervertébral",
-   "Exemple": "hernie discale"
+   "FIELD1": "disc-",
+   "FIELD2": "disque intervertébral",
+   "FIELD3": "hernie discale"
  },
  {
-   "Prefixe": "dodéca-",
-   "Sens": "douze",
-   "Exemple": "dodécagone"
+   "FIELD1": "dodéca-",
+   "FIELD2": "douze",
+   "FIELD3": "dodécagone"
  },
  {
-   "Prefixe": "dolicho-",
-   "Sens": "long",
-   "Exemple": "dolichocéphale"
+   "FIELD1": "dolicho-",
+   "FIELD2": "long",
+   "FIELD3": "dolichocéphale"
  },
  {
-   "Prefixe": "dors-",
-   "Sens": "dos",
-   "Exemple": "dorsal"
+   "FIELD1": "dors-",
+   "FIELD2": "dos",
+   "FIELD3": "dorsal"
  },
  {
-   "Prefixe": "dory-",
-   "Sens": "lance",
-   "Exemple": "doryphore"
+   "FIELD1": "dory-",
+   "FIELD2": "lance",
+   "FIELD3": "doryphore"
  },
  {
-   "Prefixe": "dynam(o)-",
-   "Sens": "force",
-   "Exemple": "dynamite, dynamomètre"
+   "FIELD1": "dynam(o)-",
+   "FIELD2": "force",
+   "FIELD3": "dynamite, dynamomètre"
  },
  {
-   "Prefixe": "dys-",
-   "Sens": "difficulté",
-   "Exemple": "dyspepsie, dyslexie"
+   "FIELD1": "dys-",
+   "FIELD2": "difficulté",
+   "FIELD3": "dyspepsie, dyslexie"
  },
  {
-   "Prefixe": "échin(o)-",
-   "Sens": "épine, hérisson",
-   "Exemple": "échinoderme"
+   "FIELD1": "échin(o)-",
+   "FIELD2": "épine, hérisson",
+   "FIELD3": "échinoderme"
  },
  {
-   "Prefixe": "électr(o)-",
-   "Sens": "ambre jaune",
-   "Exemple": "électrochoc"
+   "FIELD1": "électr(o)-",
+   "FIELD2": "ambre jaune",
+   "FIELD3": "électrochoc"
  },
  {
-   "Prefixe": "embryo-",
-   "Sens": "foetus",
-   "Exemple": "embryologie"
+   "FIELD1": "embryo-",
+   "FIELD2": "foetus",
+   "FIELD3": "embryologie"
  },
  {
-   "Prefixe": "en-, em-",
-   "Sens": "dans",
-   "Exemple": "encéphale, endémie, enfermer"
+   "FIELD1": "en-, em-",
+   "FIELD2": "dans",
+   "FIELD3": "encéphale, endémie, enfermer"
  },
  {
-   "Prefixe": "endo-",
-   "Sens": "en dedans",
-   "Exemple": "endoderme, endocarde, endocrine"
+   "FIELD1": "endo-",
+   "FIELD2": "en dedans",
+   "FIELD3": "endoderme, endocarde, endocrine"
  },
  {
-   "Prefixe": "entér(o)-",
-   "Sens": "entrailles",
-   "Exemple": "entérite"
+   "FIELD1": "entér(o)-",
+   "FIELD2": "entrailles",
+   "FIELD3": "entérite"
  },
  {
-   "Prefixe": "entomo-",
-   "Sens": "insecte",
-   "Exemple": "entomologiste"
+   "FIELD1": "entomo-",
+   "FIELD2": "insecte",
+   "FIELD3": "entomologiste"
  },
  {
-   "Prefixe": "entre-, inter-",
-   "Sens": "Entre, réciproquement",
-   "Exemple": "entreposer, entrecôte"
+   "FIELD1": "entre-, inter-",
+   "FIELD2": "Entre, réciproquement",
+   "FIELD3": "entreposer, entrecôte"
  },
  {
-   "Prefixe": "éo-",
-   "Sens": "aurore",
-   "Exemple": "éocène"
+   "FIELD1": "éo-",
+   "FIELD2": "aurore",
+   "FIELD3": "éocène"
  },
  {
-   "Prefixe": "epi-",
-   "Sens": "sur, au-dessus",
-   "Exemple": "épiderme, épizootie"
+   "FIELD1": "epi-",
+   "FIELD2": "sur, au-dessus",
+   "FIELD3": "épiderme, épizootie"
  },
  {
-   "Prefixe": "erg-",
-   "Sens": "travail",
-   "Exemple": "ergonomie"
+   "FIELD1": "erg-",
+   "FIELD2": "travail",
+   "FIELD3": "ergonomie"
  },
  {
-   "Prefixe": "érythr-",
-   "Sens": "rouge",
-   "Exemple": "érythème, érythrine"
+   "FIELD1": "érythr-",
+   "FIELD2": "rouge",
+   "FIELD3": "érythème, érythrine"
  },
  {
-   "Prefixe": "eu-",
-   "Sens": "agréable, bien, bon",
-   "Exemple": "euphorie, euphémisme, euphonie"
+   "FIELD1": "eu-",
+   "FIELD2": "agréable, bien, bon",
+   "FIELD3": "euphorie, euphémisme, euphonie"
  },
  {
-   "Prefixe": "ex-",
-   "Sens": "à  l'extérieur, hors, qui a cessé d'être",
-   "Exemple": "expatrié, ex-employé"
+   "FIELD1": "ex-",
+   "FIELD2": "à  l'extérieur, hors, qui a cessé d'être",
+   "FIELD3": "expatrié, ex-employé"
  },
  {
-   "Prefixe": "exo-",
-   "Sens": "au-dehors",
-   "Exemple": "exotisme, exonérer"
+   "FIELD1": "exo-",
+   "FIELD2": "au-dehors",
+   "FIELD3": "exotisme, exonérer"
  },
  {
-   "Prefixe": "extra-",
-   "Sens": "superlatif, hors de",
-   "Exemple": "extra-fin, extraordinaire, extra-territorialité"
+   "FIELD1": "extra-",
+   "FIELD2": "superlatif, hors de",
+   "FIELD3": "extra-fin, extraordinaire, extra-territorialité"
  },
  {
-   "Prefixe": "galact(o)-",
-   "Sens": "lait",
-   "Exemple": "galactose, galaxie"
+   "FIELD1": "galact(o)-",
+   "FIELD2": "lait",
+   "FIELD3": "galactose, galaxie"
  },
  {
-   "Prefixe": "gam(o)-",
-   "Sens": "mariage",
-   "Exemple": "gamète"
+   "FIELD1": "gam(o)-",
+   "FIELD2": "mariage",
+   "FIELD3": "gamète"
  },
  {
-   "Prefixe": "gastro-",
-   "Sens": "ventre",
-   "Exemple": "gastropodes, gastronome"
+   "FIELD1": "gastro-",
+   "FIELD2": "ventre",
+   "FIELD3": "gastropodes, gastronome"
  },
  {
-   "Prefixe": "gé(o)-",
-   "Sens": "terre",
-   "Exemple": "géographie, géologie"
+   "FIELD1": "gé(o)-",
+   "FIELD2": "terre",
+   "FIELD3": "géographie, géologie"
  },
  {
-   "Prefixe": "genu-",
-   "Sens": "genou",
-   "Exemple": "génuflexion"
+   "FIELD1": "genu-",
+   "FIELD2": "genou",
+   "FIELD3": "génuflexion"
  },
  {
-   "Prefixe": "géront(o)-",
-   "Sens": "vieillard",
-   "Exemple": "gérontocratie"
+   "FIELD1": "géront(o)-",
+   "FIELD2": "vieillard",
+   "FIELD3": "gérontocratie"
  },
  {
-   "Prefixe": "gingiv-",
-   "Sens": "gencive",
-   "Exemple": "gingivite"
+   "FIELD1": "gingiv-",
+   "FIELD2": "gencive",
+   "FIELD3": "gingivite"
  },
  {
-   "Prefixe": "gloss(o)-",
-   "Sens": "langue",
-   "Exemple": "glossaire"
+   "FIELD1": "gloss(o)-",
+   "FIELD2": "langue",
+   "FIELD3": "glossaire"
  },
  {
-   "Prefixe": "gluc(o)-",
-   "Sens": "doux",
-   "Exemple": "glucose, glycogène"
+   "FIELD1": "gluc(o)-",
+   "FIELD2": "doux",
+   "FIELD3": "glucose, glycogène"
  },
  {
-   "Prefixe": "glyc(o)-, glycér(o)-",
-   "Sens": "doux",
-   "Exemple": "glycérine"
+   "FIELD1": "glyc(o)-, glycér(o)-",
+   "FIELD2": "doux",
+   "FIELD3": "glycérine"
  },
  {
-   "Prefixe": "granul-",
-   "Sens": "granulation",
-   "Exemple": "granuleux"
+   "FIELD1": "granul-",
+   "FIELD2": "granulation",
+   "FIELD3": "granuleux"
  },
  {
-   "Prefixe": "graph(o)-",
-   "Sens": "écrire",
-   "Exemple": "graphologie, graphème"
+   "FIELD1": "graph(o)-",
+   "FIELD2": "écrire",
+   "FIELD3": "graphologie, graphème"
  },
  {
-   "Prefixe": "gyn(éco)-",
-   "Sens": "femme",
-   "Exemple": "gynécée, gynécologie"
+   "FIELD1": "gyn(éco)-",
+   "FIELD2": "femme",
+   "FIELD3": "gynécée, gynécologie"
  },
  {
-   "Prefixe": "gyro-",
-   "Sens": "cercle",
-   "Exemple": "gyroscope"
+   "FIELD1": "gyro-",
+   "FIELD2": "cercle",
+   "FIELD3": "gyroscope"
  },
  {
-   "Prefixe": "hagi(o)-",
-   "Sens": "sacré",
-   "Exemple": "hagiographie"
+   "FIELD1": "hagi(o)-",
+   "FIELD2": "sacré",
+   "FIELD3": "hagiographie"
  },
  {
-   "Prefixe": "halo-",
-   "Sens": "sel",
-   "Exemple": "halogène"
+   "FIELD1": "halo-",
+   "FIELD2": "sel",
+   "FIELD3": "halogène"
  },
  {
-   "Prefixe": "hecto-",
-   "Sens": "cent",
-   "Exemple": "hectomètre"
+   "FIELD1": "hecto-",
+   "FIELD2": "cent",
+   "FIELD3": "hectomètre"
  },
  {
-   "Prefixe": "héli(o)-",
-   "Sens": "soleil",
-   "Exemple": "héliothérapie"
+   "FIELD1": "héli(o)-",
+   "FIELD2": "soleil",
+   "FIELD3": "héliothérapie"
  },
  {
-   "Prefixe": "hémat(o)-, hémo-",
-   "Sens": "sang",
-   "Exemple": "hématose, hémorragie"
+   "FIELD1": "hémat(o)-, hémo-",
+   "FIELD2": "sang",
+   "FIELD3": "hématose, hémorragie"
  },
  {
-   "Prefixe": "hémi-",
-   "Sens": "demi",
-   "Exemple": "hémicycle, hémisphère"
+   "FIELD1": "hémi-",
+   "FIELD2": "demi",
+   "FIELD3": "hémicycle, hémisphère"
  },
  {
-   "Prefixe": "hépat(o)-",
-   "Sens": "foie",
-   "Exemple": "hépatique, hépatite"
+   "FIELD1": "hépat(o)-",
+   "FIELD2": "foie",
+   "FIELD3": "hépatique, hépatite"
  },
  {
-   "Prefixe": "hept(a)-",
-   "Sens": "sept",
-   "Exemple": "heptasyllabe"
+   "FIELD1": "hept(a)-",
+   "FIELD2": "sept",
+   "FIELD3": "heptasyllabe"
  },
  {
-   "Prefixe": "hétéro-",
-   "Sens": "autre",
-   "Exemple": "hétérogène"
+   "FIELD1": "hétéro-",
+   "FIELD2": "autre",
+   "FIELD3": "hétérogène"
  },
  {
-   "Prefixe": "hexa-",
-   "Sens": "six",
-   "Exemple": "hexagone"
+   "FIELD1": "hexa-",
+   "FIELD2": "six",
+   "FIELD3": "hexagone"
  },
  {
-   "Prefixe": "hiér(o)-",
-   "Sens": "sacré",
-   "Exemple": "hiéroglyphe"
+   "FIELD1": "hiér(o)-",
+   "FIELD2": "sacré",
+   "FIELD3": "hiéroglyphe"
  },
  {
-   "Prefixe": "hipp(o)-",
-   "Sens": "cheval",
-   "Exemple": "hippodrome"
+   "FIELD1": "hipp(o)-",
+   "FIELD2": "cheval",
+   "FIELD3": "hippodrome"
  },
  {
-   "Prefixe": "hist(o)-",
-   "Sens": "tissu",
-   "Exemple": "histologie"
+   "FIELD1": "hist(o)-",
+   "FIELD2": "tissu",
+   "FIELD3": "histologie"
  },
  {
-   "Prefixe": "homéo-, hom(o)",
-   "Sens": "semblable",
-   "Exemple": "homéopathie, homologue"
+   "FIELD1": "homéo-, hom(o)",
+   "FIELD2": "semblable",
+   "FIELD3": "homéopathie, homologue"
  },
  {
-   "Prefixe": "hor(o)-",
-   "Sens": "heure",
-   "Exemple": "horoscope, horodateur"
+   "FIELD1": "hor(o)-",
+   "FIELD2": "heure",
+   "FIELD3": "horoscope, horodateur"
  },
  {
-   "Prefixe": "hydr(o)-",
-   "Sens": "eau (fluide)",
-   "Exemple": "hydraulique, hydre, hydrologie, hydrothérapie"
+   "FIELD1": "hydr(o)-",
+   "FIELD2": "eau (fluide)",
+   "FIELD3": "hydraulique, hydre, hydrologie, hydrothérapie"
  },
  {
-   "Prefixe": "hygro-",
-   "Sens": "humide",
-   "Exemple": "hygromètre, hygroscope"
+   "FIELD1": "hygro-",
+   "FIELD2": "humide",
+   "FIELD3": "hygromètre, hygroscope"
  },
  {
-   "Prefixe": "hyper-",
-   "Sens": "plus, au dessus",
-   "Exemple": "hypermétrope, hypertension, hypertrophie"
+   "FIELD1": "hyper-",
+   "FIELD2": "plus, au dessus",
+   "FIELD3": "hypermétrope, hypertension, hypertrophie"
  },
  {
-   "Prefixe": "hypn(o)-",
-   "Sens": "sommeil",
-   "Exemple": "hypnose, hypnotisme"
+   "FIELD1": "hypn(o)-",
+   "FIELD2": "sommeil",
+   "FIELD3": "hypnose, hypnotisme"
  },
  {
-   "Prefixe": "hypo-",
-   "Sens": "moins, en dessous",
-   "Exemple": "hypophyse, hypodermique"
+   "FIELD1": "hypo-",
+   "FIELD2": "moins, en dessous",
+   "FIELD3": "hypophyse, hypodermique"
  },
  {
-   "Prefixe": "hystér(o)-",
-   "Sens": "utérus",
-   "Exemple": "hystérographie"
+   "FIELD1": "hystér(o)-",
+   "FIELD2": "utérus",
+   "FIELD3": "hystérographie"
  },
  {
-   "Prefixe": "iatr-, -iâtre",
-   "Sens": "médecin",
-   "Exemple": "pédiatre"
+   "FIELD1": "iatr-, -iâtre",
+   "FIELD2": "médecin",
+   "FIELD3": "pédiatre"
  },
  {
-   "Prefixe": "icon(o)-",
-   "Sens": "image",
-   "Exemple": "icône, iconoclaste"
+   "FIELD1": "icon(o)-",
+   "FIELD2": "image",
+   "FIELD3": "icône, iconoclaste"
  },
  {
-   "Prefixe": "idé(o)-",
-   "Sens": "idée",
-   "Exemple": "idéogramme, idéologie"
+   "FIELD1": "idé(o)-",
+   "FIELD2": "idée",
+   "FIELD3": "idéogramme, idéologie"
  },
  {
-   "Prefixe": "idi(o)-",
-   "Sens": "particulier",
-   "Exemple": "idiome, idiotisme"
+   "FIELD1": "idi(o)-",
+   "FIELD2": "particulier",
+   "FIELD3": "idiome, idiotisme"
  },
  {
-   "Prefixe": "in-, im-, il-, ir-",
-   "Sens": "entrer, privé de, négation",
-   "Exemple": "infiltrer, insinuer, illettré, impropre, inexact"
+   "FIELD1": "in-, im-, il-, ir-",
+   "FIELD2": "entrer, privé de, négation",
+   "FIELD3": "infiltrer, insinuer, illettré, impropre, inexact"
  },
  {
-   "Prefixe": "inter-",
-   "Sens": "entre",
-   "Exemple": "interallié, interligne"
+   "FIELD1": "inter-",
+   "FIELD2": "entre",
+   "FIELD3": "interallié, interligne"
  },
  {
-   "Prefixe": "intra-",
-   "Sens": "au-dedans",
-   "Exemple": "intramusculaire"
+   "FIELD1": "intra-",
+   "FIELD2": "au-dedans",
+   "FIELD3": "intramusculaire"
  },
  {
-   "Prefixe": "isch-",
-   "Sens": "suppression, arrêt",
-   "Exemple": "ischémique"
+   "FIELD1": "isch-",
+   "FIELD2": "suppression, arrêt",
+   "FIELD3": "ischémique"
  },
  {
-   "Prefixe": "iso-",
-   "Sens": "égal",
-   "Exemple": "isomorphe, isotherme"
+   "FIELD1": "iso-",
+   "FIELD2": "égal",
+   "FIELD3": "isomorphe, isotherme"
  },
  {
-   "Prefixe": "juxta-",
-   "Sens": "auprès de",
-   "Exemple": "juxtalinéaire, juxtaposer"
+   "FIELD1": "juxta-",
+   "FIELD2": "auprès de",
+   "FIELD3": "juxtalinéaire, juxtaposer"
  },
  {
-   "Prefixe": "kali-",
-   "Sens": "potassium",
-   "Exemple": "kaliémie"
+   "FIELD1": "kali-",
+   "FIELD2": "potassium",
+   "FIELD3": "kaliémie"
  },
  {
-   "Prefixe": "kilo-",
-   "Sens": "mille",
-   "Exemple": "kilogramme"
+   "FIELD1": "kilo-",
+   "FIELD2": "mille",
+   "FIELD3": "kilogramme"
  },
  {
-   "Prefixe": "kinés-, kinét-",
-   "Sens": "mouvement",
-   "Exemple": "kinestésie"
+   "FIELD1": "kinés-, kinét-",
+   "FIELD2": "mouvement",
+   "FIELD3": "kinestésie"
  },
  {
-   "Prefixe": "lapar-",
-   "Sens": "paroi abdominale",
-   "Exemple": "laparoscopie"
+   "FIELD1": "lapar-",
+   "FIELD2": "paroi abdominale",
+   "FIELD3": "laparoscopie"
  },
  {
-   "Prefixe": "laryng(o)-",
-   "Sens": "gorge",
-   "Exemple": "laryngologie"
+   "FIELD1": "laryng(o)-",
+   "FIELD2": "gorge",
+   "FIELD3": "laryngologie"
  },
  {
-   "Prefixe": "leuc-, leuco-",
-   "Sens": "blanc",
-   "Exemple": "leucocyte, leucémie"
+   "FIELD1": "leuc-, leuco-",
+   "FIELD2": "blanc",
+   "FIELD3": "leucocyte, leucémie"
  },
  {
-   "Prefixe": "lipo-",
-   "Sens": "lipide",
-   "Exemple": "liposuccion"
+   "FIELD1": "lipo-",
+   "FIELD2": "lipide",
+   "FIELD3": "liposuccion"
  },
  {
-   "Prefixe": "litho-",
-   "Sens": "pierre",
-   "Exemple": "lithographique"
+   "FIELD1": "litho-",
+   "FIELD2": "pierre",
+   "FIELD3": "lithographique"
  },
  {
-   "Prefixe": "loco-",
-   "Sens": "mettre en mouvement",
-   "Exemple": "locomotion"
+   "FIELD1": "loco-",
+   "FIELD2": "mettre en mouvement",
+   "FIELD3": "locomotion"
  },
  {
-   "Prefixe": "log(o)-",
-   "Sens": "discours, science",
-   "Exemple": "logomachie"
+   "FIELD1": "log(o)-",
+   "FIELD2": "discours, science",
+   "FIELD3": "logomachie"
  },
  {
-   "Prefixe": "lomb-",
-   "Sens": "région lombaire",
-   "Exemple": "lombalgie"
+   "FIELD1": "lomb-",
+   "FIELD2": "région lombaire",
+   "FIELD3": "lombalgie"
  },
  {
-   "Prefixe": "lum-",
-   "Sens": "lumière, partie creuse d'un tube",
-   "Exemple": "luminaire, luminance, luminisme, lumitype"
+   "FIELD1": "lum-",
+   "FIELD2": "lumière, partie creuse d'un tube",
+   "FIELD3": "luminaire, luminance, luminisme, lumitype"
  },
  {
-   "Prefixe": "macro-",
-   "Sens": "grand",
-   "Exemple": "macrocosme"
+   "FIELD1": "macro-",
+   "FIELD2": "grand",
+   "FIELD3": "macrocosme"
  },
  {
-   "Prefixe": "mi-",
-   "Sens": "milieu",
-   "Exemple": "midi, mi-figue, mi-raisin"
+   "FIELD1": "mi-",
+   "FIELD2": "milieu",
+   "FIELD3": "midi, mi-figue, mi-raisin"
  },
  {
-   "Prefixe": "micro-",
-   "Sens": "petit",
-   "Exemple": "microbe, microbiologie"
+   "FIELD1": "micro-",
+   "FIELD2": "petit",
+   "FIELD3": "microbe, microbiologie"
  },
  {
-   "Prefixe": "mis(o)-",
-   "Sens": "haine",
-   "Exemple": "misanthrope, misogyne"
+   "FIELD1": "mis(o)-",
+   "FIELD2": "haine",
+   "FIELD3": "misanthrope, misogyne"
  },
  {
-   "Prefixe": "mném(o)-",
-   "Sens": "mémoire",
-   "Exemple": "mnémotechnique"
+   "FIELD1": "mném(o)-",
+   "FIELD2": "mémoire",
+   "FIELD3": "mnémotechnique"
  },
  {
-   "Prefixe": "mono-",
-   "Sens": "seul",
-   "Exemple": "monogramme, monolithe"
+   "FIELD1": "mono-",
+   "FIELD2": "seul",
+   "FIELD3": "monogramme, monolithe"
  },
  {
-   "Prefixe": "morpho-",
-   "Sens": "forme",
-   "Exemple": "morphologie"
+   "FIELD1": "morpho-",
+   "FIELD2": "forme",
+   "FIELD3": "morphologie"
  },
  {
-   "Prefixe": "multi-",
-   "Sens": "nombreux",
-   "Exemple": "multicolore, multiforme, multiple"
+   "FIELD1": "multi-",
+   "FIELD2": "nombreux",
+   "FIELD3": "multicolore, multiforme, multiple"
  },
  {
-   "Prefixe": "myco-",
-   "Sens": "champignon",
-   "Exemple": "mycologie"
+   "FIELD1": "myco-",
+   "FIELD2": "champignon",
+   "FIELD3": "mycologie"
  },
  {
-   "Prefixe": "myél-",
-   "Sens": "moelle",
-   "Exemple": "myélopathie"
+   "FIELD1": "myél-",
+   "FIELD2": "moelle",
+   "FIELD3": "myélopathie"
  },
  {
-   "Prefixe": "myo-",
-   "Sens": "muscle",
-   "Exemple": "myocarde"
+   "FIELD1": "myo-",
+   "FIELD2": "muscle",
+   "FIELD3": "myocarde"
  },
  {
-   "Prefixe": "myri(a)-",
-   "Sens": "dix mille",
-   "Exemple": "myriade"
+   "FIELD1": "myri(a)-",
+   "FIELD2": "dix mille",
+   "FIELD3": "myriade"
  },
  {
-   "Prefixe": "mythe-",
-   "Sens": "légende",
-   "Exemple": "mythologie"
+   "FIELD1": "mythe-",
+   "FIELD2": "légende",
+   "FIELD3": "mythologie"
  },
  {
-   "Prefixe": "nas-",
-   "Sens": "nez",
-   "Exemple": "nasalisation, nasique"
+   "FIELD1": "nas-",
+   "FIELD2": "nez",
+   "FIELD3": "nasalisation, nasique"
  },
  {
-   "Prefixe": "natr-",
-   "Sens": "sodium",
-   "Exemple": "natrémie"
+   "FIELD1": "natr-",
+   "FIELD2": "sodium",
+   "FIELD3": "natrémie"
  },
  {
-   "Prefixe": "nécro-",
-   "Sens": "mort",
-   "Exemple": "nécrologie, nécropole"
+   "FIELD1": "nécro-",
+   "FIELD2": "mort",
+   "FIELD3": "nécrologie, nécropole"
  },
  {
-   "Prefixe": "néo-",
-   "Sens": "nouveau",
-   "Exemple": "néologisme, néophyte"
+   "FIELD1": "néo-",
+   "FIELD2": "nouveau",
+   "FIELD3": "néologisme, néophyte"
  },
  {
-   "Prefixe": "néphr(o)-",
-   "Sens": "rein",
-   "Exemple": "néphrite"
+   "FIELD1": "néphr(o)-",
+   "FIELD2": "rein",
+   "FIELD3": "néphrite"
  },
  {
-   "Prefixe": "neuro-, névr-",
-   "Sens": "nerf",
-   "Exemple": "neurologie, névralgie"
+   "FIELD1": "neuro-, névr-",
+   "FIELD2": "nerf",
+   "FIELD3": "neurologie, névralgie"
  },
  {
-   "Prefixe": "névr-",
-   "Sens": "nerf",
-   "Exemple": "névrose"
+   "FIELD1": "névr-",
+   "FIELD2": "nerf",
+   "FIELD3": "névrose"
  },
  {
-   "Prefixe": "nigr-, négr(o)-",
-   "Sens": "noir",
-   "Exemple": "nigéro-congolais, négritude"
+   "FIELD1": "nigr-, négr(o)-",
+   "FIELD2": "noir",
+   "FIELD3": "nigéro-congolais, négritude"
  },
  {
-   "Prefixe": "non-",
-   "Sens": "négation",
-   "Exemple": "nonchalant"
+   "FIELD1": "non-",
+   "FIELD2": "négation",
+   "FIELD3": "nonchalant"
  },
  {
-   "Prefixe": "noso-",
-   "Sens": "maladie",
-   "Exemple": "nosologie"
+   "FIELD1": "noso-",
+   "FIELD2": "maladie",
+   "FIELD3": "nosologie"
  },
  {
-   "Prefixe": "nuclé-",
-   "Sens": "noyau",
-   "Exemple": "nucléaire"
+   "FIELD1": "nuclé-",
+   "FIELD2": "noyau",
+   "FIELD3": "nucléaire"
  },
  {
-   "Prefixe": "ob-, oc-, of-, op-",
-   "Sens": "devant, en opposition",
-   "Exemple": "obnubiler"
+   "FIELD1": "ob-, oc-, of-, op-",
+   "FIELD2": "devant, en opposition",
+   "FIELD3": "obnubiler"
  },
  {
-   "Prefixe": "octa-, octo-",
-   "Sens": "huit",
-   "Exemple": "octaèdre, octogone"
+   "FIELD1": "octa-, octo-",
+   "FIELD2": "huit",
+   "FIELD3": "octaèdre, octogone"
  },
  {
-   "Prefixe": "ocul-",
-   "Sens": "oeil",
-   "Exemple": "occulter"
+   "FIELD1": "ocul-",
+   "FIELD2": "oeil",
+   "FIELD3": "occulter"
  },
  {
-   "Prefixe": "odont(o)-",
-   "Sens": "dent",
-   "Exemple": "odontologie"
+   "FIELD1": "odont(o)-",
+   "FIELD2": "dent",
+   "FIELD3": "odontologie"
  },
  {
-   "Prefixe": "olfact-",
-   "Sens": "odorat",
-   "Exemple": "olfactif"
+   "FIELD1": "olfact-",
+   "FIELD2": "odorat",
+   "FIELD3": "olfactif"
  },
  {
-   "Prefixe": "olig(o)-",
-   "Sens": "peu nombreux",
-   "Exemple": "oligarchie"
+   "FIELD1": "olig(o)-",
+   "FIELD2": "peu nombreux",
+   "FIELD3": "oligarchie"
  },
  {
-   "Prefixe": "omni-",
-   "Sens": "tout",
-   "Exemple": "omniscient, omnivore"
+   "FIELD1": "omni-",
+   "FIELD2": "tout",
+   "FIELD3": "omniscient, omnivore"
  },
  {
-   "Prefixe": "onco-",
-   "Sens": "tumeur",
-   "Exemple": "oncologie"
+   "FIELD1": "onco-",
+   "FIELD2": "tumeur",
+   "FIELD3": "oncologie"
  },
  {
-   "Prefixe": "oniro-",
-   "Sens": "songé",
-   "Exemple": "oniromancie, onirique"
+   "FIELD1": "oniro-",
+   "FIELD2": "songé",
+   "FIELD3": "oniromancie, onirique"
  },
  {
-   "Prefixe": "ophtalm(o)-",
-   "Sens": "oeil",
-   "Exemple": "ophtalmologie"
+   "FIELD1": "ophtalm(o)-",
+   "FIELD2": "oeil",
+   "FIELD3": "ophtalmologie"
  },
  {
-   "Prefixe": "orchi-",
-   "Sens": "testicule",
-   "Exemple": "orchidée"
+   "FIELD1": "orchi-",
+   "FIELD2": "testicule",
+   "FIELD3": "orchidée"
  },
  {
-   "Prefixe": "ornitho-",
-   "Sens": "oiseau",
-   "Exemple": "ornithologiste"
+   "FIELD1": "ornitho-",
+   "FIELD2": "oiseau",
+   "FIELD3": "ornithologiste"
  },
  {
-   "Prefixe": "oro-",
-   "Sens": "montagne",
-   "Exemple": "orographie"
+   "FIELD1": "oro-",
+   "FIELD2": "montagne",
+   "FIELD3": "orographie"
  },
  {
-   "Prefixe": "ortho-",
-   "Sens": "droit",
-   "Exemple": "orthographe, orthopédie"
+   "FIELD1": "ortho-",
+   "FIELD2": "droit",
+   "FIELD3": "orthographe, orthopédie"
  },
  {
-   "Prefixe": "osm-",
-   "Sens": "odeur",
-   "Exemple": "osmium"
+   "FIELD1": "osm-",
+   "FIELD2": "odeur",
+   "FIELD3": "osmium"
  },
  {
-   "Prefixe": "osté(o)-",
-   "Sens": "os",
-   "Exemple": "ostéite, ostéomyélite"
+   "FIELD1": "osté(o)-",
+   "FIELD2": "os",
+   "FIELD3": "ostéite, ostéomyélite"
  },
  {
-   "Prefixe": "ot(o)-",
-   "Sens": "oreille",
-   "Exemple": "oto-rhino-laryngologie"
+   "FIELD1": "ot(o)-",
+   "FIELD2": "oreille",
+   "FIELD3": "oto-rhino-laryngologie"
  },
  {
-   "Prefixe": "outre-",
-   "Sens": "au-delà  de",
-   "Exemple": "outrepasser"
+   "FIELD1": "outre-",
+   "FIELD2": "au-delà  de",
+   "FIELD3": "outrepasser"
  },
  {
-   "Prefixe": "ovari-",
-   "Sens": "ovaire",
-   "Exemple": "ovarien, ovarite"
+   "FIELD1": "ovari-",
+   "FIELD2": "ovaire",
+   "FIELD3": "ovarien, ovarite"
  },
  {
-   "Prefixe": "oxy-",
-   "Sens": "aigu, acide",
-   "Exemple": "oxyton, oxygène"
+   "FIELD1": "oxy-",
+   "FIELD2": "aigu, acide",
+   "FIELD3": "oxyton, oxygène"
  },
  {
-   "Prefixe": "pachy-",
-   "Sens": "épais",
-   "Exemple": "pachyderme"
+   "FIELD1": "pachy-",
+   "FIELD2": "épais",
+   "FIELD3": "pachyderme"
  },
  {
-   "Prefixe": "paléo-",
-   "Sens": "ancien",
-   "Exemple": "paléographie, paléolithique"
+   "FIELD1": "paléo-",
+   "FIELD2": "ancien",
+   "FIELD3": "paléographie, paléolithique"
  },
  {
-   "Prefixe": "pan-, pant(o)-",
-   "Sens": "tout",
-   "Exemple": "panthéisme, pantographe"
+   "FIELD1": "pan-, pant(o)-",
+   "FIELD2": "tout",
+   "FIELD3": "panthéisme, pantographe"
  },
  {
-   "Prefixe": "par-, per-",
-   "Sens": "à  travers, achèvement",
-   "Exemple": "parcourir"
+   "FIELD1": "par-, per-",
+   "FIELD2": "à  travers, achèvement",
+   "FIELD3": "parcourir"
  },
  {
-   "Prefixe": "para-",
-   "Sens": "contre, auprès",
-   "Exemple": "parasite"
+   "FIELD1": "para-",
+   "FIELD2": "contre, auprès",
+   "FIELD3": "parasite"
  },
  {
-   "Prefixe": "path-",
-   "Sens": "maladie",
-   "Exemple": "pathologie"
+   "FIELD1": "path-",
+   "FIELD2": "maladie",
+   "FIELD3": "pathologie"
  },
  {
-   "Prefixe": "path(o)-",
-   "Sens": "souffrance",
-   "Exemple": "pathogène, pathologie"
+   "FIELD1": "path(o)-",
+   "FIELD2": "souffrance",
+   "FIELD3": "pathogène, pathologie"
  },
  {
-   "Prefixe": "péd-",
-   "Sens": "enfant",
-   "Exemple": "pédagogie, pédiatrie"
+   "FIELD1": "péd-",
+   "FIELD2": "enfant",
+   "FIELD3": "pédagogie, pédiatrie"
  },
  {
-   "Prefixe": "péni-",
-   "Sens": "pauvreté, diminution",
-   "Exemple": "pénitence, pénitencier"
+   "FIELD1": "péni-",
+   "FIELD2": "pauvreté, diminution",
+   "FIELD3": "pénitence, pénitencier"
  },
  {
-   "Prefixe": "penta-",
-   "Sens": "cinq",
-   "Exemple": "pentagone"
+   "FIELD1": "penta-",
+   "FIELD2": "cinq",
+   "FIELD3": "pentagone"
  },
  {
-   "Prefixe": "per-",
-   "Sens": "à  travers",
-   "Exemple": "percolateur, perforer"
+   "FIELD1": "per-",
+   "FIELD2": "à  travers",
+   "FIELD3": "percolateur, perforer"
  },
  {
-   "Prefixe": "peri-",
-   "Sens": "autour",
-   "Exemple": "périoste, périphrase, périphérique"
+   "FIELD1": "peri-",
+   "FIELD2": "autour",
+   "FIELD3": "périoste, périphrase, périphérique"
  },
  {
-   "Prefixe": "phago-",
-   "Sens": "manger",
-   "Exemple": "phagocyte"
+   "FIELD1": "phago-",
+   "FIELD2": "manger",
+   "FIELD3": "phagocyte"
  },
  {
-   "Prefixe": "pharmac(o)-",
-   "Sens": "médicament",
-   "Exemple": "pharmaceutique, pharmacopée"
+   "FIELD1": "pharmac(o)-",
+   "FIELD2": "médicament",
+   "FIELD3": "pharmaceutique, pharmacopée"
  },
  {
-   "Prefixe": "pharyng(o)-",
-   "Sens": "gosier",
-   "Exemple": "pharyngite"
+   "FIELD1": "pharyng(o)-",
+   "FIELD2": "gosier",
+   "FIELD3": "pharyngite"
  },
  {
-   "Prefixe": "phén(o)-",
-   "Sens": "apparaître",
-   "Exemple": "phénomène"
+   "FIELD1": "phén(o)-",
+   "FIELD2": "apparaître",
+   "FIELD3": "phénomène"
  },
  {
-   "Prefixe": "phil(o)-",
-   "Sens": "qui aime",
-   "Exemple": "philanthrope, philatélie, philosophie"
+   "FIELD1": "phil(o)-",
+   "FIELD2": "qui aime",
+   "FIELD3": "philanthrope, philatélie, philosophie"
  },
  {
-   "Prefixe": "phléb-",
-   "Sens": "veine",
-   "Exemple": "phlébite"
+   "FIELD1": "phléb-",
+   "FIELD2": "veine",
+   "FIELD3": "phlébite"
  },
  {
-   "Prefixe": "phon(o)-",
-   "Sens": "voix",
-   "Exemple": "phonographe"
+   "FIELD1": "phon(o)-",
+   "FIELD2": "voix",
+   "FIELD3": "phonographe"
  },
  {
-   "Prefixe": "photo-",
-   "Sens": "lumière",
-   "Exemple": "photographe"
+   "FIELD1": "photo-",
+   "FIELD2": "lumière",
+   "FIELD3": "photographe"
  },
  {
-   "Prefixe": "phréno-",
-   "Sens": "diaphragme",
-   "Exemple": "phrénique"
+   "FIELD1": "phréno-",
+   "FIELD2": "diaphragme",
+   "FIELD3": "phrénique"
  },
  {
-   "Prefixe": "phyllo-",
-   "Sens": "feuille",
-   "Exemple": "phylloxéra"
+   "FIELD1": "phyllo-",
+   "FIELD2": "feuille",
+   "FIELD3": "phylloxéra"
  },
  {
-   "Prefixe": "phys(io)-",
-   "Sens": "nature",
-   "Exemple": "physiocrate, physique"
+   "FIELD1": "phys(io)-",
+   "FIELD2": "nature",
+   "FIELD3": "physiocrate, physique"
  },
  {
-   "Prefixe": "phyt(o)-",
-   "Sens": "plante",
-   "Exemple": "phytophage"
+   "FIELD1": "phyt(o)-",
+   "FIELD2": "plante",
+   "FIELD3": "phytophage"
  },
  {
-   "Prefixe": "plast-",
-   "Sens": "façonné",
-   "Exemple": "plasticité, plastique"
+   "FIELD1": "plast-",
+   "FIELD2": "façonné",
+   "FIELD3": "plasticité, plastique"
  },
  {
-   "Prefixe": "pleur-",
-   "Sens": "plèvre (membrane du thorax)",
-   "Exemple": "pleurodynie"
+   "FIELD1": "pleur-",
+   "FIELD2": "plèvre (membrane du thorax)",
+   "FIELD3": "pleurodynie"
  },
  {
-   "Prefixe": "pleur(o)-",
-   "Sens": "côté",
-   "Exemple": "pleurite"
+   "FIELD1": "pleur(o)-",
+   "FIELD2": "côté",
+   "FIELD3": "pleurite"
  },
  {
-   "Prefixe": "plouto-",
-   "Sens": "richesse",
-   "Exemple": "ploutocratie"
+   "FIELD1": "plouto-",
+   "FIELD2": "richesse",
+   "FIELD3": "ploutocratie"
  },
  {
-   "Prefixe": "pneum-, pneumat-",
-   "Sens": "air, respiration",
-   "Exemple": "pneumatique"
+   "FIELD1": "pneum-, pneumat-",
+   "FIELD2": "air, respiration",
+   "FIELD3": "pneumatique"
  },
  {
-   "Prefixe": "pneumo-",
-   "Sens": "poumon",
-   "Exemple": "pneumonie"
+   "FIELD1": "pneumo-",
+   "FIELD2": "poumon",
+   "FIELD3": "pneumonie"
  },
  {
-   "Prefixe": "pod(o)-",
-   "Sens": "pied",
-   "Exemple": "podomètre"
+   "FIELD1": "pod(o)-",
+   "FIELD2": "pied",
+   "FIELD3": "podomètre"
  },
  {
-   "Prefixe": "polio-",
-   "Sens": "substance grise",
-   "Exemple": "poliomyélite"
+   "FIELD1": "polio-",
+   "FIELD2": "substance grise",
+   "FIELD3": "poliomyélite"
  },
  {
-   "Prefixe": "poly-",
-   "Sens": "nombreux",
-   "Exemple": "polyèdre, polygone"
+   "FIELD1": "poly-",
+   "FIELD2": "nombreux",
+   "FIELD3": "polyèdre, polygone"
  },
  {
-   "Prefixe": "post-",
-   "Sens": "après",
-   "Exemple": "postdater, postscolaire"
+   "FIELD1": "post-",
+   "FIELD2": "après",
+   "FIELD3": "postdater, postscolaire"
  },
  {
-   "Prefixe": "pré-",
-   "Sens": "devant",
-   "Exemple": "préétabli, préhistoire, préliminaire"
+   "FIELD1": "pré-",
+   "FIELD2": "devant",
+   "FIELD3": "préétabli, préhistoire, préliminaire"
  },
  {
-   "Prefixe": "pro-",
-   "Sens": "en avant",
-   "Exemple": "proposer, projeter, prolonger"
+   "FIELD1": "pro-",
+   "FIELD2": "en avant",
+   "FIELD3": "proposer, projeter, prolonger"
  },
  {
-   "Prefixe": "proct-",
-   "Sens": "anus",
-   "Exemple": "proctologie"
+   "FIELD1": "proct-",
+   "FIELD2": "anus",
+   "FIELD3": "proctologie"
  },
  {
-   "Prefixe": "prosop-",
-   "Sens": "visage",
-   "Exemple": "prosopopée"
+   "FIELD1": "prosop-",
+   "FIELD2": "visage",
+   "FIELD3": "prosopopée"
  },
  {
-   "Prefixe": "prosta-",
-   "Sens": "prostate",
-   "Exemple": "prostatique"
+   "FIELD1": "prosta-",
+   "FIELD2": "prostate",
+   "FIELD3": "prostatique"
  },
  {
-   "Prefixe": "prot(o)-",
-   "Sens": "premier",
-   "Exemple": "prototype"
+   "FIELD1": "prot(o)-",
+   "FIELD2": "premier",
+   "FIELD3": "prototype"
  },
  {
-   "Prefixe": "proté-",
-   "Sens": "protéine, forme changeante",
-   "Exemple": "protéolyse"
+   "FIELD1": "proté-",
+   "FIELD2": "protéine, forme changeante",
+   "FIELD3": "protéolyse"
  },
  {
-   "Prefixe": "pseud(o)-",
-   "Sens": "faux",
-   "Exemple": "pseudonyme"
+   "FIELD1": "pseud(o)-",
+   "FIELD2": "faux",
+   "FIELD3": "pseudonyme"
  },
  {
-   "Prefixe": "psych(o)-",
-   "Sens": "âme",
-   "Exemple": "psychologue"
+   "FIELD1": "psych(o)-",
+   "FIELD2": "âme",
+   "FIELD3": "psychologue"
  },
  {
-   "Prefixe": "ptéro-",
-   "Sens": "aile",
-   "Exemple": "ptérodactyle"
+   "FIELD1": "ptéro-",
+   "FIELD2": "aile",
+   "FIELD3": "ptérodactyle"
  },
  {
-   "Prefixe": "pulm-",
-   "Sens": "poumon",
-   "Exemple": "pulmonaire"
+   "FIELD1": "pulm-",
+   "FIELD2": "poumon",
+   "FIELD3": "pulmonaire"
  },
  {
-   "Prefixe": "pyél-",
-   "Sens": "bassinet du rein",
-   "Exemple": "pyélite"
+   "FIELD1": "pyél-",
+   "FIELD2": "bassinet du rein",
+   "FIELD3": "pyélite"
  },
  {
-   "Prefixe": "pyo-",
-   "Sens": "pus, suppuration",
-   "Exemple": "pyogène"
+   "FIELD1": "pyo-",
+   "FIELD2": "pus, suppuration",
+   "FIELD3": "pyogène"
  },
  {
-   "Prefixe": "pyr(o)-",
-   "Sens": "feu",
-   "Exemple": "pyrotechnie"
+   "FIELD1": "pyr(o)-",
+   "FIELD2": "feu",
+   "FIELD3": "pyrotechnie"
  },
  {
-   "Prefixe": "quadr(i)-, quadru-",
-   "Sens": "quatre",
-   "Exemple": "quadrijumeaux, quadrupède"
+   "FIELD1": "quadr(i)-, quadru-",
+   "FIELD2": "quatre",
+   "FIELD3": "quadrijumeaux, quadrupède"
  },
  {
-   "Prefixe": "quasi-",
-   "Sens": "presque",
-   "Exemple": "quasi-contrat, quasi-délit"
+   "FIELD1": "quasi-",
+   "FIELD2": "presque",
+   "FIELD3": "quasi-contrat, quasi-délit"
  },
  {
-   "Prefixe": "quinqu-",
-   "Sens": "cinq",
-   "Exemple": "quinquagénaire, quinquennal"
+   "FIELD1": "quinqu-",
+   "FIELD2": "cinq",
+   "FIELD3": "quinquagénaire, quinquennal"
  },
  {
-   "Prefixe": "r(e)-",
-   "Sens": "de nouveau",
-   "Exemple": "rouvrir, réargenter"
+   "FIELD1": "r(e)-",
+   "FIELD2": "de nouveau",
+   "FIELD3": "rouvrir, réargenter"
  },
  {
-   "Prefixe": "rachi-",
-   "Sens": "colonne vertébrale",
-   "Exemple": "rachidien"
+   "FIELD1": "rachi-",
+   "FIELD2": "colonne vertébrale",
+   "FIELD3": "rachidien"
  },
  {
-   "Prefixe": "radio-",
-   "Sens": "rayon",
-   "Exemple": "radiographie, radiologie"
+   "FIELD1": "radio-",
+   "FIELD2": "rayon",
+   "FIELD3": "radiographie, radiologie"
  },
  {
-   "Prefixe": "rect-",
-   "Sens": "rectum",
-   "Exemple": "rectoscopie"
+   "FIELD1": "rect-",
+   "FIELD2": "rectum",
+   "FIELD3": "rectoscopie"
  },
  {
-   "Prefixe": "rétro-",
-   "Sens": "en retour",
-   "Exemple": "rétroactif, rétrograder"
+   "FIELD1": "rétro-",
+   "FIELD2": "en retour",
+   "FIELD3": "rétroactif, rétrograder"
  },
  {
-   "Prefixe": "rhino-",
-   "Sens": "nez",
-   "Exemple": "rhinocéros"
+   "FIELD1": "rhino-",
+   "FIELD2": "nez",
+   "FIELD3": "rhinocéros"
  },
  {
-   "Prefixe": "rhizo-",
-   "Sens": "racine",
-   "Exemple": "rhizome, rhizopodes"
+   "FIELD1": "rhizo-",
+   "FIELD2": "racine",
+   "FIELD3": "rhizome, rhizopodes"
  },
  {
-   "Prefixe": "rhodo-",
-   "Sens": "rose",
-   "Exemple": "rhododendron"
+   "FIELD1": "rhodo-",
+   "FIELD2": "rose",
+   "FIELD3": "rhododendron"
  },
  {
-   "Prefixe": "rub-",
-   "Sens": "rouge",
-   "Exemple": "rubéole"
+   "FIELD1": "rub-",
+   "FIELD2": "rouge",
+   "FIELD3": "rubéole"
  },
  {
-   "Prefixe": "sarco-",
-   "Sens": "chair",
-   "Exemple": "sarcophage"
+   "FIELD1": "sarco-",
+   "FIELD2": "chair",
+   "FIELD3": "sarcophage"
  },
  {
-   "Prefixe": "saur-",
-   "Sens": "lézard",
-   "Exemple": "sauriens"
+   "FIELD1": "saur-",
+   "FIELD2": "lézard",
+   "FIELD3": "sauriens"
  },
  {
-   "Prefixe": "scaph-",
-   "Sens": "barque",
-   "Exemple": "scaphandrier"
+   "FIELD1": "scaph-",
+   "FIELD2": "barque",
+   "FIELD3": "scaphandrier"
  },
  {
-   "Prefixe": "schizo-",
-   "Sens": "qui fend",
-   "Exemple": "schizophrénie"
+   "FIELD1": "schizo-",
+   "FIELD2": "qui fend",
+   "FIELD3": "schizophrénie"
  },
  {
-   "Prefixe": "séma-",
-   "Sens": "signe",
-   "Exemple": "sémantique, sémaphore"
+   "FIELD1": "séma-",
+   "FIELD2": "signe",
+   "FIELD3": "sémantique, sémaphore"
  },
  {
-   "Prefixe": "séméio-, sémio-",
-   "Sens": "signe",
-   "Exemple": "sémiologie"
+   "FIELD1": "séméio-, sémio-",
+   "FIELD2": "signe",
+   "FIELD3": "sémiologie"
  },
  {
-   "Prefixe": "semi-",
-   "Sens": "demi",
-   "Exemple": "semi-circulaire"
+   "FIELD1": "semi-",
+   "FIELD2": "demi",
+   "FIELD3": "semi-circulaire"
  },
  {
-   "Prefixe": "sidér(o)-",
-   "Sens": "fer",
-   "Exemple": "sidérurgique"
+   "FIELD1": "sidér(o)-",
+   "FIELD2": "fer",
+   "FIELD3": "sidérurgique"
  },
  {
-   "Prefixe": "simili-",
-   "Sens": "semblable",
-   "Exemple": "similigravure, simili marbre"
+   "FIELD1": "simili-",
+   "FIELD2": "semblable",
+   "FIELD3": "similigravure, simili marbre"
  },
  {
-   "Prefixe": "solén(o)-",
-   "Sens": "tuyau",
-   "Exemple": "solénoïde"
+   "FIELD1": "solén(o)-",
+   "FIELD2": "tuyau",
+   "FIELD3": "solénoïde"
  },
  {
-   "Prefixe": "somat(o)-",
-   "Sens": "corps",
-   "Exemple": "somatique"
+   "FIELD1": "somat(o)-",
+   "FIELD2": "corps",
+   "FIELD3": "somatique"
  },
  {
-   "Prefixe": "sou-, sous-, suc-, suf-, sug-, sup-",
-   "Sens": "sous, presque",
-   "Exemple": "soucoupe"
+   "FIELD1": "sou-, sous-, suc-, suf-, sug-, sup-",
+   "FIELD2": "sous, presque",
+   "FIELD3": "soucoupe"
  },
  {
-   "Prefixe": "spélé(o)-",
-   "Sens": "caverne",
-   "Exemple": "spéléologie"
+   "FIELD1": "spélé(o)-",
+   "FIELD2": "caverne",
+   "FIELD3": "spéléologie"
  },
  {
-   "Prefixe": "sphéno-",
-   "Sens": "coin",
-   "Exemple": "sphénoïde"
+   "FIELD1": "sphéno-",
+   "FIELD2": "coin",
+   "FIELD3": "sphénoïde"
  },
  {
-   "Prefixe": "sphér(o)-",
-   "Sens": "globe",
-   "Exemple": "sphérique, sphénoïde"
+   "FIELD1": "sphér(o)-",
+   "FIELD2": "globe",
+   "FIELD3": "sphérique, sphénoïde"
  },
  {
-   "Prefixe": "spin-",
-   "Sens": "épine, moelle épinière",
-   "Exemple": "spinal"
+   "FIELD1": "spin-",
+   "FIELD2": "épine, moelle épinière",
+   "FIELD3": "spinal"
  },
  {
-   "Prefixe": "splén-",
-   "Sens": "rate",
-   "Exemple": "splénite"
+   "FIELD1": "splén-",
+   "FIELD2": "rate",
+   "FIELD3": "splénite"
  },
  {
-   "Prefixe": "spondyl-",
-   "Sens": "vertèbre",
-   "Exemple": "spondylite"
+   "FIELD1": "spondyl-",
+   "FIELD2": "vertèbre",
+   "FIELD3": "spondylite"
  },
  {
-   "Prefixe": "stat-",
-   "Sens": "stable",
-   "Exemple": "statique, statistique"
+   "FIELD1": "stat-",
+   "FIELD2": "stable",
+   "FIELD3": "statique, statistique"
  },
  {
-   "Prefixe": "stéa-",
-   "Sens": "graisse",
-   "Exemple": "stéarine"
+   "FIELD1": "stéa-",
+   "FIELD2": "graisse",
+   "FIELD3": "stéarine"
  },
  {
-   "Prefixe": "stéré(o)-",
-   "Sens": "solide",
-   "Exemple": "stéréoscope"
+   "FIELD1": "stéré(o)-",
+   "FIELD2": "solide",
+   "FIELD3": "stéréoscope"
  },
  {
-   "Prefixe": "stomat(o)-",
-   "Sens": "bouche",
-   "Exemple": "stomatologie"
+   "FIELD1": "stomat(o)-",
+   "FIELD2": "bouche",
+   "FIELD3": "stomatologie"
  },
  {
-   "Prefixe": "styl(o)-",
-   "Sens": "colonne",
-   "Exemple": "stylite"
+   "FIELD1": "styl(o)-",
+   "FIELD2": "colonne",
+   "FIELD3": "stylite"
  },
  {
-   "Prefixe": "sub-",
-   "Sens": "sous",
-   "Exemple": "subalterne, subdélégué, subdiviser"
+   "FIELD1": "sub-",
+   "FIELD2": "sous",
+   "FIELD3": "subalterne, subdélégué, subdiviser"
  },
  {
-   "Prefixe": "super-, supra-",
-   "Sens": "au-dessus",
-   "Exemple": "superstructure, supranational"
+   "FIELD1": "super-, supra-",
+   "FIELD2": "au-dessus",
+   "FIELD3": "superstructure, supranational"
  },
  {
-   "Prefixe": "sus-",
-   "Sens": "au dessus, plus",
-   "Exemple": "sus-mentionné"
+   "FIELD1": "sus-",
+   "FIELD2": "au dessus, plus",
+   "FIELD3": "sus-mentionné"
  },
  {
-   "Prefixe": "sy-, syn-, sym-",
-   "Sens": "avec",
-   "Exemple": "sympathie, synonyme"
+   "FIELD1": "sy-, syn-, sym-",
+   "FIELD2": "avec",
+   "FIELD3": "sympathie, synonyme"
  },
  {
-   "Prefixe": "tachy-",
-   "Sens": "rapide",
-   "Exemple": "tachymètre"
+   "FIELD1": "tachy-",
+   "FIELD2": "rapide",
+   "FIELD3": "tachymètre"
  },
  {
-   "Prefixe": "tauto-",
-   "Sens": "le même",
-   "Exemple": "tautologie"
+   "FIELD1": "tauto-",
+   "FIELD2": "le même",
+   "FIELD3": "tautologie"
  },
  {
-   "Prefixe": "taxi-",
-   "Sens": "taxe",
-   "Exemple": "taximètre"
+   "FIELD1": "taxi-",
+   "FIELD2": "taxe",
+   "FIELD3": "taximètre"
  },
  {
-   "Prefixe": "techn(o)-",
-   "Sens": "art",
-   "Exemple": "technique, technologie"
+   "FIELD1": "techn(o)-",
+   "FIELD2": "art",
+   "FIELD3": "technique, technologie"
  },
  {
-   "Prefixe": "télé-",
-   "Sens": "loin",
-   "Exemple": "télépathie, téléphone"
+   "FIELD1": "télé-",
+   "FIELD2": "loin",
+   "FIELD3": "télépathie, téléphone"
  },
  {
-   "Prefixe": "térat-",
-   "Sens": "monstre",
-   "Exemple": "tératologie"
+   "FIELD1": "térat-",
+   "FIELD2": "monstre",
+   "FIELD3": "tératologie"
  },
  {
-   "Prefixe": "tétra-",
-   "Sens": "quatre",
-   "Exemple": "tétragone"
+   "FIELD1": "tétra-",
+   "FIELD2": "quatre",
+   "FIELD3": "tétragone"
  },
  {
-   "Prefixe": "thalasso-",
-   "Sens": "mer",
-   "Exemple": "thalassothérapie"
+   "FIELD1": "thalasso-",
+   "FIELD2": "mer",
+   "FIELD3": "thalassothérapie"
  },
  {
-   "Prefixe": "théo-",
-   "Sens": "dieu",
-   "Exemple": "théocratie, théologie"
+   "FIELD1": "théo-",
+   "FIELD2": "dieu",
+   "FIELD3": "théocratie, théologie"
  },
  {
-   "Prefixe": "thérapeut-",
-   "Sens": "qui soigne",
-   "Exemple": "thérapeutique"
+   "FIELD1": "thérapeut-",
+   "FIELD2": "qui soigne",
+   "FIELD3": "thérapeutique"
  },
  {
-   "Prefixe": "therm(o)-",
-   "Sens": "chaleur",
-   "Exemple": "thermomètre"
+   "FIELD1": "therm(o)-",
+   "FIELD2": "chaleur",
+   "FIELD3": "thermomètre"
  },
  {
-   "Prefixe": "thorac-",
-   "Sens": "thorax",
-   "Exemple": "thoracique"
+   "FIELD1": "thorac-",
+   "FIELD2": "thorax",
+   "FIELD3": "thoracique"
  },
  {
-   "Prefixe": "thromb-",
-   "Sens": "coagulation, caillot",
-   "Exemple": "thrombose"
+   "FIELD1": "thromb-",
+   "FIELD2": "coagulation, caillot",
+   "FIELD3": "thrombose"
  },
  {
-   "Prefixe": "top(o)-",
-   "Sens": "lieu",
-   "Exemple": "topographie, toponymie"
+   "FIELD1": "top(o)-",
+   "FIELD2": "lieu",
+   "FIELD3": "topographie, toponymie"
  },
  {
-   "Prefixe": "trans-",
-   "Sens": "au-delà  de, à  travers",
-   "Exemple": "transformer, transhumant"
+   "FIELD1": "trans-",
+   "FIELD2": "au-delà  de, à  travers",
+   "FIELD3": "transformer, transhumant"
  },
  {
-   "Prefixe": "trauma-, traumat-",
-   "Sens": "blessure, choc violent",
-   "Exemple": "traumatisé"
+   "FIELD1": "trauma-, traumat-",
+   "FIELD2": "blessure, choc violent",
+   "FIELD3": "traumatisé"
  },
  {
-   "Prefixe": "tré-",
-   "Sens": "au-delà ",
-   "Exemple": "trépasser"
+   "FIELD1": "tré-",
+   "FIELD2": "au-delà ",
+   "FIELD3": "trépasser"
  },
  {
-   "Prefixe": "tri-",
-   "Sens": "trois",
-   "Exemple": "tripartite, trisaieul, tricolore"
+   "FIELD1": "tri-",
+   "FIELD2": "trois",
+   "FIELD3": "tripartite, trisaieul, tricolore"
  },
  {
-   "Prefixe": "trich-",
-   "Sens": "poil",
-   "Exemple": "trichogramme"
+   "FIELD1": "trich-",
+   "FIELD2": "poil",
+   "FIELD3": "trichogramme"
  },
  {
-   "Prefixe": "typo-",
-   "Sens": "caractère",
-   "Exemple": "typographie, typologie"
+   "FIELD1": "typo-",
+   "FIELD2": "caractère",
+   "FIELD3": "typographie, typologie"
  },
  {
-   "Prefixe": "ultra-",
-   "Sens": "au-delà  de",
-   "Exemple": "ultrason, ultraviolet"
+   "FIELD1": "ultra-",
+   "FIELD2": "au-delà  de",
+   "FIELD3": "ultrason, ultraviolet"
  },
  {
-   "Prefixe": "uni-",
-   "Sens": "un",
-   "Exemple": "uniforme"
+   "FIELD1": "uni-",
+   "FIELD2": "un",
+   "FIELD3": "uniforme"
  },
  {
-   "Prefixe": "urano-",
-   "Sens": "ciel",
-   "Exemple": "uranographie"
+   "FIELD1": "urano-",
+   "FIELD2": "ciel",
+   "FIELD3": "uranographie"
  },
  {
-   "Prefixe": "uré-",
-   "Sens": "urine",
-   "Exemple": "urémie"
+   "FIELD1": "uré-",
+   "FIELD2": "urine",
+   "FIELD3": "urémie"
  },
  {
-   "Prefixe": "urétr-",
-   "Sens": "urètre",
-   "Exemple": "urétral"
+   "FIELD1": "urétr-",
+   "FIELD2": "urètre",
+   "FIELD3": "urétral"
  },
  {
-   "Prefixe": "vas-",
-   "Sens": "vaisseau",
-   "Exemple": "vasomoteur"
+   "FIELD1": "vas-",
+   "FIELD2": "vaisseau",
+   "FIELD3": "vasomoteur"
  },
  {
-   "Prefixe": "vascul-",
-   "Sens": "vaisseau sanguin",
-   "Exemple": "vasculaire"
+   "FIELD1": "vascul-",
+   "FIELD2": "vaisseau sanguin",
+   "FIELD3": "vasculaire"
  },
  {
-   "Prefixe": "vésic-",
-   "Sens": "vessie",
-   "Exemple": "vésicule"
+   "FIELD1": "vésic-",
+   "FIELD2": "vessie",
+   "FIELD3": "vésicule"
  },
  {
-   "Prefixe": "vi-, vice-",
-   "Sens": "suppléance",
-   "Exemple": "vice-président, vice-amiral"
+   "FIELD1": "vi-, vice-",
+   "FIELD2": "suppléance",
+   "FIELD3": "vice-président, vice-amiral"
  },
  {
-   "Prefixe": "viscér-",
-   "Sens": "viscère",
-   "Exemple": "viscéral"
+   "FIELD1": "viscér-",
+   "FIELD2": "viscère",
+   "FIELD3": "viscéral"
  },
  {
-   "Prefixe": "xanth-",
-   "Sens": "jaune",
-   "Exemple": "xanthine"
+   "FIELD1": "xanth-",
+   "FIELD2": "jaune",
+   "FIELD3": "xanthine"
  },
  {
-   "Prefixe": "xén(o)-",
-   "Sens": "étranger",
-   "Exemple": "xénophobe"
+   "FIELD1": "xén(o)-",
+   "FIELD2": "étranger",
+   "FIELD3": "xénophobe"
  },
  {
-   "Prefixe": "xér(o)-",
-   "Sens": "sec",
-   "Exemple": "xérophagie"
+   "FIELD1": "xér(o)-",
+   "FIELD2": "sec",
+   "FIELD3": "xérophagie"
  },
  {
-   "Prefixe": "xylo-",
-   "Sens": "bois",
-   "Exemple": "xylophone"
+   "FIELD1": "xylo-",
+   "FIELD2": "bois",
+   "FIELD3": "xylophone"
  },
  {
-   "Prefixe": "zoo-",
-   "Sens": "animal",
-   "Exemple": "zoologie"
+   "FIELD1": "zoo-",
+   "FIELD2": "animal",
+   "FIELD3": "zoologie"
  },
  {
-   "Prefixe": "mal-, malé-, mau-",
-   "Sens": "mauvais",
-   "Exemple": "malodorant, maléfique"
+   "FIELD1": "mal-, malé-, mau-",
+   "FIELD2": "mauvais",
+   "FIELD3": "malodorant, maléfique"
  },
  {
-   "Prefixe": "mé-, més-",
-   "Sens": "mauvais",
-   "Exemple": "médisance, mésalliance"
+   "FIELD1": "mé-, més-",
+   "FIELD2": "mauvais",
+   "FIELD3": "médisance, mésalliance"
  },
  {
-   "Prefixe": "médull-",
-   "Sens": "moelle",
-   "Exemple": "médullaire"
+   "FIELD1": "médull-",
+   "FIELD2": "moelle",
+   "FIELD3": "médullaire"
  },
  {
-   "Prefixe": "méga-, mégalo-",
-   "Sens": "grand, gros",
-   "Exemple": "mégalithe, mégalomane"
+   "FIELD1": "méga-, mégalo-",
+   "FIELD2": "grand, gros",
+   "FIELD3": "mégalithe, mégalomane"
  },
  {
-   "Prefixe": "melo-",
-   "Sens": "chant",
-   "Exemple": "mélodique, mélodrame"
+   "FIELD1": "melo-",
+   "FIELD2": "chant",
+   "FIELD3": "mélodique, mélodrame"
  },
  {
-   "Prefixe": "més(o)-",
-   "Sens": "milieu",
-   "Exemple": "mésopotamien"
+   "FIELD1": "més(o)-",
+   "FIELD2": "milieu",
+   "FIELD3": "mésopotamien"
  },
  {
-   "Prefixe": "meta-",
-   "Sens": "après, changement",
-   "Exemple": "métamorphose, métaphysique"
+   "FIELD1": "meta-",
+   "FIELD2": "après, changement",
+   "FIELD3": "métamorphose, métaphysique"
  },
  {
-   "Prefixe": "météor(o)-",
-   "Sens": "élevé dans les airs",
-   "Exemple": "météore, météorologie"
+   "FIELD1": "météor(o)-",
+   "FIELD2": "élevé dans les airs",
+   "FIELD3": "météore, météorologie"
  },
  {
-   "Prefixe": "métr(o)-",
-   "Sens": "mesure",
-   "Exemple": "métrique, métronome"
+   "FIELD1": "métr(o)-",
+   "FIELD2": "mesure",
+   "FIELD3": "métrique, métronome"
  }
 ];

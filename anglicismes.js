@@ -1878,7 +1878,7 @@ const data = [
    "FIELD2": "programme (~ fait par mon entraîneur)"
  },
  {
-   "FIELD1": "Sabrer dans (~ les dépenses)",
+   "FIELD1": "sabrer dans (~ les dépenses)",
    "FIELD2": "sabrer (~ les dépenses)"
  },
  {

@@ -1,5 +1,5 @@
-const entete = "Lequel est écrit correctement :";
-const nbr_choix = 2;
+const entete = "Lequel de ces usages n'est pas un barbarisme :";
+const nbr_choix = 6;
 const data = [
  {
    "FIELD1": "abattement",

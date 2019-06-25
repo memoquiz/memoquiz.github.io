@@ -82,18 +82,22 @@ document.getElementById("total").innerHTML = questions.length;
 document.getElementById("erreurs").innerHTML = erreurs;
 
 function nouvelleQ(){
-	brep = Math.floor(Math.random() * nbr_choix); // Il faut utiliser le nombre d'entrées, 3 (ou 10), pas 9, sinon la bonne réponse ne se retrouve jamais à la fin
+	brep = Math.floor(Math.random() * nbr_choix);
 
-	if (selection == 'prefixes') {
-		document.getElementById("question").value = data[questions[0]].Prefixe + " comme dans " + data[questions[0]].Exemple;
-		document.getElementById(brep).value = data[questions[0]].Sens;
+	if ((selection == 'prefixes') || (selection == 'suffixes')) {
+		document.getElementById("question").value = data[questions[0]].FIELD1 + " comme dans " + data[questions[0]].FIELD3;
+		document.getElementById(brep).value = data[questions[0]].FIELD2;
 	}
-	else if (selection == 'anglicismes') {
+	else if ((selection == 'anglicismes') || (selection == 'barbarismes')) {
 		txt = data[questions[0]].FIELD1;
 		txt = txt.replace(/\[.*\]/,"");
 		document.getElementById(brep).value = txt;
 	}
-	else if (selection == 'barbarismes') {
+	else if (selection == 'vocabulaire') {
+		document.getElementById("question").value = data[questions[0]].FIELD1;
+		document.getElementById(brep).value = data[questions[0]].FIELD2;
+	}
+	else if (selection == 'plus tard') {
 		document.getElementById(brep).value = data[questions[0]].FIELD1;
 	}
  	
@@ -108,7 +112,7 @@ function nouvelleQ(){
 	// La bonne réponse doit être retirée des questions pour faire la liste des mauvaises réponses
 	// De plus, si tu te limites aux questions qui restent, vers la fin
 	// il ne te restera plus assez de mauvais choix
-	if (selection != 'barbarismes') {
+	if (selection != 'plus tard') {
 		var quest = [];
 		for (var i = 0; i < nbr_questions; i++) {
 			quest.push(i);
@@ -118,14 +122,9 @@ function nouvelleQ(){
 	}
 
 	for (var i = 0; i < nbr_choix-1; i++) {
-		if (selection == 'prefixes') {
-			txt = data[mrepSens[i]].Sens;
-		}
-		else if (selection == 'anglicismes') {
-			txt = data[mrepSens[i]].FIELD2;
-			txt = txt.replace(/\[.*\]/,"");
-		}
-		else if (selection == 'barbarismes') {
+		txt = data[mrepSens[i]].FIELD2;
+		txt = txt.replace(/\[.*\]/,"");
+		if (selection == 'plus tard') {
 			if (i == 0) {
 				txt = data[questions[0]].FIELD2;
 			}
@@ -144,12 +143,6 @@ function nouvelleQ(){
 			}
 		}
 		document.getElementById(mrep[i]).value = txt;
-		if (txt == "*bonus*") {
-			document.getElementById(mrep[i]).style.visibility = "hidden";
-		}
-		else {
-			document.getElementById(mrep[i]).style.visibility = "visible";
-		}
 	}
 }
 
