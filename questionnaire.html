@@ -2,7 +2,7 @@
 <script id="selection"></script>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 <style>
 h1 {text-align:center;}
 h2 {text-align:center;}
@@ -24,6 +24,9 @@ input {
 -moz-appearance: none;
 appearance: none;
 }
+input[type="file"] {
+    display: none;
+}
 </style>
 </head>
 <body>
@@ -44,7 +47,18 @@ appearance: none;
 	<br>Erreurs : <output id="erreurs"></output>
 </h2>
 <table align=center>
-<tr><td style="min-width:300px" align=right><input type="button" class="button" style="background-color: #A0A0A0" value="Terminer" onclick="location.href='index.html';"></td></tr>
+  <tr><td style="min-width:300px">
+      <input type="button" class="button" style="background-color: #A0A0A0" value="Sauvegarder" onclick="sauvegarder()">
+  </td></tr>
+  <tr><td>
+      <label width="90%" class="button" style="background-color: #A0A0A0; width: 93%">
+	<input type="file" class="button" id="files">
+	Ouvrir
+      </label>
+  </td></tr>
+  <tr><td>
+      <input type="button" class="button" style="background-color: #A0A0A0" value="Terminer" onclick="location.href='index.html';">
+  </td></tr>
 </table>
 
 <script>
@@ -59,27 +73,17 @@ var questions = [];
 var score = 0;
 var erreurs = 0;
 var err = 0;
-
-const nbr_questions = data.length;
-// Pour debugger
-//const nbr_choix = 3;
-//const nbr_questions = 4;
+var nbr_questions = 0;
 
 // Cacher les boutons non utilisés
 for (var i = nbr_choix; i < 6; i++) {
 	document.getElementById(i).style.visibility = "hidden";
 }
 
-for (var i = 0; i < nbr_questions; i++) {
-   questions.push(i);
-}
+// Se préparer à une demande d'ouverture d'un fichier (bouton Ouvrir)
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
-questions = shuffle(questions);
-
-document.getElementById("entete").innerHTML = entete;
-document.getElementById("réussi").innerHTML = score;
-document.getElementById("total").innerHTML = questions.length;
-document.getElementById("erreurs").innerHTML = erreurs;
+initQ();
 
 function nouvelleQ(){
 	brep = Math.floor(Math.random() * nbr_choix);
@@ -144,9 +148,10 @@ function nouvelleQ(){
 		}
 		document.getElementById(mrep[i]).value = txt;
 	}
+    for (var i = 0; i < nbr_choix; i++) {
+	document.getElementById(i).style.backgroundColor = "#4CAF50";
+    }
 }
-
-nouvelleQ();
 
 function rep(r){
 	if (brep == r) {
@@ -154,6 +159,10 @@ function rep(r){
 			// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
 			score ++;
 			document.getElementById("réussi").innerHTML = score;
+			if (data[questions[0]].Essais == 0) {
+				// Réussi du premier coup
+				data[questions[0]].Essais = -1;
+			}
 		}
 		else {
 			// questions.splice(Math.floor(Math.random() * (questions.length)+1),0,questions[0]);
@@ -162,7 +171,6 @@ function rep(r){
 			// questions.shift(); // pas besoin, ça va se faire dans quelques lignes			
 		}
 		err = 0;
-	 	document.body.style.backgroundColor = "white"; 
 		if(score != data.length){
 			questions.shift();
 			nouvelleQ();
@@ -172,11 +180,17 @@ function rep(r){
 		}
 	}
 	else{
-		err = 1;
-	 	document.body.style.backgroundColor = "red";
+	    err = 1;
+	    for (var i = 0; i < nbr_choix; i++) {
+		document.getElementById(i).style.backgroundColor = "#A6D7A8";
+	    }
+	    document.getElementById(r).style.backgroundColor = "red";
+	    document.getElementById(brep).style.backgroundColor = "green";
+	    
 		// Compter les erreurs tout de suite
 		erreurs = erreurs + 1;
 		document.getElementById("erreurs").innerHTML = erreurs;
+		data[questions[0]].Essais++;
 		//questions.splice(Math.floor(Math.random() * (questions.length)+1),0,questions[0]);
 		//questions.shift();
 		// Attendre que la bonne réponse soit trouvée avant de remettre dans la liste
@@ -216,6 +230,72 @@ function extractRand(array,n){
 	return randArray;
 }
 
+function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+function sauvegarder() {
+    myJSON = JSON.stringify(data, null, 2);
+    download('mes_' + selection + '.txt', myJSON);
+}
+
+function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    var reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onload = function(event) {
+	data = JSON.parse(reader.result);
+	initQ();		   
+    };
+
+    // Read in the image file as a data URL.
+    reader.readAsText(files[0]);
+}
+			   
+function initQ() {
+    nbr_questions = data.length;
+
+    for (var i = 0; i < nbr_questions; i++) {
+        questions[i] = i;
+        if (data[i].Essais === undefined) {
+            data[i].Essais = 0;
+        }
+    }
+
+    score = 0;
+    erreurs = 0;
+
+    // Retirer les questions déjà répondues
+    for (var i = 0; i < nbr_questions; i++) {
+	if (data[i].Essais == -1) {
+	    questions.splice(i,1);
+	    score++;
+	}
+    }
+			
+    questions = shuffle(questions);
+
+    document.getElementById("entete").innerHTML = entete;
+    document.getElementById("réussi").innerHTML = score;
+    document.getElementById("total").innerHTML = nbr_questions;
+    document.getElementById("erreurs").innerHTML = erreurs;
+
+    nouvelleQ();
+}
+			
 </script>			
 </body>
 </html>

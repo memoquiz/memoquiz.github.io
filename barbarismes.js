@@ -1,6 +1,6 @@
 const entete = "Lequel de ces usages n'est pas un barbarisme :";
 const nbr_choix = 6;
-const data = [
+data = [
  {
    "FIELD1": "abattement",
    "FIELD2": "abatement",

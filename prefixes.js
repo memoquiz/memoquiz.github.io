@@ -1,6 +1,6 @@
 const entete = "Quelle est la sens de :";
 const nbr_choix = 6;
-const data = [
+data = [
  {
    "FIELD1": "acantho-",
    "FIELD2": "épine",

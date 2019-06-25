@@ -1,6 +1,6 @@
 const entete = "Lequel de ces usages est un anglicisme :";
 const nbr_choix = 4;
-const data = [
+data = [
  {
    "FIELD1": "abolir complètement",
    "FIELD2": "abolir"
