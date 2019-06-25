@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<script id="selection"></script>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+h1 {text-align:center;}
+h2 {text-align:center;}
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 2px 2px;
+  cursor: pointer;
+  width: 100%;
+}
+input {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+}
+</style>
+</head>
+<body>
+<h2 id="entete"></h2>
+<h2>
+	<output id="question"></output>
+	<br><br>
+	<table align=center>
+	<tr><td style="min-width:300px">
+	        <input type="button" class="button" id="0" onclick = "setTimeout(function(){rep(0)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="1" onclick = "setTimeout(function(){rep(1)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="2" onclick = "setTimeout(function(){rep(2)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="3" onclick = "setTimeout(function(){rep(3)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="4" onclick = "setTimeout(function(){rep(4)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="5" onclick = "setTimeout(function(){rep(5)},400)"></td></tr>
+	</table>
+	<br>Score : <output id="réussi"></output> / <output id="total"></output>
+	<br>Erreurs : <output id="erreurs"></output>
+</h2>
+<table align=center>
+<tr><td style="min-width:300px" align=right><input type="button" class="button" style="background-color: #A0A0A0" value="Terminer" onclick="location.href='index.html';"></td></tr>
+</table>
+
+<script>
+const params = new URLSearchParams(location.search);
+const selection = params.get('q');
+const fichier = selection + ".js";
+document.write("<script type='text/javascript' src='" + fichier + "'><\/script>");
+</script>
+
+<script>
+var questions = [];
+var score = 0;
+var erreurs = 0;
+var err = 0;
+
+const nbr_questions = data.length;
+// Pour debugger
+//const nbr_choix = 3;
+//const nbr_questions = 4;
+
+// Cacher les boutons non utilisés
+for (var i = nbr_choix; i < 6; i++) {
+	document.getElementById(i).style.visibility = "hidden";
+}
+
+for (var i = 0; i < nbr_questions; i++) {
+   questions.push(i);
+}
+
+questions = shuffle(questions);
+
+document.getElementById("entete").innerHTML = entete;
+document.getElementById("réussi").innerHTML = score;
+document.getElementById("total").innerHTML = questions.length;
+document.getElementById("erreurs").innerHTML = erreurs;
+
+function nouvelleQ(){
+	brep = Math.floor(Math.random() * nbr_choix); // Il faut utiliser le nombre d'entrées, 3 (ou 10), pas 9, sinon la bonne réponse ne se retrouve jamais à la fin
+
+	if (selection == 'prefixes') {
+		document.getElementById("question").value = data[questions[0]].Prefixe + " comme dans " + data[questions[0]].Exemple;
+		document.getElementById(brep).value = data[questions[0]].Sens;
+	}
+	else if (selection == 'anglicismes') {
+		txt = data[questions[0]].FIELD1;
+		txt = txt.replace(/\[.*\]/,"");
+		document.getElementById(brep).value = txt;
+	}
+	else if (selection == 'barbarismes') {
+		document.getElementById(brep).value = data[questions[0]].FIELD1;
+	}
+ 	
+	//mrep = [1,2,3];
+	// Rendre plus dynamique, pour debugger
+	mrep = [];
+	for (var i = 0; i < nbr_choix; i++) {
+   		mrep.push(i);
+	}
+	mrep.splice(brep,1);
+	mrep = shuffle(mrep); // Seulement nécessaire pour barbarisme mais bon pour tous!
+	// La bonne réponse doit être retirée des questions pour faire la liste des mauvaises réponses
+	// De plus, si tu te limites aux questions qui restent, vers la fin
+	// il ne te restera plus assez de mauvais choix
+	if (selection != 'barbarismes') {
+		var quest = [];
+		for (var i = 0; i < nbr_questions; i++) {
+			quest.push(i);
+		}
+		quest.splice(questions[0],1);
+		mrepSens = extractRand(quest,nbr_choix-1);
+	}
+
+	for (var i = 0; i < nbr_choix-1; i++) {
+		if (selection == 'prefixes') {
+			txt = data[mrepSens[i]].Sens;
+		}
+		else if (selection == 'anglicismes') {
+			txt = data[mrepSens[i]].FIELD2;
+			txt = txt.replace(/\[.*\]/,"");
+		}
+		else if (selection == 'barbarismes') {
+			if (i == 0) {
+				txt = data[questions[0]].FIELD2;
+			}
+			else {
+				txt = data[questions[0]].FIELD3;				
+			}
+		}
+
+		// Éliminer les répétitions possible dans le text
+		if (txt == document.getElementById(brep).value) {
+			txt = "*bonus*";
+		}
+		for (var j = 0; j < i; j++) {
+			if (txt == document.getElementById(mrep[j]).value) {
+				txt = "*bonus*";
+			}
+		}
+		document.getElementById(mrep[i]).value = txt;
+		if (txt == "*bonus*") {
+			document.getElementById(mrep[i]).style.visibility = "hidden";
+		}
+		else {
+			document.getElementById(mrep[i]).style.visibility = "visible";
+		}
+	}
+}
+
+nouvelleQ();
+
+function rep(r){
+	if (brep == r) {
+		if (err == 0) {
+			// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
+			score ++;
+			document.getElementById("réussi").innerHTML = score;
+		}
+		else {
+			// questions.splice(Math.floor(Math.random() * (questions.length)+1),0,questions[0]);
+			// Je préfère mettre la question un peu plus loin dans la queue
+			questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
+			// questions.shift(); // pas besoin, ça va se faire dans quelques lignes			
+		}
+		err = 0;
+	 	document.body.style.backgroundColor = "white"; 
+		if(score != data.length){
+			questions.shift();
+			nouvelleQ();
+		}else{
+			var myWindow = window.open("", "_self");
+ 			myWindow.document.write("<p>Bravo ! (" + erreurs + " erreurs)</p>"); // Afficher le nombre d'erreurs
+		}
+	}
+	else{
+		err = 1;
+	 	document.body.style.backgroundColor = "red";
+		// Compter les erreurs tout de suite
+		erreurs = erreurs + 1;
+		document.getElementById("erreurs").innerHTML = erreurs;
+		//questions.splice(Math.floor(Math.random() * (questions.length)+1),0,questions[0]);
+		//questions.shift();
+		// Attendre que la bonne réponse soit trouvée avant de remettre dans la liste
+		// L'autre option aurait été d'afficher la nouvelle question immediatement mais le code ne le faisait pas
+		// et c'est plus instructif de réessayer tout de suite jusqu'à ce que tu réussises...
+	}
+}
+
+function shuffle(array) {
+  var m = array.length, t, i;
+
+  // While there remain elements to shuffle…
+  while (m) {
+
+    // Pick a remaining element…
+    i = Math.floor(Math.random() * m--);
+
+    // And swap it with the current element.
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+
+  return array;
+}
+
+function extractRand(array,n){
+	var modArray = array;
+	var randArray = [];	
+	for(var i = 0; i < n; i ++){
+		// var rand = Math.floor(Math.random() * (modArray.length)+1);
+		// rand doit être entre 0 et length-1
+		var rand = Math.floor(Math.random() * modArray.length);
+		randArray.push(modArray[rand]);
+		modArray.splice(rand,1);
+	}	
+	return randArray;
+}
+
+</script>			
+</body>
+</html>
