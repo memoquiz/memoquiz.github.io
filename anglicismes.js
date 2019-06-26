@@ -455,7 +455,7 @@ data = [
  },
  {
    "FIELD1": "ciel constellé d'étoiles",
-   "FIELD2": "ciel constellé (constellé veut dire étoilé)"
+   "FIELD2": "ciel constellé [constellé veut dire étoilé]"
  },
  {
    "FIELD1": "ci-haut mentionné",
@@ -565,10 +565,10 @@ data = [
    "FIELD1": "concerné (il est ~ par ce problème de chimie)",
    "FIELD2": "intéressé (il est ~ à ce problème de chimie)"
  },
- {
-   "FIELD1": "conduire un orchestre",
-   "FIELD2": "conduire un orchestre (faussement considéré comme un anglicisme)"
- },
+// {
+//   "FIELD1": "conduire un orchestre",
+//   "FIELD2": "conduire un orchestre [faussement considéré comme un anglicisme]"
+// },
  {
    "FIELD1": "confiant que (je suis ~  vous réussirez)",
    "FIELD2": "bon espoir que (j'ai ~ que vous réussirez) [Pour utiliser confiant il faut le faire suivre de EN ou de DANS suivi d'un nom. Je suis confiant dans votre succès.]"
@@ -630,7 +630,7 @@ data = [
    "FIELD2": "coordonnateur"
  },
  {
-   "FIELD1": "copie (il n'y a plus aucune ~ de ce livre \n             dans les librairies)",
+   "FIELD1": "copie (il n'y a plus aucune ~ de ce livre dans les librairies)",
    "FIELD2": "exemplaire (il n'y a plus aucun ~ de ce livre dans les librairies) [une copie est une reproduction]"
  },
  {
@@ -639,7 +639,7 @@ data = [
  },
  {
    "FIELD1": "corriger après coup",
-   "FIELD2": "corriger (qui se fait toujours après avoir fait une erreur)"
+   "FIELD2": "corriger [qui se fait toujours après avoir fait une erreur]"
  },
  {
    "FIELD1": "couler (laisser ~ de l'information)",

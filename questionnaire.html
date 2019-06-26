@@ -7,6 +7,7 @@
 h1 {text-align:center;}
 h2 {text-align:center;}
 .button {
+  font-family: arial;
   background-color: #4CAF50;
   border: none;
   color: white;
@@ -36,12 +37,12 @@ input[type="file"] {
 	<br><br>
 	<table align=center>
 	<tr><td style="min-width:300px">
-	        <input type="button" class="button" id="0" onclick = "setTimeout(function(){rep(0)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="1" onclick = "setTimeout(function(){rep(1)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="2" onclick = "setTimeout(function(){rep(2)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="3" onclick = "setTimeout(function(){rep(3)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="4" onclick = "setTimeout(function(){rep(4)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="5" onclick = "setTimeout(function(){rep(5)},400)"></td></tr>
+	        <input type="button" class="button" id="0" onclick="setTimeout(function(){rep(0)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="1" onclick="setTimeout(function(){rep(1)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="2" onclick="setTimeout(function(){rep(2)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="3" onclick="setTimeout(function(){rep(3)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="4" onclick="setTimeout(function(){rep(4)},400)"></td></tr>
+	<tr><td><input type="button" class="button" id="5" onclick="setTimeout(function(){rep(5)},400)"></td></tr>
 	</table>
 	<br>Score : <output id="réussi"></output> / <output id="total"></output>
 	<br>Erreurs : <output id="erreurs"></output>
@@ -105,17 +106,14 @@ function nouvelleQ(){
 		document.getElementById(brep).value = data[questions[0]].FIELD1;
 	}
  	
-	//mrep = [1,2,3];
 	// Rendre plus dynamique, pour debugger
 	mrep = [];
 	for (var i = 0; i < nbr_choix; i++) {
    		mrep.push(i);
 	}
 	mrep.splice(brep,1);
-	mrep = shuffle(mrep); // Seulement nécessaire pour barbarisme mais bon pour tous!
+	mrep = shuffle(mrep);
 	// La bonne réponse doit être retirée des questions pour faire la liste des mauvaises réponses
-	// De plus, si tu te limites aux questions qui restent, vers la fin
-	// il ne te restera plus assez de mauvais choix
 	if (selection != 'plus tard') {
 		var quest = [];
 		for (var i = 0; i < nbr_questions; i++) {
@@ -148,8 +146,10 @@ function nouvelleQ(){
 		}
 		document.getElementById(mrep[i]).value = txt;
 	}
+
     for (var i = 0; i < nbr_choix; i++) {
-	document.getElementById(i).style.backgroundColor = "#4CAF50";
+      document.getElementById(i).style.visibility = "visible";
+	  document.getElementById(i).style.backgroundColor = "#4CAF50";
     }
 }
 
@@ -165,18 +165,18 @@ function rep(r){
 			}
 		}
 		else {
-			// questions.splice(Math.floor(Math.random() * (questions.length)+1),0,questions[0]);
-			// Je préfère mettre la question un peu plus loin dans la queue
+			// Remettre la question un peu plus loin dans la queue
 			questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
-			// questions.shift(); // pas besoin, ça va se faire dans quelques lignes			
 		}
 		err = 0;
 		if(score != data.length){
 			questions.shift();
 			nouvelleQ();
 		}else{
-			var myWindow = window.open("", "_self");
- 			myWindow.document.write("<p>Bravo ! (" + erreurs + " erreurs)</p>"); // Afficher le nombre d'erreurs
+		    document.getElementById("question").value = "Bravo !";
+            for (var i = 0; i < nbr_choix; i++) {
+	            document.getElementById(i).style.visibility = "hidden";
+            }
 		}
 	}
 	else{
@@ -187,15 +187,10 @@ function rep(r){
 	    document.getElementById(r).style.backgroundColor = "red";
 	    document.getElementById(brep).style.backgroundColor = "green";
 	    
-		// Compter les erreurs tout de suite
+		// Compter les erreurs
 		erreurs = erreurs + 1;
 		document.getElementById("erreurs").innerHTML = erreurs;
 		data[questions[0]].Essais++;
-		//questions.splice(Math.floor(Math.random() * (questions.length)+1),0,questions[0]);
-		//questions.shift();
-		// Attendre que la bonne réponse soit trouvée avant de remettre dans la liste
-		// L'autre option aurait été d'afficher la nouvelle question immediatement mais le code ne le faisait pas
-		// et c'est plus instructif de réessayer tout de suite jusqu'à ce que tu réussises...
 	}
 }
 
@@ -252,13 +247,16 @@ function sauvegarder() {
 
 function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
-
+	
     var reader = new FileReader();
 
     // Closure to capture the file information.
     reader.onload = function(event) {
-	data = JSON.parse(reader.result);
-	initQ();		   
+        data = JSON.parse(reader.result);
+		// Reset le choix de fichier pour générer un event
+		// quand le même fichier est réouvert
+	    document.getElementById('files').value = "";
+        initQ();		   
     };
 
     // Read in the image file as a data URL.
@@ -280,10 +278,10 @@ function initQ() {
 
     // Retirer les questions déjà répondues
     for (var i = 0; i < nbr_questions; i++) {
-	if (data[i].Essais == -1) {
-	    questions.splice(i,1);
-	    score++;
-	}
+        if (data[i].Essais == -1) {
+		    questions.splice(i,1);
+	        score++;
+	    }
     }
 			
     questions = shuffle(questions);
