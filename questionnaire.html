@@ -37,12 +37,12 @@ input[type="file"] {
 	<br><br>
 	<table align=center>
 	<tr><td style="min-width:300px">
-	        <input type="button" class="button" id="0" onclick="setTimeout(function(){rep(0)},100)"></td></tr>
-	<tr><td><input type="button" class="button" id="1" onclick="setTimeout(function(){rep(1)},100)"></td></tr>
-	<tr><td><input type="button" class="button" id="2" onclick="setTimeout(function(){rep(2)},100)"></td></tr>
-	<tr><td><input type="button" class="button" id="3" onclick="setTimeout(function(){rep(3)},100)"></td></tr>
-        <tr><td><input type="button" class="button" id="4" onclick="setTimeout(function(){rep(4)},100)"></td></tr>
-	<tr><td><input type="button" class="button" id="5" onclick="setTimeout(function(){rep(5)},100)"></td></tr>
+	        <input type="button" class="button" id="0" onclick="setTimeout(function(){rep(0)},0)"></td></tr>
+	<tr><td><input type="button" class="button" id="1" onclick="setTimeout(function(){rep(1)},0)"></td></tr>
+	<tr><td><input type="button" class="button" id="2" onclick="setTimeout(function(){rep(2)},0)"></td></tr>
+	<tr><td><input type="button" class="button" id="3" onclick="setTimeout(function(){rep(3)},0)"></td></tr>
+        <tr><td><input type="button" class="button" id="4" onclick="setTimeout(function(){rep(4)},0)"></td></tr>
+	<tr><td><input type="button" class="button" id="5" onclick="setTimeout(function(){rep(5)},0)"></td></tr>
 	</table>
 	<br>Score : <output id="réussi"></output> / <output id="total"></output>
 	<br>Erreurs : <output id="erreurs"></output>
@@ -186,10 +186,10 @@ function rep(reponse){
     if (brep == reponse) {
 	document.getElementById(brep).style.backgroundColor = "green";
 	if (err == 1) {
-	    setTimeout(bonne_rep, 100);
+	    setTimeout(bonne_rep, 400);
 	}
 	else {
-	    setTimeout(bonne_rep, 100);
+	    setTimeout(bonne_rep, 800);
 	}
     }
     else{
