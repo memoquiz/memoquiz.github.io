@@ -62,15 +62,17 @@ input[type="file"] {
   </td></tr>
 </table>
 
-<script>
-const params = new URLSearchParams(location.search);
+    <script>
+    const params = new URLSearchParams(location.search);
 const selection = params.get('q');
 const fichier = selection + ".js";
 document.write("<script type='text/javascript' src='" + fichier + "'><\/script>");
 </script>
-<script>
 
-var questions = [];
+    <script>
+    var questions = [];
+
+
 var score = 0;
 var erreurs = 0;
 var err = 0;
