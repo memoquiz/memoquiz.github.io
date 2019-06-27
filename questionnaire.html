@@ -37,14 +37,14 @@ input[type="file"] {
 	<br><br>
 	<table align=center>
 	<tr><td style="min-width:300px">
-	        <input type="button" class="button" id="0" onclick="setTimeout(function(){rep(0)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="1" onclick="setTimeout(function(){rep(1)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="2" onclick="setTimeout(function(){rep(2)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="3" onclick="setTimeout(function(){rep(3)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="4" onclick="setTimeout(function(){rep(4)},400)"></td></tr>
-	<tr><td><input type="button" class="button" id="5" onclick="setTimeout(function(){rep(5)},400)"></td></tr>
+	        <input type="button" class="button" id="0" onclick="setTimeout(function(){rep(0)},200)"></td></tr>
+	<tr><td><input type="button" class="button" id="1" onclick="setTimeout(function(){rep(1)},200)"></td></tr>
+	<tr><td><input type="button" class="button" id="2" onclick="setTimeout(function(){rep(2)},200)"></td></tr>
+	<tr><td><input type="button" class="button" id="3" onclick="setTimeout(function(){rep(3)},200)"></td></tr>
+        <tr><td><input type="button" class="button" id="4" onclick="setTimeout(function(){rep(4)},200)"></td></tr>
+	<tr><td><input type="button" class="button" id="5" onclick="setTimeout(function(){rep(5)},200)"></td></tr>
 	</table>
-	    Score : <output id="réussi"></output> / <output id="total"></output>
+	<br>Score : <output id="réussi"></output> / <output id="total"></output>
 	<br>Erreurs : <output id="erreurs"></output>
 </h2>
 <table align=center>
@@ -62,24 +62,19 @@ input[type="file"] {
   </td></tr>
 </table>
 
-<script>
-const params = new URLSearchParams(location.search);
+    <script>
+    const params = new URLSearchParams(location.search);
 const selection = params.get('q');
 const fichier = selection + ".js";
 document.write("<script type='text/javascript' src='" + fichier + "'><\/script>");
 </script>
 
-<script>
-var questions = [];
+    <script>
+    var questions = [];
 var score = 0;
 var erreurs = 0;
 var err = 0;
 var nbr_questions = 0;
-
-// Cacher les boutons non utilisés
-for (var i = nbr_choix; i < 6; i++) {
-	document.getElementById(i).style.visibility = "hidden";
-}
 
 // Se préparer à une demande d'ouverture d'un fichier (bouton Ouvrir)
 document.getElementById('files').addEventListener('change', handleFileSelect, false);
@@ -87,142 +82,189 @@ document.getElementById('files').addEventListener('change', handleFileSelect, fa
 initQ();
 
 function nouvelleQ(){
-	brep = Math.floor(Math.random() * nbr_choix);
-
-	if ((selection == 'prefixes') || (selection == 'suffixes')) {
-		document.getElementById("question").value = data[questions[0]].FIELD1 + " comme dans " + data[questions[0]].FIELD3;
-		document.getElementById(brep).value = data[questions[0]].FIELD2;
-	}
-	else if ((selection == 'anglicismes') || (selection == 'barbarismes')) {
-		txt = data[questions[0]].FIELD1;
-		txt = txt.replace(/\[.*\]/,"");
-		document.getElementById(brep).value = txt;
-	}
-	else if (selection == 'vocabulaire') {
-		document.getElementById("question").value = data[questions[0]].FIELD1;
-		document.getElementById(brep).value = data[questions[0]].FIELD2;
-	}
-	else if (selection == 'plus tard') {
-		document.getElementById(brep).value = data[questions[0]].FIELD1;
-	}
- 	
-	// Rendre plus dynamique, pour debugger
-	mrep = [];
-	for (var i = 0; i < nbr_choix; i++) {
-   		mrep.push(i);
-	}
-	mrep.splice(brep,1);
-	mrep = shuffle(mrep);
-	// La bonne réponse doit être retirée des questions pour faire la liste des mauvaises réponses
-	if (selection != 'plus tard') {
-		var quest = [];
-		for (var i = 0; i < nbr_questions; i++) {
-			quest.push(i);
-		}
-		quest.splice(questions[0],1);
-		mrepSens = extractRand(quest,nbr_choix-1);
-	}
-
-	for (var i = 0; i < nbr_choix-1; i++) {
-		txt = data[mrepSens[i]].FIELD2;
-		txt = txt.replace(/\[.*\]/,"");
-		if (selection == 'plus tard') {
-			if (i == 0) {
-				txt = data[questions[0]].FIELD2;
-			}
-			else {
-				txt = data[questions[0]].FIELD3;				
-			}
-		}
-
-		// Éliminer les répétitions possible dans le text
-		if (txt == document.getElementById(brep).value) {
-			txt = "*bonus*";
-		}
-		for (var j = 0; j < i; j++) {
-			if (txt == document.getElementById(mrep[j]).value) {
-				txt = "*bonus*";
-			}
-		}
-		document.getElementById(mrep[i]).value = txt;
-	}
-
+    // Réinitialiser les boutons
     for (var i = 0; i < nbr_choix; i++) {
-      document.getElementById(i).style.visibility = "visible";
-	  document.getElementById(i).style.backgroundColor = "#4CAF50";
+	document.getElementById(i).style.visibility = "visible";
+	document.getElementById(i).style.backgroundColor = "#4CAF50";
+    }
+    for (var i = nbr_choix; i < 6; i++) {
+	document.getElementById(i).value = "allo";
+	document.getElementById(i).style.visibility = "hidden";
+    }
+
+    brep = Math.floor(Math.random() * nbr_choix);
+
+    if ((selection == 'prefixes') || (selection == 'suffixes')) {
+	document.getElementById("question").value = data[questions[0]].FIELD1 + " comme dans " + data[questions[0]].FIELD3;
+	document.getElementById(brep).value = data[questions[0]].FIELD2;
+    }
+    else if ((selection == 'anglicismes') || (selection == 'barbarismes')) {
+	txt = data[questions[0]].FIELD1;
+	txt = txt.replace(/\[.*\]/,"");
+	document.getElementById(brep).value = txt;
+    }
+    else if (selection == 'vocabulaire') {
+	document.getElementById("question").value = data[questions[0]].FIELD1;
+	document.getElementById(brep).value = data[questions[0]].FIELD2;
+    }
+    else if (selection == 'plus tard') {
+	document.getElementById(brep).value = data[questions[0]].FIELD1;
+    }
+    
+    // Rendre plus dynamique, pour debugger
+    mrep = [];
+    for (var i = 0; i < nbr_choix; i++) {
+   	mrep.push(i);
+    }
+    mrep.splice(brep,1);
+    mrep = shuffle(mrep);
+    // La bonne réponse doit être retirée des questions pour faire la liste des mauvaises réponses
+    if (selection != 'plus tard') {
+        var quest = [];
+	for (var i = 0; i < nbr_questions; i++) {
+	    quest.push(i);
+	}
+	quest.splice(questions[0],1);
+	mrepSens = extractRand(quest,nbr_choix-1);
+    }
+    
+    for (var i = 0; i < nbr_choix-1; i++) {
+	txt = data[mrepSens[i]].FIELD2;
+	txt = txt.replace(/\[.*\]/,"");
+	if (selection == 'plus tard') {
+	    if (i == 0) {
+		txt = data[questions[0]].FIELD2;
+	    }
+	    else {
+		txt = data[questions[0]].FIELD3;				
+	    }
+	}
+
+	// Éliminer les répétitions possible dans le text
+	if (txt == document.getElementById(brep).value) {
+	    txt = "*bonus*";
+	}
+	for (var j = 0; j < i; j++) {
+	    if (txt == document.getElementById(mrep[j]).value) {
+		txt = "*bonus*";
+	    }
+	}
+	document.getElementById(mrep[i]).value = txt;
     }
 }
 
-function rep(r){
-	if (brep == r) {
-		if (err == 0) {
-			// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
-			score ++;
-			document.getElementById("réussi").innerHTML = score;
-			if (data[questions[0]].Essais == 0) {
-				// Réussi du premier coup
-				data[questions[0]].Essais = -1;
-			}
+function bonne_rep() {
+    if (err == 0) {
+	// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
+	score ++;
+	document.getElementById("réussi").innerHTML = score;
+	if (data[questions[0]].Essais == 0) {
+	    // Réussi du premier coup
+	    data[questions[0]].Essais = -1;
+	}
+    }
+    else {
+	// Remettre la question un peu plus loin dans la queue
+	questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
+    }
+    err = 0;
+    if(score != data.length){
+	questions.shift();
+	nouvelleQ();
+    }else{
+	document.getElementById("entete").innerHTML = "";
+	document.getElementById("question").value = "Bravo !";
+	for (var i = 0; i < nbr_choix; i++) {
+	    document.getElementById(i).style.visibility = "hidden";
+	}
+    }
+}
+
+function rep(reponse){
+    if (brep == reponse) {
+	document.getElementById(brep).style.backgroundColor = "green";
+	if (err == 1) {
+	    setTimeout(bonne_rep, 100);
+	}
+	else {
+	    setTimeout(bonne_rep, 800);
+	}
+    }
+    else{
+	err = 1;
+	for (var i = 0; i < nbr_choix; i++) {
+	    document.getElementById(i).style.backgroundColor = "#A6D7A8";
+	}
+	document.getElementById(reponse).style.backgroundColor = "red";
+	document.getElementById(brep).style.backgroundColor = "green";
+
+	if (selection == 'anglicismes') {
+	    txt = data[questions[0]].FIELD2;
+	    if (/\[.*\]/.test(txt)) {
+		txt = txt.match(/\[.*\]/)[0];
+		txt = txt.replace(/[\[\]]/g,"");
+		txt = txt.charAt(0).toUpperCase() + txt.slice(1); // Lettre majuscule
+		//<div style="font-size: 16px; font-family: arial" id="details"></div>
+		idx = txt.length / 2;
+		if (idx > 30) {
+		    while (idx < txt.length && txt.charAt(idx).match(/\s/) == null)
+			idx++;
+		    s1 = txt.substring(0, idx);
+		    s2 = txt.substring(idx);
 		}
 		else {
-			// Remettre la question un peu plus loin dans la queue
-			questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
+		    s1 = txt;
+		    s2 = " ";
 		}
-		err = 0;
-		if(score != data.length){
-			questions.shift();
-			nouvelleQ();
-		}else{
-		    document.getElementById("question").value = "Bravo !";
-            for (var i = 0; i < nbr_choix; i++) {
-	            document.getElementById(i).style.visibility = "hidden";
-            }
+		document.getElementById(4).value = s1;
+		document.getElementById(4).style.padding = "20px 10px 0px";
+		document.getElementById(5).value = s2;
+		document.getElementById(5).style.padding = "0px 10px 20px";
+
+		for (var i = 4; i < 6; ++i) {
+		    document.getElementById(i).style.backgroundColor = "white";
+		    document.getElementById(i).style.color = "black";
+		    document.getElementById(i).style.visibility = "visible";
 		}
-	}
-	else{
-	    err = 1;
-	    for (var i = 0; i < nbr_choix; i++) {
-		document.getElementById(i).style.backgroundColor = "#A6D7A8";
 	    }
-	    document.getElementById(r).style.backgroundColor = "red";
-	    document.getElementById(brep).style.backgroundColor = "green";
-	    
-		// Compter les erreurs
-		erreurs = erreurs + 1;
-		document.getElementById("erreurs").innerHTML = erreurs;
-		data[questions[0]].Essais++;
 	}
+	
+	// Compter les erreurs
+	erreurs = erreurs + 1;
+	document.getElementById("erreurs").innerHTML = erreurs;
+	data[questions[0]].Essais++;
+    }
 }
 
 function shuffle(array) {
-  var m = array.length, t, i;
+    var m = array.length, t, i;
 
-  // While there remain elements to shuffle…
-  while (m) {
+    // While there remain elements to shuffle…
+    while (m) {
 
-    // Pick a remaining element…
-    i = Math.floor(Math.random() * m--);
+	// Pick a remaining element…
+	i = Math.floor(Math.random() * m--);
 
-    // And swap it with the current element.
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
+	// And swap it with the current element.
+	t = array[m];
+	array[m] = array[i];
+	array[i] = t;
+    }
 
-  return array;
+    return array;
 }
 
 function extractRand(array,n){
-	var modArray = array;
-	var randArray = [];	
-	for(var i = 0; i < n; i ++){
-		// var rand = Math.floor(Math.random() * (modArray.length)+1);
-		// rand doit être entre 0 et length-1
-		var rand = Math.floor(Math.random() * modArray.length);
-		randArray.push(modArray[rand]);
-		modArray.splice(rand,1);
-	}	
-	return randArray;
+    var modArray = array;
+    var randArray = [];	
+    for(var i = 0; i < n; i ++){
+	// var rand = Math.floor(Math.random() * (modArray.length)+1);
+	// rand doit être entre 0 et length-1
+	var rand = Math.floor(Math.random() * modArray.length);
+	randArray.push(modArray[rand]);
+	modArray.splice(rand,1);
+    }	
+    return randArray;
 }
 
 function download(filename, text) {
@@ -247,22 +289,22 @@ function sauvegarder() {
 
 function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
-	
+    
     var reader = new FileReader();
 
     // Closure to capture the file information.
     reader.onload = function(event) {
         data = JSON.parse(reader.result);
-		// Reset le choix de fichier pour générer un event
-		// quand le même fichier est réouvert
-	    document.getElementById('files').value = "";
+	// Reset le choix de fichier pour générer un event
+	// quand le même fichier est réouvert
+	document.getElementById('files').value = "";
         initQ();		   
     };
 
     // Read in the image file as a data URL.
     reader.readAsText(files[0]);
 }
-			   
+
 function initQ() {
     nbr_questions = data.length;
 
@@ -279,11 +321,11 @@ function initQ() {
     // Retirer les questions déjà répondues
     for (var i = 0; i < nbr_questions; i++) {
         if (data[i].Essais == -1) {
-		    questions.splice(i,1);
-	        score++;
-	    }
+	    questions.splice(i,1);
+	    score++;
+	}
     }
-			
+    
     questions = shuffle(questions);
 
     document.getElementById("entete").innerHTML = entete;
@@ -293,7 +335,7 @@ function initQ() {
 
     nouvelleQ();
 }
-			
+
 </script>			
 </body>
 </html>

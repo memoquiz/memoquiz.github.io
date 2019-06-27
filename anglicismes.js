@@ -118,8 +118,8 @@ data = [
    "FIELD2": "petites annonces"
  },
  {
-   "FIELD1": "anxieux (être ~ de rencontrer...)",
-   "FIELD2": "impatient  (être ~ de rencontrer...), avoir hâte (~ de rencontrer...) [en français, anxieux = inquiet et la forme de la colonne de gauche est correcte si la rencontre vous rend inquiet]"
+   "FIELD1": "anxieux (être ~ de rencontrer... avoir hâte)",
+   "FIELD2": "impatient (être ~ de rencontrer...), avoir hâte (~ de rencontrer...) [en français, anxieux = inquiet et n'a pas le sens d'avoir hâte. L'expression est correcte si la rencontre vous rend inquiet]"
  },
  {
    "FIELD1": "apogée (au maximum de son ~)",
@@ -699,7 +699,7 @@ data = [
  },
  {
    "FIELD1": "débuter (~ un travail)",
-   "FIELD2": "commencer (~ un travail) [Le verbe DÉBUTER n'a jamais de complément : Le spectacle débute à 8 heures.)"
+   "FIELD2": "commencer (~ un travail) [Le verbe DÉBUTER n'a jamais de complément : Le spectacle débute à 8 heures.]"
  },
  {
    "FIELD1": "déconnecter (~ le téléphone)",
