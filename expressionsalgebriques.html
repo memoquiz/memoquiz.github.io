@@ -122,7 +122,6 @@
             q = q.replace(/var5/g, var5);
             q = q.replace(/var6/g, var6)
             q = q.replace(/\+\-/g, '-');
-            console.log(difficulte)
 
             expr.value = q
             q = q.replace(/÷/g, '/');
@@ -131,7 +130,6 @@
             } else if (var3 < 0 && difficulte == 2){
                 q = q.replace(/\/\-/g, '/(-').concat(')');
             }
-
             var reponse = Algebrite.run(q)
             console.log(reponse)
             update()
@@ -153,8 +151,9 @@
             try {
                 // Teste si l'expression de l'élève correspond à la réponse en s'assurant que la différence entre les deux si évalué 
                 // a x=3 est de moins de 0.1
-                var succes1 = math.abs(math.parse(repEleve).evaluate({ x: 3 }) - math.parse(expr.value).evaluate({ x: 3 })) < 0.1
-                var succes2 = math.abs(math.parse(repEleve).evaluate({ x: -3 }) - math.parse(expr.value).evaluate({ x: -3 })) < 0.1
+                var brep = expr.value.replace(/÷/g, '/');
+                var succes1 = math.abs(math.parse(repEleve).evaluate({ x: 3 }) - math.parse(brep).evaluate({ x: 3 })) < 0.1
+                var succes2 = math.abs(math.parse(repEleve).evaluate({ x: -3 }) - math.parse(brep).evaluate({ x: -3 })) < 0.1
             } catch{
                 var succes1 = false
                 var succes2 = false
@@ -203,7 +202,6 @@
             try {
                 // export the expression to LaTeX
                 const latex = node ? node.toTex({ parenthesis: parenthesis, implicit: implicit }) : ''
-                console.log('LaTeX expression:', latex)
 
                 // display and re-render the expression
                 const elem = MathJax.Hub.getAllJax('pretty')[0]
