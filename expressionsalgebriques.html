@@ -93,13 +93,13 @@
         function diff(val){
             difficulte = val
             if(val == 2){
-                eq = ["var1(x+var2)-(var5x+var4)÷var3","var1(x+var2)-(var5x+var4)/var3","var1(x+var2a)-(var5a+var4b)/var3"]
+                eq = ["var1(x+var2)-(var5x+var4)÷var3","var1(x+var2)-(var5x+var4)/var3","var1(x+var2x)-(var5x+var4x)/var3"]
                 nouvelleQ()
             } else if (val == 1){
                 eq = ["var1(x+var2)", "var1(var2x+var3)", "(var1x+var2)÷var3", "(var1x+var2)/var3"]
                 nouvelleQ()
             } else {
-                eq = ["var1(x+var2)", "var1(var2a+var3)"]
+                eq = ["var1(x+var2)", "var1(var2x+var3)"]
                 nouvelleQ()
             }
         }
@@ -150,6 +150,8 @@
             var repEleve = document.getElementById('reponse').value.toString()
             document.getElementById('reponse').value = null
             try {
+                // Teste si l'expression de l'élève correspond à la réponse en s'assurant que la différence entre les deux si évalué 
+                // a x=3 est de moins de 0.1
                 var succes1 = math.abs(math.parse(repEleve).evaluate({ x: 3 }) - math.parse(expr.value).evaluate({ x: 3 })) < 0.1
                 var succes2 = math.abs(math.parse(repEleve).evaluate({ x: -3 }) - math.parse(expr.value).evaluate({ x: -3 })) < 0.1
             } catch{
