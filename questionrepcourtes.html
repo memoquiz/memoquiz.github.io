@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<script id="selection"></script>
+<html>
+
+<head>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		h1 {
+			text-align: center;
+		}
+
+		h2 {
+			text-align: center;
+		}
+
+		.button {
+			font-family: arial;
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 10px 10px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 20px;
+			margin: 2px 2px;
+			cursor: pointer;
+			width: 20%;
+		}
+
+		input {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+		input[type="file"] {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+
+	<script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+	<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<h2 id="entete"></h2>
+	<h2>
+		<br><br>
+		<table align=center>
+			<tr>
+				<th>Expression</th>
+				<td><input type="text" id="expr" /></td>
+			</tr>
+			<td style="min-width:600px"><input type="text" id="0"></td>
+			</tr>
+			<tr>
+				<th>Pretty print</th>
+				<td><div id="pretty">$$$$</div></td>
+			</tr>
+			<tr>
+				<td><input type="button" class="button" value="Soumettre" id="1"
+						onclick="setTimeout(function(){rep(0)},100)">
+				</td>
+			</tr>
+		</table>
+		<br>Score : <output id="réussi"></output> / <output id="total"></output>
+		<br>Erreurs : <output id="erreurs"></output>
+	</h2>
+	<script>
+  	const expr = document.getElementById('expr')
+		expr.oninput = function () {
+
+			let node = null
+
+			try {
+				// parse the expression
+				node = math.parse(expr.value)
+
+				// evaluate the result of the expression
+				result.innerHTML = math.format(node.compile().evaluate())
+			}
+			catch (err) {
+				result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>'
+			}
+
+			try {
+				// export the expression to LaTeX
+				const latex = node ? node.toTex({ parenthesis: parenthesis, implicit: implicit }) : ''
+				console.log('LaTeX expression:', latex)
+
+				// display and re-render the expression
+				const elem = MathJax.Hub.getAllJax('pretty')[0]
+				MathJax.Hub.Queue(['Text', elem, latex])
+			}
+			catch (err) { }
+		}
+		expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2'
+		expr.innerHTML = math.format(math.evaluate(expr))
+
+	</script>
+</body>
+
+</html>
