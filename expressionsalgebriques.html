@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>math.js | pretty printing with MathJax</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="/home/cedric/Documents/Ecole/ANM/memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .button1 {
+            font-family: arial;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 2px 2px;
+            cursor: pointer;
+            width: 20%;
+        }
+
+        .button2 {
+            font-family: arial;
+            background-color: rgb(46, 51, 47);
+            border: none;
+            color: white;
+            padding: 5px 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 2px 2px;
+            cursor: pointer;
+            width: 10%;
+        }
+
+        input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>
+        Réduit l'expression suivante
+    </h1>
+    <h2>
+        <table align=center>
+            <tr>
+                <td>
+                    <div id="pretty">$$$$</div>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" id="reponse" /></td>
+            </tr>
+            <tr>
+                <td style="min-width:1000px"><input type="button" class="button1" value="Soumettre" id="button"
+                        onclick="setTimeout(function(){soum()},100)">
+                </td>
+            </tr>
+        </table>
+        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+        <br>Erreurs : <output id="erreurs"></output>
+        <br><br>Sélectionne le niveau de difficulté<br>
+            <td style="min-width:200px"><input type="button" class="button2" value="Doux" id="button" onclick="diff(0)">
+            <td style="min-width:200px"><input type="button" class="button2" value="Medium" id="button" onclick="diff(1)">
+            <td style="min-width:200px"><input type="button" class="button2" value="Piquant" id="button" onclick="diff(2)">
+    </h2>
+    <script>
+        function diff(val){
+            difficulte = val
+            if(val == 2){
+                eq = ["var1(x+var2)-(var5x+var4)÷var3","var1(x+var2)-(var5x+var4)/var3","var1(x+var2a)-(var5a+var4b)/var3"]
+                nouvelleQ()
+            } else if (val == 1){
+                eq = ["var1(x+var2)", "var1(var2x+var3)", "(var1x+var2)÷var3", "(var1x+var2)/var3"]
+                nouvelleQ()
+            } else {
+                eq = ["var1(x+var2)", "var1(var2a+var3)"]
+                nouvelleQ()
+            }
+        }
+
+        function nouvelleQ() {
+            var qi = Math.floor(Math.random() * eq.length)
+            q = eq[qi]
+            var min = -9
+            var max = 9
+            var var1 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
+            var var2 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
+            var var3 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
+            var var4 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
+            var var5 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
+            var var6 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
+            q = q.replace(/var1/g, var1);
+            q = q.replace(/var2/g, var2);
+            q = q.replace(/var3/g, var3)
+            q = q.replace(/var4/g, var4);
+            q = q.replace(/var5/g, var5);
+            q = q.replace(/var6/g, var6)
+            q = q.replace(/\+\-/g, '-');
+            console.log(difficulte)
+
+            expr.value = q
+            q = q.replace(/÷/g, '/');
+            if(var3 < 0 && difficulte == 1 && qi > 1){
+                q = q.replace(/\/\-/g, '/(-').concat(')');
+            } else if (var3 < 0 && difficulte == 2){
+                q = q.replace(/\/\-/g, '/(-').concat(')');
+            }
+
+            var reponse = Algebrite.run(q)
+            console.log(reponse)
+            update()
+        }
+
+        function replaceZero(val) {
+            if (val <= 0) {
+                val = val - 1;
+            }
+            if (val == 1) {
+                val = val + 1;
+            }
+            return val;
+        }
+        soum = function () {
+            var repEleve = document.getElementById('reponse').value.toString()
+            document.getElementById('reponse').value = null
+            try {
+                var succes1 = math.abs(math.parse(repEleve).evaluate({ x: 3 }) - math.parse(expr.value).evaluate({ x: 3 })) < 0.1
+                var succes2 = math.abs(math.parse(repEleve).evaluate({ x: -3 }) - math.parse(expr.value).evaluate({ x: -3 })) < 0.1
+            } catch{
+                var succes1 = false
+                var succes2 = false
+            }
+
+            nbEssais++
+
+            if (succes1 == true && succes2 == true) {
+                reussi++
+                if (reussi < total) {
+                    nouvelleQ()
+                } else {
+                    if (reussi / total > 0.8) {
+                        expr.value = 'Bravo!'
+                    } else {
+                        expr.value = 'Tu as besoin de plus de pratique on dirait'
+                    }
+                    button.value = "Recommencer ?"
+                    button.onclick = recommancer
+                    update()
+                }
+            } else {
+                button.style.backgroundColor = "red"
+                button.style.value = "Réessaie !"
+                erreurs++
+                update()
+                //button.onclick = resetButton
+
+            }
+        }
+
+        resetButton = function () {
+            button.style.backgroundColor = "#4CAF50"
+            button.style.value = "Réessaie !"
+            button.onclick = soum()
+        }
+
+        recommancer = function () {
+            total = 0
+            reussi = 0
+            erreurs = 0
+        }
+
+        update = function () {
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+            let node = null
+            node = math.parse(expr.value)
+
+            try {
+                // export the expression to LaTeX
+                const latex = node ? node.toTex({ parenthesis: parenthesis, implicit: implicit }) : ''
+                console.log('LaTeX expression:', latex)
+
+                // display and re-render the expression
+                const elem = MathJax.Hub.getAllJax('pretty')[0]
+                MathJax.Hub.Queue(['Text', elem, latex])
+            }
+            catch (err) { }
+        }
+
+        var total = 10
+        var erreurs = 0
+        var reussi = 0
+        var nbEssais = 0
+        var eq = null
+
+        document.getElementById('reussi').value = reussi
+        document.getElementById('erreurs').value = erreurs
+        document.getElementById('total').value = total
+
+        const expr = []
+        const pretty = document.getElementById('pretty')
+        const button = document.getElementById('button')
+        const result = []
+        let parenthesis = 'keep'
+        let implicit = 'hide'
+        var difficulte = 0
+        diff(difficulte)
+
+        // initialize with an example expression
+        pretty.innerHTML = '$$' + math.parse(expr.value).toTex({ parenthesis: parenthesis }) + '$$'
+
+
+    </script>
+
+</body>
+
+</html>
