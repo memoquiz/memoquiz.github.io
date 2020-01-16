@@ -148,6 +148,7 @@
         }
         soum = function () {
             var repEleve = document.getElementById('reponse').value.toString()
+            repEleve = repEleve.replace(/\,/,'.') // Remplace les , par des . pour les eleves francophones
             document.getElementById('reponse').value = null
             try {
                 // Teste si l'expression de l'élève correspond à la réponse en s'assurant que la différence entre les deux si évalué 
@@ -165,6 +166,9 @@
                 reussi++
                 if (reussi < total) {
                     nouvelleQ()
+                    button.style.backgroundColor = "#4CAF50"
+                    button.value = "Soumettre"
+
                 } else {
                     if (reussi / total > 0.8) {
                         expr.value = 'Bravo!'
@@ -177,18 +181,10 @@
                 }
             } else {
                 button.style.backgroundColor = "red"
-                button.style.value = "Réessaie !"
+                button.value = "Réessaie !"
                 erreurs++
                 update()
-                //button.onclick = resetButton
-
             }
-        }
-
-        resetButton = function () {
-            button.style.backgroundColor = "#4CAF50"
-            button.style.value = "Réessaie !"
-            button.onclick = soum()
         }
 
         recommancer = function () {
