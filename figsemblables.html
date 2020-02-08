@@ -9,6 +9,8 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
     <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.13/svg.js"></script>
+
     <style>
         h1 {
             text-align: center;
@@ -72,9 +74,8 @@
 <body>
 
     <h1>
-        Réduit l'expression suivante
+        Quelle est le rapport de similitude entre ces deux figures ?
     </h1>
-    <canvas id="hexagon" width="200" height="200"></canvas>
     <h2>
         <table align=center>
             <tr>
@@ -99,36 +100,65 @@
         <td style="min-width:200px"><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)">
     </h2>
     <script>
-        middleSegments = function(points){
-            for(i=0;i < points.length;i++){
-                console.log(points[i].x)
-            }
+        middlePoint = function(p1,p2){
+            return Math.min(p1,p2)+Math.abs(p1-p2)/2
         }
 
-        writeText = function(string,x,y,size) {
-            var c = document.getElementById("hexagon");
-            var ctx = c.getContext("2d");
-            ctx.font = size.toString().concat("px Arial");
-            ctx.fillText(string, x, y);
+        length = function(p1,p2){
+            return Math.sqrt(Math.pow(p1[0]-p2[0],2)+Math.pow(p1[0]-p2[0],2))
         }
 
-        drawPolygon = function (numberOfSides, size, Xcenter, Ycenter) {
-            var points = []
-            ctx.beginPath();
-            ctx.moveTo(Xcenter + size * Math.cos(0), Ycenter + size * Math.sin(0));
-
-            for (var i = 1; i <= numberOfSides; i += 1) {
-                var xval = Xcenter + size * Math.cos(i * 2 * Math.PI / numberOfSides)
-                var yval =  Ycenter + size * Math.sin(i * 2 * Math.PI / numberOfSides)
-                ctx.lineTo(xval,yval);
-                points[i-1] = {x:xval,yval} 
+        segments = function (points) {
+                var midPoints = []
+                var lengthSeg = []
+                for (i = 0; i < points.length; i++) {
+                    var p1 = points[i % ncote]
+                    var p2 = points[(i + 1) % ncote]
+                    midPoints[i] = [middlePoint(p1[0],p2[0]), middlePoint(p1[1], p2[1])]
+                    lengthSeg[i] = length(p1,p2)
+                }
+                return [midPoints,lengthSeg]
             }
 
-            ctx.strokeStyle = "#000000";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-            return(points)
-        }
+            function drawPolygons (numberOfSides, size, randFactor,k) {
+                var points = []
+                var pointsIma = []
+                console.log(k)
+                for (var i = 1; i <= numberOfSides; i += 1) {
+                    var randx = randFactor * (Math.random() - 0.5)
+                    var randy = randFactor * (Math.random() - 0.5)
+                    var xval = Math.cos(i * 2 * Math.PI / numberOfSides)
+                    var yval = Math.sin(i * 2 * Math.PI / numberOfSides)
+                    points[i - 1] = [150 + size * xval + randx,150 + size * yval + randy]
+                    pointsIma[i - 1] = [150 + size * k * xval + randx*k,150 + size * k * yval + randy * k]
+
+                }
+                console.log(pointsIma)
+                drawFig(points, draw)
+                drawFig(pointsIma, draw1)
+            }
+
+            function drawFig(points, draw) {
+                    var polygon = draw.polygon(points)
+                    polygon.fill('none').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' })
+                    var seg = segments(points)
+                    var middPoints = seg[0]
+                    var lengthSeg = seg[1]
+                    for (var i = 0; i < lengthSeg.length; i++) {
+                        var x = middPoints[i][0] - 150
+                        var y = -(middPoints[i][1] - 150)
+                        var angle = Math.atan2(y, x)
+                        var text = draw.text(lengthSeg[i].toFixed(0), toString()).font({
+                            family: 'Helvetica'
+                            , size: font
+                        })
+                        //  draw.circle(10).center(middPoints[i][0] + 1.5 * w * Math.cos(angle), middPoints[i][1] - font * Math.sin(angle))
+                        var w = text.bbox().width
+                        text.center(middPoints[i][0] + 1.5 * w * Math.cos(angle), middPoints[i][1] - font * Math.sin(angle))
+                    }
+                }
+
+
         function diff(val) {
             difficulte = val
             if (val == 2) {
@@ -170,7 +200,7 @@
                 q = q.replace(/\/\-/g, '/(-').concat(')');
             }
             var reponse = Algebrite.run(q)
-            console.log(reponse)
+            //console.log(reponse)
             update()
         }
 
@@ -270,15 +300,16 @@
         diff(difficulte)
 
         // initialize with an example expression
-        pretty.innerHTML = '$$' + math.parse(expr.value).toTex({ parenthesis: parenthesis }) + '$$'
+        pretty.innerHTML = '$$' + math.parse(expr.value).toTex({ parenthesis: parenthesis }) + '$$'     
+        var draw = SVG().addTo('h1').size(300, 300)
+        var draw1 = SVG().addTo('h1').size(300, 300)
 
-        var ctx = document.getElementById('hexagon').getContext('2d');
+        var ncote = 4
+        var font = 20
+        var k = (Math.random()-0.5)*
+        console.log(k)
+        drawPolygons(ncote,100,50,k)
 
-
-        var bob = drawPolygon(6, 90, 100, 100)
-        middleSegments(bob)
-        console.log(bob)
-        writeText("bob",10,10,30)
     </script>
 
 </body>
