@@ -9,7 +9,6 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
     <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
-    <script src="https://memoquiz.github.io/svg.intersections.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.13/svg.js"></script>
 
     <style>
@@ -152,11 +151,6 @@
             drawFig(pointsIma, draw, canSizeX * 3 / 4, canSizey, yOffset, k, lengthSeg)
         }
 
-        function drawAngles(points, offsetX, canSizeY, offsetY){
-            var arc = draw.path(d = "M150 150 A1 1 0 0 1 100 50").addTo('svg')
-            arc.stroke({color: 'black',width: 2}).fill('none')
-        }
-
         function drawFig(points, draw, offsetX, canSizeY, offsetY, k, lengthSeg) {
             var polygon = draw.polygon(points)
             polygon.fill('none').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' })
@@ -278,9 +272,7 @@
         button = document.getElementById('bouttonSoum')
 
         var draw = SVG().addTo('svg')
-
         nouvelleQ()
-        drawAngles()
 
     </script>
 
