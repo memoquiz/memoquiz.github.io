@@ -9,7 +9,6 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
     <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
-    <script src="https://memoquiz.github.io/svg.intersections.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.13/svg.js"></script>
 
     <style>
@@ -149,17 +148,41 @@
             var randScale = (Math.random() + 0.5) / 2
             var lengthSeg = segments(points)[1]
             drawFig(points, draw, canSizeX / 4, canSizey, yOffset, 1, lengthSeg)
+            drawAngles(points,canSizeX / 4, canSizey, yOffset)
             drawFig(pointsIma, draw, canSizeX * 3 / 4, canSizey, yOffset, k, lengthSeg)
+            drawAngles(pointsIma,canSizeX * 3 / 4, canSizey, yOffset)
+
         }
 
         function drawAngles(points, offsetX, canSizeY, offsetY){
-            var arc = draw.path(d = "M150 150 A1 1 0 0 1 100 50").addTo('svg')
-            arc.stroke({color: 'black',width: 2}).fill('none')
+            var polygonMask = draw.mask()
+            polygonMask.add(draw.polygon(points)).fill('white').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' })
+            for (var i = 0; i < points.length; i++) {
+                var arc = draw.circle(20).center(points[i][0],points[i][1]).fill('none').stroke({ color: '#000', width: 2, linecap: 'round', linejoin: 'round' })
+                arc.maskWith(polygonMask)
+
+                var p0 = points[(i) % ncote]
+                var p1 = points[i + 1 % ncote]
+                var p2 = points[(i + 2) % ncote]
+                console.log(p1)
+
+                var a2 = Math.atan2(p2[1]-p1[1], p2[0]-p1[1]);
+                var a1 = Math.atan2(p0[1]-p1[1], p0[0]-p1[1]);
+                var sign = a1 > a2 ? 1 : -1;
+                var angle = a1 - a2;
+                var K = -sign * Math.PI * 2;
+                var angle = (Math.abs(K + angle) < Math.abs(angle))? K + angle : angle;
+                var text = draw.text(angle.toPrecision(2).toString()).font({family: 'Helvetica', size: font})
+                var w = text.bbox().width
+                text.center(p1[0] + 0.75 * w * Math.cos(angle), p1[1] - font * Math.sin(angle))
+
+
+            }
         }
 
         function drawFig(points, draw, offsetX, canSizeY, offsetY, k, lengthSeg) {
             var polygon = draw.polygon(points)
-            polygon.fill('none').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' })
+            polygon.fill('white').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' })
             var seg = segments(points)
             var middPoints = seg[0]
             for (var i = 0; i < lengthSeg.length; i++) {
@@ -171,7 +194,7 @@
                     , size: font
                 })
                 var w = text.bbox().width
-                text.center(middPoints[i][0] + 1.5 * w * Math.cos(angle), middPoints[i][1] - font * Math.sin(angle))
+                text.center(middPoints[i][0] + 0.75 * w * Math.cos(angle), middPoints[i][1] - font * Math.sin(angle))
             }
         }
 
@@ -259,8 +282,8 @@
         var reussi = 0
         var nbEssais = 0
 
-        var ncote = 4
-        var font = 20
+        var ncote = 5
+        var font = 15
 
         var dir = 0
         var AggRet = 0
@@ -280,7 +303,6 @@
         var draw = SVG().addTo('svg')
 
         nouvelleQ()
-        drawAngles()
 
     </script>
 
