@@ -69,15 +69,15 @@
     <h2>
         <table align=center>
             <tr>
-                <td>
-                    <div id="pretty">$$$$</div>
+                <td height="120">
+                    <div id="pretty" >$$$$</div>
                 </td>
             </tr>
             <tr>
                 <td><input type="text" id="reponse" /></td>
             </tr>
             <tr>
-                <td style="min-width:1000px"><input type="button" class="button0" value="Soumettre" id="bouttonSoum"
+                <td style="min-width:1000px"><input type="button" class="button1" value="Soumettre" id="bouttonSoum"
                         onclick="setTimeout(function(){soum()},100)">
                 </td>
             </tr>
@@ -92,16 +92,26 @@
     <script>
         function diff(val){
             difficulte = val
-            console.log('bob')
-            document.getElementById('button0').style.backgroundColor = "grey";
             if(val == 2){
                 eq = ["var1(x+var2)-(var5x+var4)÷var3","var1(x+var2)-(var5x+var4)/var3","var1(x+var2x)-(var5x+var4x)/var3"]
+                
+                document.getElementById('button2').style.backgroundColor = "grey"
+                document.getElementById('button0').style.backgroundColor = "black"
+                document.getElementById('button1').style.backgroundColor = "black"
                 nouvelleQ()
             } else if (val == 1){
-                eq = ["var1(x+var2)", "var1(var2x+var3)", "(var1x+var2)÷var3", "(var1x+var2)/var3"]
+                eq = ["var1(var2x+var3)+var4x", "var1(var2x+var3)-var4(var5x)", "(var1x+var2)÷var3", "(var1x+var2)/var3"]
+               
+                document.getElementById('button1').style.backgroundColor = "grey"
+                document.getElementById('button0').style.backgroundColor = "black"
+                document.getElementById('button2').style.backgroundColor = "black"
                 nouvelleQ()
             } else {
                 eq = ["var1(x+var2)", "var1(var2x+var3)"]
+               
+                document.getElementById('button0').style.backgroundColor = "grey"
+                document.getElementById('button2').style.backgroundColor = "black"
+                document.getElementById('button1').style.backgroundColor = "black"
                 nouvelleQ()
             }
         }
@@ -124,6 +134,8 @@
             q = q.replace(/var5/g, var5);
             q = q.replace(/var6/g, var6)
             q = q.replace(/\+\-/g, '-');
+            q = q.replace(/\-\-/g, '-');
+
 
             expr.value = q
             q = q.replace(/÷/g, '/');
@@ -192,6 +204,7 @@
             total = 0
             reussi = 0
             erreurs = 0
+            nouvelleQ()
         }
 
         update = function () {
@@ -222,7 +235,7 @@
         document.getElementById('erreurs').value = erreurs
         document.getElementById('total').value = total
         
-        button = document.getElementById('button3')
+        button = document.getElementById('bouttonSoum')
 
         const expr = []
         const pretty = document.getElementById('pretty')
