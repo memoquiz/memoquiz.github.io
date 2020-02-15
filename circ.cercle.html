@@ -84,7 +84,7 @@
 
     <h1 id='h1'>
     </h1>
-    <svg id='canvas' align=center width=600 height=300>
+    <svg id='canvas' align=center width=600 height=400>
         <marker id="arrowhead" markerWidth="5" markerHeight="3.5" refX="0" refY="3.5" orient="auto">
             <polygon points="0 0, 5 1.75, 0 3.5" />
         </marker>
@@ -114,7 +114,7 @@
 function diff(val){
             difficulte = val
             if(val == 2){
-                ndiff = ["var1(var2 + var3x)","var1(var2x + var3)","var1(x+var2)-(var5x+var4)"]
+                ndiff = ["var1(var2 + var3x)","var1(var2x + var3)","var1(x+var2)-(var5x)"]
                 document.getElementById('button2').style.backgroundColor = "grey"
                 document.getElementById('button0').style.backgroundColor = "black"
                 document.getElementById('button1').style.backgroundColor = "black"
@@ -204,9 +204,11 @@ function diff(val){
                 var var4 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
                 var var5 = replaceZero(Math.floor(Math.random() * (max - min)) + min)
 
-                var rayDiam = Math.round(Math.random())
 
                 var letters = "abcdefghkmnopqrstuvwxyz"
+                //var unit = ['mm','cm','m','dm','hm','km'][Math.floor(Math.random()*5)]
+                var unit = ''
+
                 var ranLett = Math.floor(Math.random() * (letters.length - 1)) + 1
                 letter = letters.substring(ranLett - 1, ranLett)
 
@@ -218,27 +220,46 @@ function diff(val){
                 q = q.replace(/var4/g, var2)
                 q = q.replace(/var5/g, var3)
 
-                var qLetter = q.replace(/x/g, letter)
+                var qLetter = q.replace(/x/g, letter).concat(unit)
+                
+                draw.circle(360).fill('none').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' }).center(300, 200)
 
-                txtH1 = "Quelle est la circonférence de ce cercle ?"
-                h1 = document.getElementById('h1').innerHTML = txtH1
+                var txtH1 = Math.round(Math.random())
+                var rayDiam = Math.round(Math.random())
+                
+                if(txtH1 == 0 && rayDiam == 0){
 
-                if (rayDiam == 0) {
+                    txtH1 = "Quelle est la circonférence de ce cercle ?"
                     var rep = "(".concat(q.concat(')*3.1415926'))
-                } else {
+
+                    draw.path(d = "M 120 200 L 480 200 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
+                    var text = draw.text('d = '.concat(qLetter.toString())).font({ family: 'sans', size: font }).center(300, 220)
+
+                }else if(txtH1 == 0 && rayDiam == 1){
+
+                    txtH1 = "Quelle est la circonférence de ce cercle ?"
                     var rep = "(".concat(q.concat(')*2*3.1415926'))
+
+                    draw.path(d = "M 300 200 L 480 200 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
+                    var text = draw.text('r = '.concat(qLetter.toString())).font({ family: 'sans', size: font }).center(390, 180)
+
+                }else if(txtH1 == 1 && rayDiam == 0){
+
+                    txtH1 = "Quelle est le diamètre de ce cercle ?"
+                    var rep = "(".concat(q.concat(')/3.1415926'))
+                    draw.path(d = "M 120 200 L 480 200 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
+                    var text = draw.text('C = '.concat(qLetter).toString()).font({ family: 'sans', size: font }).center(300, 150)
+
+                }else if(txtH1 == 1 && rayDiam == 1){
+                    txtH1 = "Quelle est le rayon de ce cercle ?"
+                    var rep = "(".concat(q.concat(')/2/3.1415926'))
+                    draw.path(d = "M 300 200 L 480 200 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
+                    var text = draw.text('C = '.concat(qLetter).toString()).font({ family: 'sans', size: font }).center(300, 150)
+
+
                 }
 
-                draw.circle(280).fill('none').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' }).center(300, 150)
-
-                if (rayDiam == 0) {
-                    draw.path(d = "M 160 150 L 440 150 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
-                    var text = draw.text(qLetter.toString()).font({ family: 'sans', size: font }).center(300, 170)
-                } else {
-                    draw.path(d = "M 300 150 L 440 150 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
-                    var text = draw.text(qLetter.toString()).font({ family: 'sans', size: font }).center(370, 170)
-
-                }
+                h1 = document.getElementById('h1').innerHTML = txtH1
 
                 brep = Algebrite.run(rep).replace(/\.\.\./g,"")
                 console.log(brep)
@@ -261,13 +282,13 @@ function diff(val){
             document.getElementById('total').value = total
         }
 
-        var total = 1
+        var total = 10
         var erreurs = 0
         var reussi = 0
         var nbEssais = 0
 
         var brep = null
-        var font = 14
+        var font = 18
         var letter = null
         var ndiff = null
         var txtH1 = null
