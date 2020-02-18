@@ -105,8 +105,9 @@ function nouvelleQ(){
 	txt = txt.replace(/\[.*\]/,"");
 	document.getElementById(brep).value = txt;
     }
-    else if ((selection == 'vocabulaire') || (selection == 'degrad') || (selection == 'raddeg') ||
-             (selection == 'radcos') || (selection == 'radsin') || (selection == 'radcossin') || (selection == 'cossinrad')) {
+    else if ((selection == 'vocabulaire') || (selection == 'medpompes') || (selection == 'medhypogly') ||
+             (selection == 'degrad') || (selection == 'raddeg') || (selection == 'radcos') ||
+             (selection == 'radsin') || (selection == 'radcossin') || (selection == 'cossinrad')) {
 	document.getElementById("question").value = data[questions[0]].FIELD1;
 	document.getElementById(brep).value = data[questions[0]].FIELD2;
     }
