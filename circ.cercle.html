@@ -151,8 +151,8 @@ function diff(val){
                 // Teste si l'expression de l'élève correspond à la réponse en s'assurant que la différence entre les deux si évalué 
                 // a x=3 est de moins de 0.1
                 
-                var succes1 = math.abs(math.parse(repEleve).evaluate({ x: 3 }) - math.parse(brep).evaluate({ x: 3 })) < 0.1
-                var succes2 = math.abs(math.parse(repEleve).evaluate({ x: -3 }) - math.parse(brep).evaluate({ x: -3 })) < 0.1
+               var succes1 = (math.abs(math.parse(repEleve).evaluate({ x: 3 }) - math.parse(brep).evaluate({ x: 3 })))/math.parse(brep).evaluate({ x: 3 }) < 0.1
+               var succes2 = (math.abs(math.parse(repEleve).evaluate({ x: -3 }) - math.parse(brep).evaluate({ x: -3 })))/math.parse(brep).evaluate({ x: -3 }) < 0.1
             } catch{
                 var succes1 = false
                 var succes2 = false
