@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Pratique Figures</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.13/svg.js"></script>
+
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        svg {
+            display: block;
+            margin: auto;
+        }
+
+        canvas {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .button1 {
+            font-family: arial;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 2px 2px;
+            cursor: pointer;
+            width: 20%;
+        }
+
+        .button2 {
+            font-family: arial;
+            background-color: rgb(46, 51, 47);
+            border: none;
+            color: white;
+            padding: 5px 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 2px 2px;
+            cursor: pointer;
+            width: 10%;
+        }
+
+        input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            text-align: center;
+            width: 14%;
+
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id='h1'>
+    </h1>
+    <svg id='canvas' align=center width=800 height=450>
+        <marker id="arrowhead" markerWidth="5" markerHeight="3.5" refX="0" refY="3.5" orient="auto">
+            <polygon points="0 0, 5 1.75, 0 3.5" />
+        </marker>
+    </svg>
+
+    <h2>
+        <table align=center>
+            <tr>
+                <td><input type="text" id="reponse" />
+                    <units id='units'></units>
+                </td>
+            </tr>
+            <tr>
+                <td style="min-width:1000px"><input type="button" class="button1" value="Soumettre" id="bouttonSoum"
+                        onclick="setTimeout(function(){soum()},100)">
+                </td>
+            </tr>
+        </table>
+        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+        <br>Erreurs : <output id="erreurs"></output>
+        <br><br>Sélectionne le niveau de difficulté<br>
+        <td style="min-width:200px"><input type="button" class="button2" value="Arc" id="button0" onclick="diff(0)">
+        <td style="min-width:200px"><input type="button" class="button2" value="Aire" id="button1" onclick="diff(1)">
+        <td style="min-width:200px"><input type="button" class="button2" value="Arc et Aire" id="button2" onclick="diff(2)">
+    </h2>
+    </h2>
+    <script>
+
+        function diff(val) {
+            erreurs = 0
+            reussi = 0
+            nbEssais = 0
+            update()
+            
+            if (val == 2) {
+                var V1 = ["l'angle de l'arc APB (θ)", "la longeur de l'arc APB","l'aire du secteur"]
+                varDep = V1.splice(Math.round(Math.random())+1, 1)
+                varInd = V1
+                ndiff = ["var1"]
+                document.getElementById('button2').style.backgroundColor = "grey"
+                document.getElementById('button0').style.backgroundColor = "black"
+                document.getElementById('button1').style.backgroundColor = "black"
+                nouvelleQ()
+            } else if (val == 1) {
+                var V1 = ["l'angle de l'arc APB (θ)", "l'aire du secteur","l'aire du cercle"]
+                varDep = V1.splice(Math.round(Math.random()*2),1)
+                varInd = V1
+
+                ndiff = ["var1"]
+                document.getElementById('button0').style.backgroundColor = "black"
+                document.getElementById('button2').style.backgroundColor = "black"
+                document.getElementById('button1').style.backgroundColor = "grey"
+                nouvelleQ()
+            } else {
+                var V1 = ["l'angle de l'arc APB (θ)", "la longeur de l'arc APB","la circonférence"]
+                varDep = V1.splice(Math.round(Math.random()*2),1)
+                varInd = V1
+
+                ndiff = ["var1"]
+                document.getElementById('button0').style.backgroundColor = "grey"
+                document.getElementById('button2').style.backgroundColor = "black"
+                document.getElementById('button1').style.backgroundColor = "black"
+                nouvelleQ()
+
+            }
+        }
+
+        soum = function () {
+            var repEleve = document.getElementById('reponse').value
+
+            if(Math.abs(repEleve - rep)/rep < 0.03){
+                var succes1 = true
+            }
+
+            nbEssais++
+
+            if (succes1 == true) {
+                reussi++
+                document.getElementById('reponse').value = null
+                if (reussi < total) {
+                    nouvelleQ()
+                    button.style.backgroundColor = "#4CAF50"
+                    button.value = "Soumettre"
+                    update()
+
+                } else {
+                    draw.clear()
+                    if (erreurs / total < 0.8) {
+                        draw.text('Bravo!').font({ family: 'serif', size: 50 }).center(center.x, center.y)
+                    } else {
+                        draw.text('Tu as besoin de plus de pratique on dirait').font({ family: 'serif', size: 20 }).center(center.x, center.y)
+                    }
+                    button.value = "Recommencer ?"
+                    button.onclick = recommancer
+                    update()
+                }
+            } else {
+                button.style.backgroundColor = "red"
+                button.value = "Réessaie !"
+                erreurs++
+                update()
+            }
+        }
+
+        recommancer = function () {
+            reussi = 0
+            erreurs = 0
+            nouvelleQ()
+        }
+
+        function nouvelleQ() {
+            draw.clear()
+
+            var min = 5
+            var max = 99
+            var circ = Math.floor(Math.random() * (max - min)) + min
+
+            var unit = ['mm', 'cm', 'm', 'dm', 'hm', 'km'][Math.floor(Math.random() * 5)]
+
+            var randS = Math.random()*2*Math.PI
+            var randL = (Math.random()*4/6*Math.PI)+Math.PI/6
+
+            var pointx = []
+            var pointy = []
+
+            pointx[0] = Math.cos(randS)
+            pointy[0] = Math.sin(randS)
+            pointx[1] = Math.cos(randS+randL)
+            pointy[1] = Math.sin(randS+randL)
+            pointx[2] = Math.cos(randS+randL/2)
+            pointy[2] = Math.sin(randS+randL/2)
+            pointx[3] = Math.cos(randS+randL/4)
+            pointy[3] = Math.sin(randS+randL/4)
+            pointx[4] = Math.cos(randS+3*randL/4)
+            pointy[4] = Math.sin(randS+3*randL/4)
+            pointx[5] = Math.cos(randS+Math.PI)
+            pointy[5] = Math.sin(randS+Math.PI)
+
+            var angle = randL/2/Math.PI*360
+            var arc = circ*angle/360
+            var rayon = circ/2/Math.PI
+            var aire = Math.PI*Math.pow(rayon,2)
+            var sect = aire*angle/360
+
+            console.log(`sect = ${sect}`)
+            console.log(`aire = ${aire}`)
+            console.log(`rayon = ${rayon}`)
+            console.log(`arc = ${arc}`)
+            console.log(`angle = ${angle}`)
+
+
+            var polygonMask = draw.mask()
+            var polygonMask2 = draw.mask()
+            var nligne = 0
+            var drawSec = false
+
+
+            polygonMask2.add(draw.path(d = `M ${center.x},${center.y} ${2000*pointx[0]+center.x},${2000*pointy[0]+center.y} ${2000*pointx[2]+center.x},${2000*pointy[2]+center.y} ${2000*pointx[1]+center.x},${2000*pointy[1]+center.y} Z`)
+                .fill('white').stroke({ color: 'white', width: 0}))
+            draw.circle(30).fill('none').stroke({ color: '#000', width: 2, linecap: 'round', linejoin: 'round' }).center(center.x, center.y).maskWith(polygonMask2)
+
+            var txtH1 = "Quelle est la mesure de ".concat(varDep).concat(" ?")
+
+            draw.circle(360).fill('none').stroke({ color: '#000', width: 4, linecap: 'round', linejoin: 'round' }).center(center.x, center.y)        
+            draw.circle(7).fill('black').center(center.x, center.y)
+
+            if(varDep == "la circonférence" || varInd[0] == "la circonférence" || varInd[1] == "la circonférence"){
+                if (varDep == "la circonférence") {
+                    draw.text('C = ?').font({ family: 'sans', size: font }).center(center.x+280, center.y + nligne++*20)
+                    rep = circ
+                } else {
+                    draw.text('C = '.concat(circ.toPrecision(3).toString()).concat(' ').concat(unit)).font({ family: 'sans', size: font }).center(center.x+280, center.y+nligne++*20)
+                }
+            }
+
+            if(varDep == "la longeur de l'arc APB" || varInd[0] == "la longeur de l'arc APB" || varInd[1] == "la longeur de l'arc APB"){
+                draw.path(d = `M ${center.x},${center.y} L ${pointx[0]*180+center.x},${pointy[0]*180+center.y} `).fill('none').stroke({ color: '#000', width: 3, linecap: 'straight', linejoin: 'round' })
+                draw.path(d = `M ${center.x},${center.y} L ${pointx[1]*180+center.x},${pointy[1]*180+center.y} `).fill('none').stroke({ color: '#000', width: 3, linecap: 'straight', linejoin: 'round' })
+
+                draw.circle(7).fill('black').center(pointx[0]*180+center.x, pointy[0]*180+center.y)
+                draw.text('A').font({ family: 'sans', size: font }).center(pointx[0]*195+center.x, pointy[0]*190+center.y)
+                draw.circle(7).fill('black').center(pointx[1]*180+center.x, pointy[1]*180+center.y)
+                draw.text('B ').font({ family: 'sans', size: font }).center(pointx[1]*195+center.x, pointy[1]*190+center.y)
+                draw.circle(7).fill('black').center(pointx[2]*180+center.x, pointy[2]*180+center.y)
+                draw.text('P ').font({ family: 'sans', size: font }).center(pointx[2]*195+center.x, pointy[2]*190+center.y)
+                
+                if (varDep == "la longeur de l'arc APB") {
+                    draw.text('mAPB = ?').font({ family: 'sans', size: font }).center(center.x+280, center.y+ nligne++*20)
+                    rep = arc
+
+                } else {
+                    draw.text('mAPB = '.concat(arc.toPrecision(3).toString()).concat(' ').concat(unit)).font({ family: 'sans', size: font }).center(center.x+280, center.y+ nligne++*20)
+                }
+            }
+
+            if(varDep == "l'aire du cercle" || varInd[0] == "l'aire du cercle" || varInd[1] == "l'aire du cercle"){
+                drawSec = true
+                if(varDep == "l'aire du cercle"){
+                    rep = aire
+                    draw.text('A = ?').font({ family: 'sans', size: font }).center(center.x+280, center.y+ nligne++*20)
+                }else{
+                    draw.text('A = '.concat(aire.toPrecision(3).toString()).concat(' ').concat(unit).concat('²')).font({ family: 'sans', size: font }).center(center.x+280, center.y+ nligne++*20)
+                }
+            }
+
+            if (varDep == "l'aire du secteur" || varInd[0] == "l'aire du secteur" || varInd[1] == "l'aire du secteur") {
+                drawSec = true
+                if (varDep == "l'aire du secteur") {
+                    rep = sect
+                    draw.text('Asec = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y+ nligne++*20)
+                } else {
+                    draw.text('Asec = '.concat(sect.toPrecision(3).toString()).concat(' ').concat(unit).concat('²')).font({ family: 'sans', size: font }).center(center.x + 280, center.y+ nligne++*20)
+                }
+            }
+
+            if(drawSec == true){
+                polygonMask.add(draw.circle(360).fill('grey').stroke({ color: '#000', width: 0, linecap: 'round', linejoin: 'round' }).center(center.x, center.y))
+                draw.path(d = `M ${center.x},${center.y} ${20000*pointx[0]+center.x},${20000*pointy[0]+center.y} ${20000*pointx[3]+center.x},${20000*pointy[3]+center.y} ${20000*pointx[4]+center.x},${20000*pointy[4]+center.y} ${20000*pointx[1]+center.x},${20000*pointy[1]+center.y} Z`)
+                    .fill('blue').stroke({ color: 'white', width: 0}).maskWith(polygonMask)
+                
+                draw.circle(7).fill('black').center(pointx[0]*180+center.x, pointy[0]*180+center.y)
+                draw.text('A').font({ family: 'sans', size: font }).center(pointx[0]*195+center.x, pointy[0]*190+center.y)
+                draw.circle(7).fill('black').center(pointx[1]*180+center.x, pointy[1]*180+center.y)
+                draw.text('B ').font({ family: 'sans', size: font }).center(pointx[1]*195+center.x, pointy[1]*190+center.y)
+            }
+            
+            if(varDep == "l'angle de l'arc APB (θ)" || varInd[0] == "l'angle de l'arc APB (θ)" || varInd[1] == "l'angle de l'arc APB (θ)"){
+                draw.text('θ').font({ family: 'sans', size: font }).center(pointx[2]*30+center.x, pointy[2]*30+center.y)
+                if(varDep == "l'angle de l'arc APB (θ)"){
+                    rep = angle
+                    draw.text('θ = ?').font({ family: 'sans', size: font }).center(center.x+280, center.y+ nligne++*20)
+                }else{
+                    draw.text('θ = '.concat(angle.toPrecision(3).toString()).concat('°')).font({ family: 'sans', size: font }).center(center.x+280, center.y+ nligne++*20)
+                }
+            }
+            
+
+            document.getElementById('h1').innerHTML = txtH1
+            if (varDep == "l'aire") {
+                unit = unit.concat('²')
+            }else if(varDep == "l'angle de l'arc APB (θ)"){
+                unit = '°'
+            }
+            
+            document.getElementById('units').innerHTML = unit
+
+            console.log(rep)
+        }
+
+        update = function () {
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+        }
+
+        var total = 10
+        var erreurs = 0
+        var reussi = 0
+        var nbEssais = 0
+
+        var brep
+        var font = 18
+        var ndiff
+        var varDep 
+        var varInd
+        var letter
+        var center = {x:400,y:225}
+        var rep
+
+
+        document.getElementById('reussi').value = reussi
+        document.getElementById('erreurs').value = erreurs
+        document.getElementById('total').value = total
+
+        var button = document.getElementById('bouttonSoum')
+
+        var draw = SVG().addTo('svg')
+
+        diff(0)
+    </script>
+
+</body>
+
+</html>
