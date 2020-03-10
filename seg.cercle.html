@@ -156,6 +156,7 @@
 
         soum = function () {
             var repEleve = document.getElementById('reponse').value
+            repEleve = repEleve.replace(/\,/, '.')
 
             if(Math.abs(repEleve - rep)/rep < 0.03){
                 var succes1 = true
