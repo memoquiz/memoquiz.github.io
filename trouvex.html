@@ -115,8 +115,8 @@
                 document.getElementById('button2').style.backgroundColor = "black"
                 nouvelleQ()
             } else {
-                eq1 = ["var(x+var)", "var(varx+var)", "x/(var)","(varx+var)/(var)", "x+var"]
-                eq1Pretty = ["var(x+var)", "var(varx+var)", "\\frac{x}{var}","\\frac{varx+var}{var}","x+var"]
+                eq1 = ["var(x+var)", "var(varx+var)", "x^2/(var)","(varx+var)/(var)", "x^2+var"]
+                eq1Pretty = ["var(x+var)", "var(varx+var)", "\\frac{x^2}{var}","\\frac{varx+var}{var}","x^2+var"]
                 eq2 = ["var"]
                 eq2Pretty = ["var"]
 
@@ -133,7 +133,6 @@
             var chiffres = [-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]
 
             var qi0 = Math.floor(Math.random() * eq1.length)
-            var qi0 = 0
             var qi1= Math.floor(Math.random() * eq2.length)
 
             q1 = eq1[qi0]
@@ -181,11 +180,15 @@
             var constante = math.parse(qSimp).evaluate({ x: 0 })
             var coeff = math.parse(qSimp.concat(`-${constante}`)).evaluate({ x: 1 })
             reponse = -constante/coeff
-            
-/*             if(q1.match(/^2\/g)){
-                reponse = Math.sqrt(reponse)
+    
+            if(q1.match(/\^2/g)){
+                if(reponse > 0){
+                    reponse = Math.sqrt(reponse)
+            }else{
+                nouvelleQ()
+                }
             }
- */
+
             console.log(reponse)
             update()
         }
