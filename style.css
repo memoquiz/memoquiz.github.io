@@ -1,0 +1,73 @@
+body {
+    background-color: #CCCCCC;
+  }
+
+h1 {
+    text-align: center;
+    font-size: 4.0vh;
+}
+
+h2 {
+    text-align: center;
+    font-size: 3.0vh;
+}
+
+h3 {
+    text-align: center;
+    font-size: 3.5vh;
+    }
+
+h4 {
+    text-align: center;
+    font-size: 2.5vh;
+    }
+
+p {
+    text-align: center;
+    font-size: 2vmin;
+}
+
+.input {
+    background-color: #EEEEEE;
+}
+
+.button1 {
+    font-family: arial;
+    background-color: #36AF3B;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 2.0vh;
+    margin: 2px 2px;
+    cursor: pointer;
+    width: 15.0vh;
+}
+
+.button2 {
+    font-family: arial;
+    background-color: rgb(46, 51, 47);
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 2.0vh;
+    margin: 2px 2px;
+    cursor: pointer;
+    width: 10.0vh;
+}
+
+input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    text-align: center;
+}
+
+input[type="file"] {
+    display: none;
+}
