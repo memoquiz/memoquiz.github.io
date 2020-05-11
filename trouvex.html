@@ -177,7 +177,7 @@
                         button.value = "Soumettre"
 
                     } else {
-                        var code = `TroX-D${difficulte}R${reussi}E${erreurs}`
+                        var code = (Math.random()*1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random()*1000).toPrecision(3))
                         document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
                         if (reussi / total > 0.8) {
                             expr1.value = 'Bravo!'
