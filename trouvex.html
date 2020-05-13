@@ -18,15 +18,20 @@
     <h1>
         Trouve la valeur de x
     </h1>
-    <h4>
-        Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de 2/3)
-    </h4>
     <br>
     <h3>
         <div id="pretty">$$$$</div><br>
-        <input class=input type="text" id="reponse"><br>
+        <div class="tooltip"><input class=input type="text" id="reponse">
+        <span class="tooltiptext"><h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de 2/3)</h5>
+        </span></div><br>
         <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
             onclick="setTimeout(function(){soum()},100)"><br>
+        <div class="tooltip"><input type="button" class="button1" value="Sauter la question" id="bouttonSoum"
+                onclick="setTimeout(function(){sauter()},100)"><br>
+            <span class="tooltiptext">
+                <h5>Attention ! Sauter une question compte pour une erreur.</h5>
+            </span>
+        </div>
     </h3>
     <h2>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
@@ -63,8 +68,8 @@
                 } else if (val == 1) {
                     eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var"]
                     eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}"]
-                    eq2 = ["var(x+var)", "var(varx+var)", "varx + varx"]
-                    eq2Pretty = ["var(x+var)", "var(varx+var)", "varx + varx"]
+                    eq2 = ["var(x+var)", "var(varx+var)", "varx+varx"]
+                    eq2Pretty = ["var(x+var)", "var(varx+var)", "varx+varx"]
 
 
                     document.getElementById('button1').style.backgroundColor = "grey"
@@ -127,7 +132,6 @@
 
                 expr1.value = q1.replace(/\(/, "\\left.").replace(/\)/, "\\right.")
                 expr2.value = q2
-                console.log(expr1.value)
 
                 q1 = q1.replace(/÷/g, '/');
                 q2 = q2.replace(/÷/g, '/');
@@ -135,7 +139,7 @@
                 var q1Simp = Algebrite.run(q1)
                 var q2Simp = Algebrite.run(q2)
                 var qSimp = Algebrite.run(q1Simp.concat("-(").concat(q2Simp).concat(")"))
-                console.log(qSimp)
+
                 var constante = math.parse(qSimp).evaluate({ x: 0 })
                 var coeff = math.parse(qSimp.concat(`-${constante}`)).evaluate({ x: 1 })
                 reponse = -constante / coeff
@@ -159,6 +163,12 @@
                 }
                 return val;
             }
+            sauter = function(){
+                erreurs++
+                nouvelleQ()
+                update()
+            }
+
             soum = function () {
                 console.log(reponse)
                 var repEleve = document.getElementById('reponse').value.toString()
@@ -177,7 +187,7 @@
                         button.value = "Soumettre"
 
                     } else {
-                        var code = (Math.random()*1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random()*1000).toPrecision(3))
+                        var code = (Math.random() * 1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random() * 1000).toPrecision(3))
                         document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
                         if (reussi / total > 0.8) {
                             expr1.value = 'Bravo!'

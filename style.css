@@ -22,6 +22,10 @@ h4 {
     font-size: 2.5vh;
     }
 
+h5 {
+    text-align: center;
+    font-size: 1.5vh;
+    }
 p {
     text-align: center;
     font-size: 2vmin;
@@ -43,8 +47,13 @@ p {
     font-size: 2.0vh;
     margin: 2px 2px;
     cursor: pointer;
-    width: 15.0vh;
+    width: 20.0vh;
+    transition-duration: 0.4s;
 }
+
+.button1:hover {
+    background-color: rgb(64, 211, 69); /* Green */
+  }
 
 .button2 {
     font-family: arial;
@@ -59,6 +68,8 @@ p {
     margin: 2px 2px;
     cursor: pointer;
     width: 10.0vh;
+    transition-duration: 0.4s;
+
 }
 
 input {
@@ -71,3 +82,28 @@ input {
 input[type="file"] {
     display: none;
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 30.0vh;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    opacity: 0.5;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

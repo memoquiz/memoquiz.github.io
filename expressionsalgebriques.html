@@ -18,15 +18,20 @@
     <h1>
         Simplifie l'expression algébrique suivante
     </h1>
-    <h4>
-        Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de 2/3)
-    </h4>
     <br>
     <h3>
         <div id="pretty">$$$$</div><br>
-        <input class=input type="text" id="reponse"><br>
+        <div class="tooltip"><input class=input type="text" id="reponse">
+        <span class="tooltiptext"><h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de 2/3)</h5>
+        </span></div><br>
         <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
             onclick="setTimeout(function(){soum()},100)"><br>
+        <div class="tooltip"><input type="button" class="button1" value="Sauter la question" id="bouttonSoum"
+                onclick="setTimeout(function(){sauter()},100)"><br>
+            <span class="tooltiptext">
+                <h5>Attention ! Sauter une question compte pour une erreur.</h5>
+            </span>
+        </div>
     </h3>
     <h2>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
@@ -36,7 +41,7 @@
         <h2>Sélectionne le niveau de difficulté<br>
             <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
             <td><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)"></td>
-            <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
+            <td><input type="button" class="button2" value="Piquant" background-color="red" id="button2" onclick="diff(2)"></td>
         </h2>
         <script>
             function toHex(str) {
@@ -117,6 +122,13 @@
                 }
                 return val;
             }
+
+            sauter = function(){
+                erreurs++
+                nouvelleQ()
+                update()
+            }
+
             soum = function () {
                 console.log(reponse)
                 var repEleve = document.getElementById('reponse').value.toString()
