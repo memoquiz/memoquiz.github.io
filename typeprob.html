@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<script id="selection"></script>
+<script type='text/javascript' src='typeprob.js'></script>
+<html>
+<head>
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<style>
+h1 {text-align:center;}
+h2 {text-align:center;}
+.button {
+  font-family: arial;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 2px 2px;
+  cursor: pointer;
+  width: 100%;
+}
+
+
+</style>
+</head>
+<body>
+<h1 id="entete"></h1><br><br>
+<h2>
+	<output id="question"></output>
+	<br><br><br>
+	<table align=center>
+	<tr><td style="min-width:300px">
+    <input type="button" value="Théorique" class="button" id="0" onclick="setTimeout(function(){rep(0)},100)"></td></tr>
+    <tr><td><input type="button" value="Fréquentielle" class="button" id="1" onclick="setTimeout(function(){rep(1)},100)"></td></tr>
+	<tr><td><input type="button" value="Subjective" class="button" id="2" onclick="setTimeout(function(){rep(2)},100)"></td></tr>
+	</table>
+	<br>Score : <output id="réussi"></output> / <output id="total"></output>
+	<br>Erreurs : <output id="erreurs"></output>
+
+<script>
+var questions = [];
+var score = 0;
+var erreurs = 0;
+var err = 0;
+var nbr_questions = 0;
+var brep;
+
+initQ();
+function nouvelleQ(){
+    // Réinitialiser les boutons
+    for (var i = 0; i < nbr_choix; i++) {
+	document.getElementById(i).style.visibility = "visible";
+	document.getElementById(i).style.backgroundColor = "#4CAF50";
+    }
+
+	document.getElementById("question").value = data[questions[0]].FIELD1;
+    if(data[questions[0]].FIELD2 == "Théorique"){
+        brep = 0;
+    }else if (data[questions[0]].FIELD2 == "Fréquentielle"){
+        brep = 1;
+    }else if (data[questions[0]].FIELD2 == "Subjective"){
+        brep = 2;
+    }
+    console.log(brep)
+}
+
+function bonne_rep() {
+    if (err == 0) {
+	// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
+	score ++;
+	document.getElementById("réussi").innerHTML = score;
+	if (data[questions[0]].Essais == 0) {
+	    // Réussi du premier coup
+	    data[questions[0]].Essais = -1;
+	}
+    }
+    else {
+	// Remettre la question un peu plus loin dans la queue
+	questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
+    }
+    err = 0;
+    if(score != data.length){
+	questions.shift();
+	nouvelleQ();
+    }else{
+	document.getElementById("entete").innerHTML = "";
+	document.getElementById("question").value = "Bravo !";
+	for (var i = 0; i < nbr_choix; i++) {
+	    document.getElementById(i).style.visibility = "hidden";
+	}
+    }
+}
+
+function rep(reponse){
+    if (brep == reponse) {
+	document.getElementById(brep).style.backgroundColor = "green";
+	if (err == 1) {
+	    setTimeout(bonne_rep, 800);
+	}
+	else {
+	    setTimeout(bonne_rep, 300);
+	}
+    }
+    else{
+	err = 1;
+	for (var i = 0; i < nbr_choix; i++) {
+	    document.getElementById(i).style.backgroundColor = "#A6D7A8";
+	}
+	document.getElementById(reponse).style.backgroundColor = "red";
+	document.getElementById(brep).style.backgroundColor = "green";
+
+	if (selection == 'anglicismes') {
+	    txt = data[questions[0]].FIELD2;
+	    if (/\[.*\]/.test(txt)) {
+		txt = txt.match(/\[.*\]/)[0];
+		txt = txt.replace(/[\[\]]/g,"");
+		txt = txt.charAt(0).toUpperCase() + txt.slice(1); // Lettre majuscule
+		//<div style="font-size: 16px; font-family: arial" id="details"></div>
+		idx = txt.length / 2;
+		if (idx > 30) {
+		    while (idx < txt.length && txt.charAt(idx).match(/\s/) == null)
+			idx++;
+		    s1 = txt.substring(0, idx);
+		    s2 = txt.substring(idx);
+		}
+		else {
+		    s1 = txt;
+		    s2 = " ";
+		}
+		document.getElementById(4).value = s1;
+		document.getElementById(4).style.padding = "20px 10px 0px";
+		document.getElementById(5).value = s2;
+		document.getElementById(5).style.padding = "0px 10px 20px";
+
+		for (var i = 4; i < 6; ++i) {
+		    document.getElementById(i).style.backgroundColor = "white";
+		    document.getElementById(i).style.color = "black";
+		    document.getElementById(i).style.visibility = "visible";
+		}
+	    }
+	}
+	
+	// Compter les erreurs
+	erreurs = erreurs + 1;
+	document.getElementById("erreurs").innerHTML = erreurs;
+	data[questions[0]].Essais++;
+    }
+}
+
+function shuffle(array) {
+    var m = array.length, t, i;
+
+    // While there remain elements to shuffle…
+    while (m) {
+
+	// Pick a remaining element…
+	i = Math.floor(Math.random() * m--);
+
+	// And swap it with the current element.
+	t = array[m];
+	array[m] = array[i];
+	array[i] = t;
+    }
+
+    return array;
+}
+
+function initQ() {
+    nbr_questions = data.length;
+
+    for (var i = 0; i < nbr_questions; i++) {
+        questions[i] = i;
+    }
+
+    score = 0;
+    erreurs = 0;
+    
+    questions = shuffle(questions);
+
+    document.getElementById("entete").innerHTML = entete;
+    document.getElementById("réussi").innerHTML = score;
+    document.getElementById("total").innerHTML = nbr_questions;
+    document.getElementById("erreurs").innerHTML = erreurs;
+
+    nouvelleQ();
+}
+
+</script>			
+</body>
+</html>

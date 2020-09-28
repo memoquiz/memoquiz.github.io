@@ -1,4 +1,4 @@
-const entete = "Quel type de probabilité correspond aux évènements suivants ?";
+const entete = "Quel est le type de probabilité de l'événement suivant ?";
 const nbr_choix = 3;
 data = [
         {
@@ -46,7 +46,7 @@ data = [
             "FIELD2": "Théorique"
         },
         {
-            "FIELD1": "De trouver un érable à sucre derrière l'école",
+            "FIELD1": "De trouver un érable à sucre parmis tous les arbres de la forêt derrière l'école",
             "FIELD2": "Fréquentielle"
         },
         {
@@ -62,7 +62,7 @@ data = [
             "FIELD2": "Fréquentielle"
         },
         {
-            "FIELD1": "Qu'une grenouille attrape un moustique ",
+            "FIELD1": "Qu'une grenouille attrape un moustique déposé sur son nez",
             "FIELD2": "Fréquentielle"
         },
         {
@@ -70,7 +70,7 @@ data = [
             "FIELD2": "Fréquentielle"
         },
         {
-            "FIELD1": "Que le Canadien de Montréal gagne 4 parties de suite",
+            "FIELD1": "Que le Canadien de Montréal gagne 4 parties de suite malgré plusieurs joueurs blessés",
             "FIELD2": "Subjective"
         },
         {
