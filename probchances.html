@@ -6,7 +6,7 @@
 <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="style.css">
 <head>
-    <title>My Title</title>
+    <title>Chances et probabilités</title>
 </head>
 <style>
 h1 {text-align:center;}
@@ -17,7 +17,7 @@ h2 {text-align:center;}
 </style>
 </head>
 <body>
-<h1 id="entete"></h1><br><br>
+<h1 id="entete"></h1><h3>N.B. Les probabilités doivent être exprimées en fraction non réduites.</h3><br><br>
 <h3>
 	<output id="question"></output>
 	<br><br><br>
@@ -48,44 +48,29 @@ var opt;
 
 initQ();
 function nouvelleQ(){
-    var ques = data[questions[0]].FIELD1;
-    opt = Math.floor(Math.random() * data[questions[0]].FIELD2.length)
-    ques = ques.replace('RES',data[questions[0]].FIELD2[opt]);
+    document.getElementById(0).value = ""
+    document.getElementById(1).value = ""
+    document.getElementById(2).value = ""
+    document.getElementById(3).value = ""
+    document.getElementById(4).value = ""
+    document.getElementById(0).style.backgroundColor = "white"
+    document.getElementById(1).style.backgroundColor = "white"
+    document.getElementById(2).style.backgroundColor = "white"
+    document.getElementById(3).style.backgroundColor = "white"
+    document.getElementById(4).style.backgroundColor = "white"
+
+    var ques = data[questions[0][0]].FIELD1;
+    opt = Math.floor(Math.random() * data[questions[0][0]].FIELD2.length)
+    ques = ques.replace('RES',data[questions[0][0]].FIELD2[opt]);
     document.getElementById("question").value = ques;
-    fav = data[questions[0]].FIELD3[opt];
-    restot = data[questions[0]].FIELD4;
+    fav = data[questions[0][0]].FIELD3[opt];
+    restot = data[questions[0][0]].FIELD4;
     brep = [`${fav}:${restot-fav}`,`${restot-fav}:${fav}`,`${restot}`,`${fav}/${restot}`,`${restot-fav}/${restot}`];
     console.log(brep)
 }
 
-function bonne_rep() {
-    if (err == 0) {
-	// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
-	score ++;
-	document.getElementById("réussi").innerHTML = score;
-	if (data[questions[0]].Essais == 0) {
-	    // Réussi du premier coup
-	    data[questions[0]].Essais = -1;
-	}
-    }
-    else {
-	// Remettre la question un peu plus loin dans la queue
-	questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
-    }
-    err = 0;
-    if(score != data.length){
-	questions.shift();
-	nouvelleQ();
-    }else{
-	document.getElementById("entete").innerHTML = "";
-	document.getElementById("question").value = "Bravo !";
-	for (var i = 0; i < nbr_choix; i++) {
-	    document.getElementById(i).style.visibility = "hidden";
-	}
-    }
-}
-
 function soum(reponse){
+    err = 0;
     if (document.getElementById(0).value == brep[0]){
         document.getElementById(0).style.backgroundColor = "green";
     }else{
@@ -121,11 +106,17 @@ function soum(reponse){
         erreurs = erreurs + 1;
         document.getElementById(4).style.backgroundColor = "red";
     }
-	
+	console.log(err);
 	// Compter les erreurs
     document.getElementById("erreurs").innerHTML = erreurs;
-    score = score + 1
+    if(err == 0){
+        questions.shift();
+        score ++;
+        document.getElementById("réussi").innerHTML = score;
+        setTimeout(function(){nouvelleQ()},1000);
     }
+}
+
 
 
 function shuffle(array) {
@@ -147,17 +138,18 @@ function shuffle(array) {
 }
 
 function initQ() {
-    nbr_questions = data.length;
-
-    for (var i = 0; i < nbr_questions; i++) {
-        questions[i] = i;
+    
+    for (var i = 0; i < data.length; i++) {
+        for(var y = 0; y < data[i].FIELD2.length; y++){
+            questions.push([i,y])
+        }
     }
-
+    nbr_questions = 5
     score = 0;
     erreurs = 0;
     
     questions = shuffle(questions);
-
+    console.log(questions)
     document.getElementById("entete").innerHTML = entete;
     document.getElementById("réussi").innerHTML = score;
     document.getElementById("total").innerHTML = nbr_questions;
