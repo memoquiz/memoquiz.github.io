@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<script id="selection"></script>
+<script type='text/javascript' src='probchances.js'></script>
+<html>
+<head>
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<style>
+h1 {text-align:center;}
+h2 {text-align:center;}
+
+
+
+</style>
+</head>
+<body>
+<h1 id="entete"></h1><br><br>
+<h3>
+	<output id="question"></output>
+	<br><br><br>
+	<table align=center margin = 0px>
+    <tr><td >Chances pour</td><td><input type="text" class="inputbar" id="0" ></td></tr>
+    <tr><td>Chances contre</td><td><input type="text" class="inputbar" id="1" ></td></tr>
+    <tr><td>Nombre total de résultats</td><td><input type="text" class="inputbar" id="2" ></td></tr>
+    <tr><td>Probabilité pour (en fraction non réduite)</td><td><input type="text" class="inputbar" id="3" ></td></tr>
+    <tr><td>Probabilité contre (en fraction non réduite)</td><td><input type="text" class="inputbar" id="4" ></td></tr>
+    </table>
+    <br>
+    <table align=center margin = 0px>
+    <tr><td align=center "><input type="button" class="button3" value="Soumettre" id="bouttonSoum" onclick="setTimeout(function(){soum()},100)"></td></tr>
+	</table></h3><h2>
+	<br>Progression : <output id="réussi"></output> / <output id="total"></output>
+	<br>Erreurs : <output id="erreurs"></output></h2>
+
+<script>
+var questions = [];
+var score = 0;
+var erreurs = 0;
+var err = 0;
+var nbr_questions = 0;
+var brep;
+var fav;
+var restot;
+var opt;
+
+initQ();
+function nouvelleQ(){
+    var ques = data[questions[0]].FIELD1;
+    opt = Math.floor(Math.random() * data[questions[0]].FIELD2.length)
+    ques = ques.replace('RES',data[questions[0]].FIELD2[opt]);
+    document.getElementById("question").value = ques;
+    fav = data[questions[0]].FIELD3[opt];
+    restot = data[questions[0]].FIELD4;
+    brep = [`${fav}:${restot-fav}`,`${restot-fav}:${fav}`,`${restot}`,`${fav}/${restot}`,`${restot-fav}/${restot}`];
+    console.log(brep)
+}
+
+function bonne_rep() {
+    if (err == 0) {
+	// Il faut augmenter le score seulement quand il n'y a pas eu d'erreur sinon le questionnaire arrête sans poser certaines questions
+	score ++;
+	document.getElementById("réussi").innerHTML = score;
+	if (data[questions[0]].Essais == 0) {
+	    // Réussi du premier coup
+	    data[questions[0]].Essais = -1;
+	}
+    }
+    else {
+	// Remettre la question un peu plus loin dans la queue
+	questions.splice(Math.floor(Math.random()*(questions.length-2) + 3),0,questions[0]);
+    }
+    err = 0;
+    if(score != data.length){
+	questions.shift();
+	nouvelleQ();
+    }else{
+	document.getElementById("entete").innerHTML = "";
+	document.getElementById("question").value = "Bravo !";
+	for (var i = 0; i < nbr_choix; i++) {
+	    document.getElementById(i).style.visibility = "hidden";
+	}
+    }
+}
+
+function soum(reponse){
+    if (document.getElementById(0).value == brep[0]){
+        document.getElementById(0).style.backgroundColor = "green";
+    }else{
+        err = 1;
+        erreurs = erreurs + 1;
+        document.getElementById(0).style.backgroundColor = "red";
+    }
+    if (document.getElementById(1).value == brep[1]){
+        document.getElementById(1).style.backgroundColor = "green";
+    }else{
+        err = 1;
+        erreurs = erreurs + 1;
+        document.getElementById(1).style.backgroundColor = "red";
+    }
+    if (document.getElementById(2).value == brep[2]){
+        document.getElementById(2).style.backgroundColor = "green";
+    }else{
+        err = 1;
+        erreurs = erreurs + 1;
+        document.getElementById(2).style.backgroundColor = "red";
+    }
+    if (document.getElementById(3).value == brep[3]){
+        document.getElementById(3).style.backgroundColor = "green";
+    }else{
+        err = 1;
+        erreurs = erreurs + 1;
+        document.getElementById(3).style.backgroundColor = "red";
+    }
+    if (document.getElementById(4).value == brep[4]){
+        document.getElementById(4).style.backgroundColor = "green";
+    }else{
+        err = 1;
+        erreurs = erreurs + 1;
+        document.getElementById(4).style.backgroundColor = "red";
+    }
+	
+	// Compter les erreurs
+    document.getElementById("erreurs").innerHTML = erreurs;
+    score = score + 1
+    }
+
+
+function shuffle(array) {
+    var m = array.length, t, i;
+
+    // While there remain elements to shuffle…
+    while (m) {
+
+	// Pick a remaining element…
+	i = Math.floor(Math.random() * m--);
+
+	// And swap it with the current element.
+	t = array[m];
+	array[m] = array[i];
+	array[i] = t;
+    }
+
+    return array;
+}
+
+function initQ() {
+    nbr_questions = data.length;
+
+    for (var i = 0; i < nbr_questions; i++) {
+        questions[i] = i;
+    }
+
+    score = 0;
+    erreurs = 0;
+    
+    questions = shuffle(questions);
+
+    document.getElementById("entete").innerHTML = entete;
+    document.getElementById("réussi").innerHTML = score;
+    document.getElementById("total").innerHTML = nbr_questions;
+    document.getElementById("erreurs").innerHTML = erreurs;
+
+    nouvelleQ();
+}
+
+</script>			
+</body>
+</html>
