@@ -1,7 +1,7 @@
 const entete = "Complétez le tableau suivant";
 data = [
         {
-            "FIELD1": "Obtenir un RES lors d'un lancer de dé",
+            "FIELD1": "Obtenir un RES lors d'un lancer d'un dé à 6 faces",
             "FIELD2": ["1","3 ou un 5", "4, un 5 ou un 6","chiffre pair","chiffre impair"],
             "FIELD3": [1,2,3,3,3],
             "FIELD4": 6
