@@ -35,6 +35,9 @@ p {
     background-color: #EEEEEE;
 }
 
+textarea:focus, input:focus{
+    outline: none;
+}
 .inputbar {
     font-family: arial;
     background-color: #white;
