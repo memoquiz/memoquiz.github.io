@@ -29,7 +29,7 @@ data = [
             "FIELD1": "Obtenir un RES lors d'un lancer de dé à 12 faces",
             "FIELD2": ["9","8 ou un 5", "4, un 5 ou un 6","chiffre pair","chiffre impair", "multiple de 3"],
             "FIELD3": [1,2,6,6,4],
-            "FIELD4": 6
+            "FIELD4": 12
 
         }
     ]
