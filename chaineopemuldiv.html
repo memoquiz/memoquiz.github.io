@@ -16,12 +16,13 @@
 <body>
 
     <h1>
-        Résouds la chaine d'opération suivante
+        Résous la chaine d'opération suivante
     </h1>
     <br>
     <h3>
         <table align=center>
         <tr>
+        <tr><td><div id="expr1"></div></td></tr>
         <td><div id="pretty">$$$$</div></td>
         <td><div class="tooltip"><input class=inputbar type="text" id="reponse">
         <span class="tooltiptext"><h5>Ne mets pas d'espace entre le signe et le nombre dans ta réponse</h5></td>
@@ -101,46 +102,46 @@
 
             soum = function () {
                 var repEleve = document.getElementById('reponse').value.toString()
-                document.getElementById('reponse').value = null
+                if (repEleve != "") {
+                    document.getElementById('reponse').value = null
 
-                var succes = Math.abs(repEleve - reponse) < 0.1
+                    var succes = repEleve == reponse;
 
-                nbEssais++
+                    nbEssais++
 
-                if (succes == true) {
-                    reussi++
-                    if (reussi < total) {
-                        nouvelleQ()
-                        button.style.backgroundColor = "#4CAF50"
-                        button.value = "Soumettre"
+                    if (succes == true) {
+                        reussi++
+                        if (reussi < total) {
+                            nouvelleQ()
+                            button.style.backgroundColor = "#4CAF50"
+                            button.value = "Soumettre"
 
-                    } else {
-                        var code = (Math.random() * 1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random() * 1000).toPrecision(3))
-                        document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
-                        if (reussi / total > 0.8) {
-                            expr1.value = 'Bravo!'
-                            expr2.value = ''
                         } else {
-                            expr1.value = 'Tu as besoin de plus de pratique on dirait'
-                            expr2.value = ''
-
+                            if (reussi / total > 0.8) {
+                                document.getElementById('expr1').innerHTML  = 'Bravo!'
+                            } else {
+                                document.getElementById('expr1').innerHTML  = 'Tu as besoin de plus de pratique on dirait'
+                            }
+                            button.value = "Recommencer ?"
+                            button.onclick = recommencer
+                            update()
                         }
-                        button.value = "Recommencer ?"
-                        button.onclick = recommencer
+                    } else {
+                        button.style.backgroundColor = "red"
+                        button.value = "Réessaie !"
+                        erreurs++
                         update()
                     }
-                } else {
-                    button.style.backgroundColor = "red"
-                    button.value = "Réessaie !"
-                    erreurs++
-                    update()
                 }
+
             }
 
             recommencer = function () {
                 reussi = 0
                 erreurs = 0
                 nouvelleQ()
+                document.getElementById('expr1').innerHTML  = ''
+
             }
 
             update = function () {
