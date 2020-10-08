@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Trouver x</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>
+        Résouds la chaine d'opération suivante
+    </h1>
+    <br>
+    <h3>
+        <table align=center>
+        <tr>
+        <td><div id="pretty">$$$$</div></td>
+        <td><div class="tooltip"><input class=inputbar type="text" id="reponse">
+        <span class="tooltiptext"><h5>Ne mets pas d'espace entre le signe et le nombre dans ta réponse</h5></td>
+        </span></div>
+        </tr></table>
+        <br>
+        <br>
+        <input type="button" class="button3" value="Soumettre" id="bouttonSoum" onclick="setTimeout(function(){soum()},100)"><br>
+            </span></div>
+    </h3>
+    <h2>
+        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+        <br>Erreurs : <output id="erreurs"></output>
+        <br>
+        <p id="codereussite">&nbsp</p>
+        <h2>Sélectionne le niveau de difficulté<br>
+            <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
+            <td><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)"></td>
+            <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
+        </h2>
+        <script>
+
+            function diff(val) {
+                difficulte = val
+                if (val == 2) {
+                    eq1 = ["(-var)*(-var)*(-var)*(-var)*var", "(-var)*var*(-var)*var*var", "var*(-var)*var*var*(-var)", "(-var)*(-var)*var*var*(-var)"]
+
+                    document.getElementById('button2').style.backgroundColor = "grey"
+                    document.getElementById('button0').style.backgroundColor = "black"
+                    document.getElementById('button1').style.backgroundColor = "black"
+                    recommencer()
+                    nouvelleQ()
+                } else if (val == 1) {
+                    eq1 = ["(-var)*var*(-var)", "(-var)*var*var", "(-var)*(-var)*(-var)", "var*(-var)*var"]
+
+                    document.getElementById('button1').style.backgroundColor = "grey"
+                    document.getElementById('button0').style.backgroundColor = "black"
+                    document.getElementById('button2').style.backgroundColor = "black"
+                    recommencer()
+                    nouvelleQ()
+                } else {
+                    eq1 = ["(-var)*var", "var*(-var)", "var*var", "(-var)*(-var)"]
+
+                    document.getElementById('button0').style.backgroundColor = "grey"
+                    document.getElementById('button2').style.backgroundColor = "black"
+                    document.getElementById('button1').style.backgroundColor = "black"
+                    recommencer()
+                    nouvelleQ()
+                }
+            }
+
+            function nouvelleQ() {
+
+                var chiffres = [1, 2, 3, 4, 1, 2, 3, 4]
+
+                var qi0 = Math.floor(Math.random() * eq1.length)
+
+                q1 = eq1[qi0]
+
+                while (q1.match(/var/)) {
+                    var ind = Math.floor(Math.random() * chiffres.length)
+                    var bob = chiffres[ind]
+                    q1 = q1.replace(/var/, chiffres[ind])
+                    chiffres.splice(ind, 1)
+                }
+                console.log(q1)
+                q1brut = q1;
+                q1brut = q1brut.replace(/\*/g, '×');
+                q1brut = q1brut.replace(/\(/g, '');
+                q1brut = q1brut.replace(/\)/g, '');
+
+
+                reponse = Algebrite.run(q1)
+                console.log(reponse)
+                update()
+            }
+
+            soum = function () {
+                var repEleve = document.getElementById('reponse').value.toString()
+                document.getElementById('reponse').value = null
+
+                var succes = Math.abs(repEleve - reponse) < 0.1
+
+                nbEssais++
+
+                if (succes == true) {
+                    reussi++
+                    if (reussi < total) {
+                        nouvelleQ()
+                        button.style.backgroundColor = "#4CAF50"
+                        button.value = "Soumettre"
+
+                    } else {
+                        var code = (Math.random() * 1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random() * 1000).toPrecision(3))
+                        document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
+                        if (reussi / total > 0.8) {
+                            expr1.value = 'Bravo!'
+                            expr2.value = ''
+                        } else {
+                            expr1.value = 'Tu as besoin de plus de pratique on dirait'
+                            expr2.value = ''
+
+                        }
+                        button.value = "Recommencer ?"
+                        button.onclick = recommencer
+                        update()
+                    }
+                } else {
+                    button.style.backgroundColor = "red"
+                    button.value = "Réessaie !"
+                    erreurs++
+                    update()
+                }
+            }
+
+            recommencer = function () {
+                reussi = 0
+                erreurs = 0
+                nouvelleQ()
+            }
+
+            update = function () {
+                document.getElementById('reussi').value = reussi
+                document.getElementById('erreurs').value = erreurs
+                document.getElementById('total').value = total
+                pretty.innerHTML = '$$' + q1brut + "=" + '$$'
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }
+
+            var total = 10
+            var erreurs = 0
+            var reussi = 0
+            var nbEssais = 0
+            var eq1 = null
+            var eq2 = null
+            var q1 = null
+            var q1Pretty = null
+            var q2 = null
+            var q2Pretty = null
+
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+
+            button = document.getElementById('bouttonSoum')
+
+            const expr1 = []
+            const expr2 = []
+
+            var reponse = null
+
+            const pretty = document.getElementById('pretty')
+            const result = []
+            let parenthesis = 'keep'
+            let implicit = 'hide'
+            var difficulte = 0
+
+            diff(difficulte)
+        </script>
+
+</body>
+
+</html>
