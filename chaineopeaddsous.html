@@ -25,19 +25,17 @@
                 <td>
                     <div id="pretty">$$$$</div>
                 </td>
-                <td>
-                    <div class="tooltip"><input class=inputbar type="text" id="reponse">
-                        <span class="tooltiptext">
-                            <h5>Ne mets pas d'espace entre le signe et le nombre dans ta réponse</h5>
+                <td align="left" width=70px>
+                    <input class=inputbar type="text" id="reponse">
                 </td>
                 </span></div>
             </tr>
         </table>
-        <br>
-        <br>
+
         <input type="button" class="button3" value="Soumettre" id="bouttonSoum"
-            onclick="setTimeout(function(){soum()},100)"><br>
+            onclick="setTimeout(function(){soum()},100)">
         </span></div>
+        <div id="expr1"> </div>
     </h3>
     <h2>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
@@ -54,7 +52,7 @@
             function diff(val) {
                 difficulte = val
                 if (val == 2) {
-                    eq1 = ["var-+var-+var--var++var", "var++var-+var-+var-+var", "var+-var++var--var++var", "var--var++var-+var-+var"]
+                    eq1 = ["var-+var*(-var)-+var--var++var", "var*(-var)++var-+var*(-var)-+var-+var", "var*(-var)+-var++var--var*(-var)++var", "var*(-var)--var++var*(-var)-+var-+var"]
 
                     document.getElementById('button2').style.backgroundColor = "grey"
                     document.getElementById('button0').style.backgroundColor = "black"
@@ -62,7 +60,7 @@
                     recommencer()
                     nouvelleQ()
                 } else if (val == 1) {
-                    eq1 = ["var-+var-+var", "var++var-+var", "var+-var++var", "var--var++var"]
+                    eq1 = ["var-+var-+var", "var++var-+var", "var+-var++var", "var--var++var", "(-var)*var*(-var)", "(-var)*(-var)*(-var)", "(-var)*var*var"]
 
                     document.getElementById('button1').style.backgroundColor = "grey"
                     document.getElementById('button0').style.backgroundColor = "black"
@@ -70,7 +68,7 @@
                     recommencer()
                     nouvelleQ()
                 } else {
-                    eq1 = ["var-+var", "var++var", "var+-var", "var--var"]
+                    eq1 = ["var-+var", "var++var", "var+(-var)", "var-(-var)", "(-var)*var", "var*(-var)", "(-var)*(-var)"]
 
                     document.getElementById('button0').style.backgroundColor = "grey"
                     document.getElementById('button2').style.backgroundColor = "black"
@@ -82,7 +80,7 @@
 
             function nouvelleQ() {
 
-                var chiffres = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                var chiffres = [1, 2, 3, 4, 5]
 
                 var qi0 = Math.floor(Math.random() * eq1.length)
 
@@ -92,16 +90,19 @@
                     var ind = Math.floor(Math.random() * chiffres.length)
                     var bob = chiffres[ind]
                     q1 = q1.replace(/var/, chiffres[ind])
-                    chiffres.splice(ind, 1)
                 }
 
                 q1brut = q1;
-                q1 = q1.replace(/\+\-/g, '-');
-                q1 = q1.replace(/\-\-/g, '+');
-                q1 = q1.replace(/\+\+/g, '+');
-                q1 = q1.replace(/\-\+/g, '-');
+                q1 = q1.replace(/\*/g, '×');
+                q1 = q1.replace(/\(/g, '');
+                q1 = q1.replace(/\)/g, '');
 
-                reponse = Algebrite.run(q1)
+                q1brut = q1brut.replace(/\+\-/g, '-');
+                q1brut = q1brut.replace(/\-\-/g, '+');
+                q1brut = q1brut.replace(/\+\+/g, '+');
+                q1brut = q1brut.replace(/\-\+/g, '-');
+
+                reponse = Algebrite.run(q1brut)
                 console.log(reponse)
                 update()
             }
@@ -124,10 +125,13 @@
 
                         } else {
                             if (reussi / total > 0.8) {
-                                document.getElementById('expr1').innerHTML  = 'Bravo!'
+                                document.getElementById('expr1').innerHTML = 'Bravo!'
+
                             } else {
-                                document.getElementById('expr1').innerHTML  = 'Tu as besoin de plus de pratique on dirait'
+                                document.getElementById('expr1').innerHTML = 'Tu as besoin de plus de pratique on dirait'
+
                             }
+                            button.style.backgroundColor = "#4CAF50"
                             button.value = "Recommencer ?"
                             button.onclick = recommencer
                             update()
@@ -146,7 +150,7 @@
                 reussi = 0
                 erreurs = 0
                 nouvelleQ()
-                document.getElementById('expr1').innerHTML  = ''
+                document.getElementById('expr1').innerHTML = ''
 
             }
 
@@ -154,11 +158,11 @@
                 document.getElementById('reussi').value = reussi
                 document.getElementById('erreurs').value = erreurs
                 document.getElementById('total').value = total
-                pretty.innerHTML = '$$' + q1brut + "=" + '$$'
+                pretty.innerHTML = '$$' + q1 + "=" + '$$'
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
 
-            var total = 10
+            var total = 1
             var erreurs = 0
             var reussi = 0
             var nbEssais = 0
