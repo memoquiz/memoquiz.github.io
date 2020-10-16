@@ -34,7 +34,6 @@ p {
 
 .input {
     background-color: #EEEEEE;
-
 }
 
 textarea:focus, input:focus{
@@ -50,7 +49,19 @@ textarea:focus, input:focus{
     outline: none;
     width: 100%;
 
-  }
+}
+
+.inputbar1 {
+    font-family: arial;
+    background-color: #white;
+    color: black;
+    text-align: center;
+    font-size: 1.5vw;
+    cursor: pointer;
+    outline: none;
+    width: 20%;
+
+}
 
 .button1 {
     font-family: arial;
@@ -96,9 +107,11 @@ textarea:focus, input:focus{
     cursor: pointer;
     width: 13%;
 }
+
 .button1:hover {
     background-color: rgb(64, 211, 69); /* Green */
-  }
+}
+
 .button3:hover {
     background-color: rgb(64, 211, 69); /* Green */
 }
@@ -106,7 +119,6 @@ textarea:focus, input:focus{
 table{
     table-layout:fixed;
 }
-  
 
 input {
     -webkit-appearance: none;
@@ -125,7 +137,7 @@ input[type="file"] {
     display: inline-block;
   }
   
-  .tooltip .tooltiptext {
+.tooltip .tooltiptext {
     visibility: hidden;
     width: 30.0vh;
     background-color: black;
@@ -134,15 +146,16 @@ input[type="file"] {
     border-radius: 6px;
     padding: 5px 0;
     opacity: 0.5;
-  
+
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
-  }
+}
   
 .tooltip:hover .tooltiptext {
-visibility: visible;
+    visibility: visible;
 }
+
 div {
     margin-right: 20vw;
     margin-left: 20vw;
