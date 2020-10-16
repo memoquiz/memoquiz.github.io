@@ -56,7 +56,7 @@ textarea:focus, input:focus{
     background-color: #white;
     color: black;
     text-align: center;
-    font-size: 0.5vw;
+    font-size: 1.5vw;
     cursor: pointer;
     outline: none;
     width: 20%;
