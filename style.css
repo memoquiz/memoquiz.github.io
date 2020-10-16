@@ -140,10 +140,12 @@ input[type="file"] {
     z-index: 1;
   }
   
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-  }
-  div {
+.tooltip:hover .tooltiptext {
+visibility: visible;
+}
+div {
     margin-right: 20vw;
     margin-left: 20vw;
-  }
+}
+
+.MathJax nobr>span.math>span{border-left-width:0 !important};
