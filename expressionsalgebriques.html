@@ -19,21 +19,17 @@
         Simplifie l'expression algébrique suivante
     </h1>
     <br>
-    <h3>
+    <h2>
         <div id="pretty">$$$$</div><br>
         <div class="tooltip"><input class=input type="text" id="reponse">
-        <span class="tooltiptext"><h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de 2/3)</h5>
-        </span></div><br>
+            <span class="tooltiptext">
+                <h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de
+                    2/3)</h5>
+            </span></div><br>
         <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
             onclick="setTimeout(function(){soum()},100)"><br>
-        <div class="tooltip"><input type="button" class="button1" value="Sauter la question" id="bouttonSoum"
-                onclick="setTimeout(function(){sauter()},100)"><br>
-            <span class="tooltiptext">
-                <h5>Attention ! Sauter une question compte pour une erreur.</h5>
-            </span>
-        </div>
-    </h3>
-    <h2>
+        <input type="button" class="button1" value="Sauter la question" id="bouttonSoum"
+            onclick="setTimeout(function(){sauter()},100)"><br>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
         <br>Erreurs : <output id="erreurs"></output>
         <br>
@@ -41,13 +37,14 @@
         <h2>Sélectionne le niveau de difficulté<br>
             <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
             <td><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)"></td>
-            <td><input type="button" class="button2" value="Piquant" background-color="red" id="button2" onclick="diff(2)"></td>
+            <td><input type="button" class="button2" value="Piquant" background-color="red" id="button2"
+                    onclick="diff(2)"></td>
         </h2>
         <script>
             function toHex(str) {
                 var result = '';
-                for (var i=0; i<str.length; i++) {
-                result += str.charCodeAt(i).toString(16);
+                for (var i = 0; i < str.length; i++) {
+                    result += str.charCodeAt(i).toString(16);
                 }
                 return result;
             }
@@ -123,7 +120,7 @@
                 return val;
             }
 
-            sauter = function(){
+            sauter = function () {
                 erreurs++
                 nouvelleQ()
                 update()
@@ -155,7 +152,7 @@
                         button.value = "Soumettre"
 
                     } else {
-                        var code = (Math.random()*1000).toPrecision(3).concat(`-ExAl-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random()*1000).toPrecision(3))
+                        var code = (Math.random() * 1000).toPrecision(3).concat(`-ExAl-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random() * 1000).toPrecision(3))
                         document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
                         if (reussi / total > 0.8) {
                             expr.value = 'Bravo!'

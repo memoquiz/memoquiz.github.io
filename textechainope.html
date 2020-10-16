@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Chaîne d'opération</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>
+        Résous le problème suivant
+    </h1>
+    <br><div><h2 id="prob"></h2>
+    </div>
+    <h3>
+        <table align=center>
+            <tr>
+                <td>
+                    <div id="pretty">$$$$</div>
+                </td></tr><tr>
+                <td align="center" width=500px>
+                    <input class=inputbar type="text" id="reponse">
+                </td>
+                </div>
+            </tr>
+        </table>
+        <br>
+        <input type="button" class="button1" value="Soumettre" id="bouttonSoum" onclick="setTimeout(function(){soum()},100)">
+        <br>
+        <input type="button" class="button1" value="Indice" id="bouttonSoum" onclick="setTimeout(function(){indice()},100)">
+        </span></div>
+        <h3 id="expr1"></h3>
+    </h3>
+    <h2>
+        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+        <br>Erreurs : <output id="erreurs"></output>
+        <br>
+        <h2>Sélectionne le niveau de difficulté<br>
+            <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
+            <td><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)"></td>
+            <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
+        </h2>
+        <script>
+
+            function diff(val) {
+                diffq = val
+                if (val == 2) {
+                    document.getElementById('button2').style.backgroundColor = "grey"
+                    document.getElementById('button0').style.backgroundColor = "black"
+                    document.getElementById('button1').style.backgroundColor = "black"
+
+                } else if (val == 1) {
+                    document.getElementById('button1').style.backgroundColor = "grey"
+                    document.getElementById('button0').style.backgroundColor = "black"
+                    document.getElementById('button2').style.backgroundColor = "black"
+                } else {
+                    document.getElementById('button0').style.backgroundColor = "grey"
+                    document.getElementById('button2').style.backgroundColor = "black"
+                    document.getElementById('button1').style.backgroundColor = "black"
+                }
+                recommencer()
+                nouvelleQ()
+            }
+
+            function nouvelleQ() {
+                var qtexte = '';
+
+                rand = Math.floor(Math.random() * qarr.length)
+                rand = 0
+
+                var question = qlib[rand];
+
+                var variabtext = question.variables;
+                var chaineope = question.reponses[diffq];
+                qpretty = question.pretty[diffq]
+
+
+                for (let i = 0; i < question.texte.length; i++) {
+                    qtexte = qtexte + question.texte[i][question.difficultés[diffq][i]];
+                }
+
+                for (i of variabtext) {
+                    var regex = RegExp(i[0], i[1]);
+                    while (qtexte.match(regex)) {
+                        var rempl = question[i[0]][Math.floor(Math.random() * question[i[0]].length)];
+                        qtexte = qtexte.replace(regex, rempl);
+                        chaineope = chaineope.replace(regex, rempl);
+                        qpretty = qpretty.replace(regex, rempl);
+
+                    }
+                }
+                document.getElementById('prob').innerHTML = qtexte;
+                reponse = parseFloat(Algebrite.run(chaineope))
+                console.log(reponse);
+                console.log(typeof reponse);
+                
+
+                update()
+            }
+
+            soum = function () {
+                var repEleve = document.getElementById('reponse').value.toString()
+                if (repEleve != "") {
+                    document.getElementById('reponse').value = null
+
+                    var succes = (repEleve - reponse) / reponse < 0.1;
+
+                    if (succes == true) {
+                        if (nbEssais == 0) {
+                            reussi++
+                            //qarr.splice(rand, 1)
+                        }
+                        nbEssais = 0
+                        if (reussi < total) {
+                            nouvelleQ()
+                            button.style.backgroundColor = "#4CAF50"
+                            button.value = "Soumettre"
+
+                        } else {
+                            if (reussi / total > 0.8) {
+                                document.getElementById('expr1').innerHTML = 'Bravo!'
+                            } else {
+                                document.getElementById('expr1').innerHTML = 'Tu as besoin de plus de pratique on dirait'
+                            }
+                            button.style.backgroundColor = "#4CAF50"
+                            button.value = "Recommencer ?"
+                            button.onclick = recommencer
+                            update()
+                            diff(val)
+                        }
+                    } else {
+                        nbEssais = 1
+                        button.style.backgroundColor = "red"
+                        button.value = "Réessaie !"
+                        erreurs++
+                        update()
+                    }
+                }
+
+            }
+
+            recommencer = function () {
+                reussi = 0
+                erreurs = 0
+                resetquestion()
+                nouvelleQ()
+                document.getElementById('expr1').innerHTML = ''
+                button.value = "Soumettre"
+                button.onclick = soum
+
+            }
+
+            update = function () {
+                pretty.innerHTML = '$$' + "" + '$$'
+                document.getElementById('reussi').value = reussi
+                document.getElementById('erreurs').value = erreurs
+                document.getElementById('total').value = total
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }
+
+            indice = function(){
+                pretty.innerHTML = '$$' + qpretty + "=" + '$$'
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                nbEssais = 1
+            }
+
+            var qlib = [
+                {
+                    difficultés: [[0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [0, 0, 2, 2, 0]],
+                    reponses: ['varport - (varnum*varprix)+varnum*varprix', 'varport-(varnum*varprix)-(varnum*varprix)+varnum*varprix+varnum*varprix', 'varport-(varnum*varprix)-(varnum*varprix)-(varnum*varprix)+varnum*varprix+varnum*varprix+varnum*varprix'],
+                    pretty: ['varport-varnum*varprix+varnum*varprix', 'varport-varnum*varprix-varnum*varprix+varnum*varprix+varnum*varprix', 'varport-varnum*varprix-varnum*varprix-varnum*varprix+varnum*varprix+varnum*varprix+varnum*varprix'],
+                    variables: [["varnom", 'g'], ["varport", 'g'], ["varobj", ''], ["varprix", ''], ["varnum", '']],
+                    varnom: ["Hélène", "Emilie", "Joséphine", "Alex", "Stéphanie"],
+                    varobj: ["pommes", "crayons", "effaces", "biscuits", "salades", "bananes", "pots de yogourt", "balles de laine", "patates", "ananas"],
+                    varport: [336.42, 451.1, 369.11, 521.36, 452, 570.12, 454.98],
+                    varprix: [1.05, 2.35, 3.44, 4.02, 5.12, 6.95, 7.45, 8.41, 9.11, 17.17, 23.56],
+                    varnum: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    texte: [[`varnom va au magasin. `],
+                    [`Elle a varport$ dans son portefeuille. `],
+                    [`Elle achète varnum varobj à varprix$. `,
+                        `Elle achète varnum varobj à varprix$ et varnum varobj à varprix$. `,
+                        `Elle achète varnum varobj à varprix$, varnum varobj à varprix$ et varnum varobj à varprix$. `],
+                    [`Elle se fait rembourser varnum varobj à varprix$. `,
+                        `Elle se fait rembourser varnum varobj à varprix$ et varnum varobj à varprix$. `,
+                        `Elle se fait rembourser varnum varobj à varprix$, varnum varobj à varprix$ et varnum varobj à varprix$. `],
+                    ['Quel montant lui reste-t\'il à la fin de son magasinage ? ']]
+                },
+                {
+                    difficultés: [[0, 0, 0], [0, 1, 0], [0, 2, 0]],
+                    reponses: ['varres - (varnum*varlitres)', 'varres - (varnum*varlitres) + varnum*varnum', 'varres - (varnum*varlitres) - (varnum/100*varres)'],
+                    pretty: ['varres - varnum*varlitres', 'varres - varnum*varlitres + varnum*varnum', 'varres - varnum*varlitres - \\frac{varnum}{100}*varres'],
+                    variables: [["varfam", 'g'], ["varres", 'g'], ["varnum", ''], ["varlitres", '']],
+                    varfam: ["Boisclair", "Nguyen", "Singh", "DaCosta", "Chrétien"],
+                    varres: [80, 85, 90, 95, 100, 105, 110, 115, 120],
+                    varnum: [2, 3, 4, 5],
+                    varlitres: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                    texte: [[`En début de matinée, le réservoir d'eau chaude de la famille varfam contient varres litres. `],
+                    [`varnum membres de la famille prennent chacun une douche qui consomme chacune varlitres litres d\'eau. `,
+                        `varnum membres de la famille prennent chacun une douche de varlitres litres d\'eau. La pompe s'active ensuite pendant varnum minutes et remplit le réservoir à un débit de varnum litres par minutes. `,
+                        `varnum membres de la famille prennent chacun une douche de varlitres litres d\'eau. Ensuite, le lave-vaiselle est activé et consomme varnum% du volume total du réservoir. `],
+                    ['Combien y\'a t\'il de litres d\'eau dans le réservoir à la fin de la matinée ? ']]
+                },
+                {
+                    difficultés: [[0, 0, 0], [0, 1, 0], [0, 2, 0]],
+                    reponses: ['vardist - varnum', 'vardist - varnum + varnum', '(vardist - varnum + varnum)/vardiv'],
+                    pretty: ['vardist - varnum', 'vardist - varnum + varnum', '\\frac{vardist - varnum + varnum}{vardiv}'],
+                    variables: [["varnom", 'g'], ["vardist", 'g'], ["varnum", ''], ["vardiv", '']],
+                    varnom: ["Hélène", "Emilie", "Joséphine", "Alex", "Stéphanie"],
+                    vardist: [1000, 1500, 2000, 2500, 3000, 3500],
+                    varnum: [100, 150, 200, 250, 300, 350, 400, 450],
+                    vardiv: [2, 3, 4, 5],
+                    texte: [[`varnom joue à un jeux vidéo de course. La ligne d'arrivée est à vardist mètres. `],
+                    [`Elle tombe sur un cercle de téléportation et se rapproche de varnum mètres de la ligne d'arrivée. `,
+                        `Elle tombe sur un cercle de téléportation et se rapproche de varnum mètres de la ligne d'arrivée. Ensuite, une coquille de tortue bleue lui tombe sur la tête et elle recule de varnum mètres. `,
+                        `Elle tombe sur un cercle de téléportation et se rapproche de varnum mètres de la ligne d'arrivée. Ensuite, une coquille de tortue bleue lui tombe sur la tête et elle recule de varnum mètres. Par après, elle utilise la baguette de division et la distance qui lui restait est divisée par vardiv. `,
+                    ],
+                    ['Combien lui reste t\'il de mètres à parcourir ? ']]
+                },
+                {
+                    difficultés: [[0, 0, 0], [0, 1, 0], [0, 2, 0]],
+                    reponses: ['varans - varnum', 'varans + varnum - varnum', 'varans - varnum +varnum - varnum'],
+                    pretty: ['varans - varnum', 'varans + varnum - varnum', 'varans - varnum +varnum - varnum'],
+                    variables: [["varnom", 'g'], ["varans", 'g'], ["varnum", '']],
+                    varnom: ["Hélène", "Emilie", "Joséphine", "Alex", "Stéphanie"],
+                    varans: [-253, -456, -890, -2001, -3562, -4025],
+                    varnum: [5, 17, 45, 56, 79, 91, 97, 201, 453, 1482],
+                    texte: [[`varnom voyage dans le temps. Elle commence son voyage en varans. `],
+                    [`Elle ne s'est pas rendue assez loin dans le passé. Elle recule donc de varnum années de plus. `,
+                        `Elle s'est rendue trop loin dans le passé. Elle avance donc de varnum années. Elle décide ensuite de reculer de varnum. `,
+                        `Elle ne s'est pas rendue assez loin dans le passé. Elle recule donc de varnum années. Elle avance par la suite de varnum pour finalement reculer dans le temps de varnum. `,
+                    ],
+                    ['En quelle année se retrouve t\'elle à la fin de son périple ? ']]
+                },
+                {
+                    difficultés: [[0, 0, 0], [0, 1, 0], [0, 2, 0]],
+                    reponses: ['vartot/vardiv+varnum', '(vartot - varnum)*varnum', '(vartot+varnum-varnum)/vardiv'],
+                    pretty: ['\\frac{vartot}{vardiv}+varnum', '(vartot - varnum)*varnum', '\\frac{vartot+varnum-varnum}{vardiv}'],
+                    variables: [["varnom", 'g'], ["vartot", 'g'], ["varnum", ''], ["vardiv", '']],
+                    varnom: ["Hélène", "Emilie", "Joséphine", "Alex", "Stéphanie"],
+                    vartot: [14, 16, 28, 32, 26, 48],
+                    varnum: [2, 4, 6, 8, 10],
+                    vardiv: [2],
+                    texte: [[`varnom possède vartot crapauds. `],
+                    [`Elle divise son élevage en vardiv pour en donner à son amie. Peu de temps après, varnum crapauds naissent. `,
+                        `Un serpent entre dans la cage et mange varnum crapauds. Par la suite, les oeufs quelle avait gardé éclos et multiplie son élevage par varnum! `,
+                        `Certains de ses oeufs éclos et varnum crapauds s'ajoutent à son élevage. varnum crapauds disparaîssent mystérieusement. Elle divise ensuite son élevage en vardiv pour en donner à ses amis et garde une des parts pour elle. `,
+                    ],
+                    ['Combien lui reste t\'il de craupauds à la fin ? ']]
+                }
+            ]
+            var qarr = [];
+
+            function resetquestion() {
+                for (let i = 0; i < qlib.length; i++) {
+                    qarr[i] = i
+                }
+            }
+
+            resetquestion()
+
+            var total = 5;
+            var erreurs = 0;
+            var reussi = 0;
+            var nbEssais = 0;
+            var qtexte = null;
+            var diffq = 0;
+            var qpretty = null;
+            var rand;
+
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+
+            button = document.getElementById('bouttonSoum')
+
+            const expr1 = []
+            const expr2 = []
+
+            var reponse = null
+
+            const pretty = document.getElementById('pretty')
+            const result = []
+            let parenthesis = 'keep'
+            let implicit = 'hide'
+
+            diff(0)
+        </script>
+
+</body>
+
+</html>
