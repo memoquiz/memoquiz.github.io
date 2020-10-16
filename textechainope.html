@@ -25,7 +25,10 @@
             <tr>
                 <td>
                     <div id="pretty">$$$$</div>
-                </td></tr><tr>
+                </td></tr>
+        </table>
+        <table align="center">
+                <tr>
                 <td align="center" width=500px>
                     <input class=inputbar1 type="text" id="reponse">
                 </td>
@@ -33,10 +36,11 @@
             </tr>
         </table>
         <input type="button" class="button1" value="Soumettre" id="bouttonSoum" onclick="setTimeout(function(){soum()},100)">
+        <br>
         <input type="button" class="button1" value="Indice" id="bouttonSoum" onclick="setTimeout(function(){indice()},100)">
-        </span></div>
+        </span></div></h2>
         <h3 id="expr1"></h3>
-
+        <h2>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
         <br>Erreurs : <output id="erreurs"></output>
         <br>
@@ -44,7 +48,7 @@
             <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
             <td><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)"></td>
             <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
-        </h3>
+        </h2>
         <script>
 
             function diff(val) {
@@ -113,7 +117,7 @@
                     if (succes == true) {
                         if (nbEssais == 0) {
                             reussi++
-                            //qarr.splice(rand, 1)
+                            qarr.splice(rand, 1)
                         }
                         nbEssais = 0
                         if (reussi < total) {
