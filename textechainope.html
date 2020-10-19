@@ -104,6 +104,8 @@
 
             soum = function () {
                 var repEleve = document.getElementById('reponse').value.toString()
+                repEleve = repEleve.replace(/\,/,".")
+
                 if (repEleve != "") {
                     document.getElementById('reponse').value = null
 
