@@ -39,7 +39,7 @@
         <h3 id="expr1"></h3>
         <h2>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
-        <br>Erreurs : <output id="erreurs"></output>
+        <br>Erreurs : <output id="erreurs"></output><br>
         Sélectionne le niveau de difficulté<br>
             <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
             <td><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)"></td>
@@ -71,7 +71,6 @@
                 var qtexte = '';
 
                 rand = Math.floor(Math.random() * qarr.length)
-                rand = 0
 
                 var question = qlib[rand];
 
