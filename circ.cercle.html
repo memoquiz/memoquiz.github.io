@@ -3,27 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Pratique Figures</title>
+    <title>Circonférence, rayon, diamètre et aire</title>
 
     <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
     <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.13/svg.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="style.css">
     <style>
-        h1 {
-            text-align: center;
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-        h3 {
-            text-align: center;
-        }
-
         svg {
             display: block;
             margin: auto;
@@ -35,49 +23,6 @@
             margin-left: auto;
             margin-right: auto;
             display: block;
-        }
-
-        .button1 {
-            font-family: arial;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 5px 5px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 2px 2px;
-            cursor: pointer;
-            width: 20%;
-        }
-
-        .button2 {
-            font-family: arial;
-            background-color: rgb(46, 51, 47);
-            border: none;
-            color: white;
-            padding: 5px 5px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 2px 2px;
-            cursor: pointer;
-            width: 10%;
-        }
-
-        input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            text-align: center;
-            width: 14%;
-
-        }
-
-        input[type="file"] {
-            display: none;
         }
     </style>
 </head>
@@ -95,32 +40,29 @@
     <h2>
         <table align=center>
             <tr>
-                <td><input type="text" id="reponse" />
+                <td><input type="text" class="inputbar1" id="reponse" />
                     <units id='units'></units>
                 </td>
             </tr>
-            <tr>
-                <td style="min-width:1000px"><input type="button" class="button1" value="Soumettre" id="bouttonSoum"
-                        onclick="setTimeout(function(){soum()},100)">
-                </td>
-            </tr>
         </table>
+        <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
+            onclick="setTimeout(function(){soum()},100)">
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
         <br>Erreurs : <output id="erreurs"></output>
-        <br><br>Sélectionne le niveau de difficulté<br>
-        <td style="min-width:200px"><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)">
-        <td style="min-width:200px"><input type="button" class="button2" value="Medium" id="button1" onclick="diff(1)">
-        <td style="min-width:200px"><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)">
-    </h2>
-    </h2>
+        <h2>Sélectionne le niveau de difficulté<br>
+            <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
+            <td><input type="button" class="button2" value="Moyen" id="button1" onclick="diff(1)"></td>
+            <td><input type="button" class="button2" value="Piquant" background-color="red" id="button2"
+                    onclick="diff(2)"></td>
+        </h2>
     <script>
 
         function diff(val) {
             if (val == 2) {
                 var rayDiam = ["le rayon", "le diamètre"][Math.round(Math.random())]
                 var vars = [rayDiam, "la circonférence"]
-                varInd = vars.splice(Math.round(Math.random() * (vars.length-1)), 1)
-                varDep = vars.splice(Math.round(Math.random() * (vars.length-2)), 1)
+                varInd = vars.splice(Math.round(Math.random() * (vars.length - 1)), 1)
+                varDep = vars.splice(Math.round(Math.random() * (vars.length - 2)), 1)
                 ndiff = ["var1(var2 + var3x)", "var1(var2x + var3)", "var1(x+var2)-(var5x)"]
                 document.getElementById('button2').style.backgroundColor = "grey"
                 document.getElementById('button0').style.backgroundColor = "black"
@@ -128,7 +70,7 @@
                 nouvelleQ()
             } else if (val == 1) {
                 var vars = ["l'aire", "la circonférence"]
-                varInd = vars.splice(Math.round(Math.random()),1)
+                varInd = vars.splice(Math.round(Math.random()), 1)
                 varDep = vars
                 ndiff = ["var1"]
                 document.getElementById('button1').style.backgroundColor = "grey"
@@ -138,8 +80,8 @@
             } else {
                 var rayDiam = ["le rayon", "le diamètre"][Math.round(Math.random())]
                 var cirAre = ["l'aire", "la circonférence"][Math.round(Math.random())]
-                var vars = [rayDiam,cirAre]
-                varInd = vars.splice(Math.round(Math.random()),1)
+                var vars = [rayDiam, cirAre]
+                varInd = vars.splice(Math.round(Math.random()), 1)
                 varDep = vars
 
                 ndiff = ["var1"]
@@ -243,7 +185,7 @@
                     } else if (varDep == "la circonférence") {
                         var rep = "(".concat(q.concat(')*2*3.1415926'))
                     }
-                } else if(varDep == "le rayon"){
+                } else if (varDep == "le rayon") {
                     var text = draw.text('r = ?').font({ family: 'sans', size: font }).center(390, 180)
                     if (varInd == "l'aire") {
                         var text = draw.text('a = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
@@ -255,14 +197,14 @@
                 }
             } else if (varInd == "le diamètre" || varDep == "le diamètre") {
                 draw.path(d = "M 120 200 L 480 200 ").fill('none').stroke({ color: '#000', width: 3, linecap: 'round', linejoin: 'round' })
-                if (varInd == "le diamètre"){
+                if (varInd == "le diamètre") {
                     var text = draw.text('d = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
                     if (varDep == "l'aire") {
                         var rep = "(0.25*3.1415926*".concat(q).concat(")*").concat(q)
                     } else if (varDep == "la circonférence") {
                         var rep = "(".concat(q.concat(')*3.1415926'))
                     }
-                } else if(varDep == "le diamètre"){
+                } else if (varDep == "le diamètre") {
                     var text = draw.text('d = ?').font({ family: 'sans', size: font }).center(300, 180)
                     if (varInd == "l'aire") {
                         var text = draw.text('a = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
@@ -270,7 +212,8 @@
                     } else if (varInd == "la circonférence") {
                         var text = draw.text('c = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
                         var rep = "(".concat(q.concat(')/3.1415926'))
-                    }                }
+                    }
+                }
             } else if (varInd == "l'aire" || varDep == "la circonférence") {
                 var text = draw.text('a = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 200)
                 var rep = "(".concat(q.concat(')^0.5*3.5449'))
@@ -305,7 +248,7 @@
         var brep
         var font = 18
         var ndiff
-        var varDep 
+        var varDep
         var varInd
         var letter
 

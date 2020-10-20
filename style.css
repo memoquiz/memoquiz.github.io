@@ -15,7 +15,7 @@ h2 {
 
 h3 {
     text-align: center;
-    font-size: 1.5vh;
+    font-size: 2.5vh;
     }
 
 h4 {
@@ -60,6 +60,18 @@ textarea:focus, input:focus{
     cursor: pointer;
     outline: none;
     width: 20%;
+
+}
+
+.inputbar2 {
+    font-family: arial;
+    background-color: #white;
+    color: black;
+    text-align: center;
+    font-size: 1.5vw;
+    cursor: pointer;
+    outline: none;
+    width: 40%;
 
 }
 
@@ -143,9 +155,9 @@ input[type="file"] {
     background-color: black;
     color: #fff;
     text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    opacity: 0.5;
+    border-radius: 5px;
+    padding: 5px 5px 5px 5px;
+    opacity: 0.7;
 
     /* Position the tooltip */
     position: absolute;
@@ -162,3 +174,16 @@ div {
 }
 
 .MathJax nobr>span.math>span{border-left-width:0 !important};
+
+svg {
+    display: block;
+    margin: auto;
+}
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}

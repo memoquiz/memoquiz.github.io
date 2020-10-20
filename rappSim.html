@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Pratique Figures</title>
+    <title>Rapports de similitude</title>
 
     <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
     <script
@@ -13,18 +13,6 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 
     <style>
-        h1 {
-            text-align: center;
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-        h3 {
-            text-align: center;
-        }
-
         svg {
             display: block;
             margin: auto;
@@ -36,47 +24,6 @@
             margin-left: auto;
             margin-right: auto;
             display: block;
-        }
-
-        .button1 {
-            font-family: arial;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 5px 5px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 2px 2px;
-            cursor: pointer;
-            width: 20%;
-        }
-
-        .button2 {
-            font-family: arial;
-            background-color: rgb(46, 51, 47);
-            border: none;
-            color: white;
-            padding: 5px 5px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 20px;
-            margin: 2px 2px;
-            cursor: pointer;
-            width: 10%;
-        }
-
-        input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            text-align: center;
-        }
-
-        input[type="file"] {
-            display: none;
         }
     </style>
 </head>
@@ -95,14 +42,12 @@
     <h2>
         <table align=center>
             <tr>
-                <td><input type="text" id="reponse" /></td>
-            </tr>
-            <tr>
-                <td style="min-width:1000px"><input type="button" class="button1" value="Soumettre" id="bouttonSoum"
-                        onclick="setTimeout(function(){soum()},100)">
-                </td>
+                <td><input type="text" class="inputbar1" id="reponse" /></td>
             </tr>
         </table>
+        <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
+            onclick="setTimeout(function(){soum()},100)">
+
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
         <br>Erreurs : <output id="erreurs"></output>
     </h2>
@@ -188,28 +133,28 @@
         }
 
         soum = function () {
-                var repEleve = document.getElementById('reponse').value
-                repEleve = repEleve.replace(/\,/, '.') // Remplace les , par des . pour les eleves francophones
-                document.getElementById('reponse').value = null
-                console.log(kRep)
-                console.log(repEleve != 0)
-                if (Math.abs(kRep - repEleve) < kRep * 0.04 && repEleve != 0) {
-                    nouvelleQ()
-                    reussi++
-                    button.style.backgroundColor = "#4CAF50"
+            var repEleve = document.getElementById('reponse').value
+            repEleve = repEleve.replace(/\,/, '.') // Remplace les , par des . pour les eleves francophones
+            document.getElementById('reponse').value = null
+            console.log(kRep)
+            console.log(repEleve != 0)
+            if (Math.abs(kRep - repEleve) < kRep * 0.04 && repEleve != 0) {
+                nouvelleQ()
+                reussi++
+                button.style.backgroundColor = "#4CAF50"
 
-                    if (reussi < total) {
-                        button.value = "Soumettre"
+                if (reussi < total) {
+                    button.value = "Soumettre"
+                } else {
+                    if (reussi / total > 0.8) {
+                        button.value = 'Bravo!'
                     } else {
-                        if (reussi / total > 0.8) {
-                            button.value = 'Bravo!'
-                        } else {
-                            button.value = 'Tu as besoin de plus de pratique on dirait'
-                        }
-                        button.value = "Recommencer ?"
-                        button.onclick = recommancer
+                        button.value = 'Tu as besoin de plus de pratique on dirait'
                     }
-            }else{
+                    button.value = "Recommencer ?"
+                    button.onclick = recommancer
+                }
+            } else {
                 button.style.backgroundColor = "red"
                 erreurs++
             }
@@ -223,8 +168,8 @@
         }
 
         drawArrow = function (dir) {
-            try{fleche.remove()}catch{}
-            try{boutFleche.remove()}catch{}
+            try { fleche.remove() } catch{ }
+            try { boutFleche.remove() } catch{ }
             fleche = draw.path('M 150 60 q 150 -100 300 0').addTo('svg')
             fleche.fill('none').stroke({ color: '#000', width: 5, linecap: 'round' })
             if (dir == -1) {
@@ -233,17 +178,17 @@
                 boutFleche = draw.path(d = "M 140 50 L 160 67 L 140 72 z").addTo('svg')
             }
         }
-            function nouvelleQ() {
-                draw.clear()
-                dir = 1 - Math.round(Math.random()) * 2
-                AggRet = 1 - Math.round(Math.random()) * 2
-                k = Math.pow((Math.random() * 4 + 1), AggRet).toPrecision(2)
-                kFig = Math.pow(k, 0.2)
-                kRep = Math.pow(k, -dir).toPrecision(2)
-                drawArrow(dir)
-                console.log(kRep)
-                drawPolygons(ncote, 60, 30, kFig, 25, k)
-            }
+        function nouvelleQ() {
+            draw.clear()
+            dir = 1 - Math.round(Math.random()) * 2
+            AggRet = 1 - Math.round(Math.random()) * 2
+            k = Math.pow((Math.random() * 4 + 1), AggRet).toPrecision(2)
+            kFig = Math.pow(k, 0.2)
+            kRep = Math.pow(k, -dir).toPrecision(2)
+            drawArrow(dir)
+            console.log(kRep)
+            drawPolygons(ncote, 60, 30, kFig, 25, k)
+        }
 
         var total = 10
         var erreurs = 0
@@ -255,7 +200,7 @@
 
         var dir = 0
         var AggRet = 0
-        var k  = 0
+        var k = 0
         var kFig = 0
         var kRep = 0
         var fleche = null
