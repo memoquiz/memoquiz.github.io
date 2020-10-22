@@ -29,9 +29,9 @@
         </table>
         <table align="center">
                 <tr>
-                <td align="center" width=500px>
-                    <input class=inputbar1 type="text" id="reponse">
-                </td>
+                <td align="center" width=100px>
+                    <input class=inputbar3 type="text" id="reponse"></td><td align="left" width=5px><h2 id="unite"></h2>
+                    </td>
                 </div>
             </tr>
         </table>
@@ -75,12 +75,13 @@
                 var qtexte = '';
 
                 rand = Math.floor(Math.random() * qarr.length)
-                rand = 5
-                var question = qlib[rand];
+                var question = qlib[qarr[rand]];
 
                 var variabtext = question.variables;
                 var chaineope = question.reponses[diffq];
                 qpretty = question.pretty[diffq]
+                
+                document.getElementById('unite').innerHTML = question.unite
 
                 for (let i = 0; i < question.texte.length; i++) {
                     qtexte = qtexte + question.texte[i][question.difficultés[diffq][i]];
@@ -93,12 +94,10 @@
                     for (let y = 0; y < question[i[0]].length; y++) {
                         remplarr[y]=y;
                         }
-
                     while (qtexte.match(regex)) {
-                        console.log(question[i[0]])
                         var rand2 = Math.floor(Math.random() * remplarr.length)
-                        var rempl = question[i[0]][rand2];
-                        remplarr.splice[rand2,1];
+                        var rempl = question[i[0]][remplarr[rand2]];
+                        remplarr.splice(rand2,1);
                         qtexte = qtexte.replace(regex, rempl);
                         chaineope = chaineope.replace(regex, rempl);
                         qpretty = qpretty.replace(regex, rempl);
@@ -116,7 +115,6 @@
                 var repEleve = document.getElementById('reponse').value.toString()
                 repEleve = repEleve.replace(/,/g,".")
                 repEleve = repEleve.replace(/\$/g,"")
-
                 if (repEleve != "") {
                     document.getElementById('reponse').value = null
 
@@ -151,9 +149,9 @@
                         button.value = "Réessaie !"
                         erreurs++
                         update()
+
                     }
                 }
-
             }
 
             recommencer = function () {
@@ -188,18 +186,19 @@
                     pretty: ['varport-varnum*varprix+varnum*varprix', 'varport-varnum*varprix-varnum*varprix+varnum*varprix+varnum*varprix', 'varport-varnum*varprix-varnum*varprix-varnum*varprix+varnum*varprix+varnum*varprix+varnum*varprix'],
                     variables: [["varnom", 'g'], ["varport", 'g'], ["varobj", ''], ["varprix", ''], ["varnum", '']],
                     varnom: ["Hélène", "Emilie", "Joséphine", "Alex", "Stéphanie"],
-                    varobj: ["pommes", "crayons", "effaces", "biscuits", "salades", "bananes", "pots de yogourt", "balles de laine", "patates", "ananas"],
+                    varobj: ["pommes", "effaces", "galettes", "salades", "bananes", "balles de laine", "patates", "miches de pain", "calculatrices"],
                     varport: [336.42, 451.1, 369.11, 521.36, 452, 570.12, 454.98],
                     varprix: [1.05, 2.35, 3.44, 4.02, 5.12, 6.95, 7.45, 8.41, 9.11, 17.17, 23.56],
                     varnum: [2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    unite : "$",
                     texte: [[`varnom va au magasin. `],
                     [`Elle a varport$ dans son portefeuille. `],
-                    [`Elle achète varnum varobj à varprix$. `,
-                        `Elle achète varnum varobj à varprix$ et varnum varobj à varprix$. `,
-                        `Elle achète varnum varobj à varprix$, varnum varobj à varprix$ et varnum varobj à varprix$. `],
-                    [`Elle se fait rembourser varnum varobj à varprix$. `,
-                        `Elle se fait rembourser varnum varobj à varprix$ et varnum varobj à varprix$. `,
-                        `Elle se fait rembourser varnum varobj à varprix$, varnum varobj à varprix$ et varnum varobj à varprix$. `],
+                    [`Elle achète varnum varobj qui côutent chacunes varprix$. `,
+                        `Elle achète varnum varobj qui côutent chacunes varprix$ et varnum varobj qui côutent chacunes varprix$. `,
+                        `Elle achète varnum varobj qui côutent chacunes varprix$, varnum varobj qui côutent chacunes varprix$ et varnum varobj qui côutent chacunes varprix$. `],
+                    [`Elle se fait rembourser varnum varobj qui côutent chacunes varprix$. `,
+                        `Elle se fait rembourser varnum varobj qui côutent chacunes varprix$ et varnum varobj qui côutent chacunes varprix$. `,
+                        `Elle se fait rembourser varnum varobj qui côutent chacunes varprix$, varnum varobj qui côutent chacunes varprix$ et varnum varobj qui côutent chacunes varprix$. `],
                     ['Quel montant lui reste-t\'il à la fin de son magasinage ? ']]
                 },
                 {
@@ -211,6 +210,7 @@
                     varres: [80, 85, 90, 95, 100, 105, 110, 115, 120],
                     varnum: [2, 3, 4, 5],
                     varlitres: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+                    unite : "L",
                     texte: [[`En début de matinée, le réservoir d'eau chaude de la famille varfam contient varres litres. `],
                     [`varnum membres de la famille prennent chacun une douche qui consomme chacune varlitres litres d\'eau. `,
                         `varnum membres de la famille prennent chacun une douche de varlitres litres d\'eau. La pompe s'active ensuite pendant varnum minutes et remplit le réservoir à un débit de varnum litres par minutes. `,
@@ -226,6 +226,7 @@
                     vardist: [1000, 1500, 2000, 2500, 3000, 3500],
                     varnum: [100, 150, 200, 250, 300, 350, 400, 450],
                     vardiv: [2, 3, 4, 5],
+                    unite : "m",
                     texte: [[`varnom joue à un jeux vidéo de course. La ligne d'arrivée est à vardist mètres. `],
                     [`Elle tombe sur un cercle de téléportation et se rapproche de varnum mètres de la ligne d'arrivée. `,
                         `Elle tombe sur un cercle de téléportation et se rapproche de varnum mètres de la ligne d'arrivée. Ensuite, une coquille de tortue bleue lui tombe sur la tête et elle recule de varnum mètres. `,
@@ -241,6 +242,7 @@
                     varnom: ["Hélène", "Emilie", "Joséphine", "Alex", "Stéphanie"],
                     varans: [-253, -456, -890, -2001, -3562, -4025],
                     varnum: [5, 17, 45, 56, 79, 91, 97, 201, 453, 1482],
+                    unite : "",
                     texte: [[`varnom voyage dans le temps. Elle commence son voyage en varans. `],
                     [`Elle ne s'est pas rendue assez loin dans le passé. Elle recule donc de varnum années de plus. `,
                         `Elle s'est rendue trop loin dans le passé. Elle avance donc de varnum années. Elle décide ensuite de reculer de varnum. `,
@@ -257,6 +259,7 @@
                     vartot: [14, 16, 28, 32, 26, 48],
                     varnum: [2, 4, 6, 8, 10],
                     vardiv: [2],
+                    unite : "crapauds",
                     texte: [[`varnom possède vartot crapauds. `],
                     [`Elle divise son élevage en vardiv pour en donner à son amie. Peu de temps après, varnum crapauds naissent. `,
                         `Un serpent entre dans la cage et mange varnum crapauds. Par la suite, les oeufs quelle avait gardé éclos et multiplie son élevage par varnum! `,
@@ -273,6 +276,7 @@
                     vartot: [144, 165, 286, 322, 236, 486],
                     varnum: [5, 17, 23, 44, 61, 81, 107],
                     vardiv : [2,3,4,5],
+                    unite : "$",
                     texte: [[`varnom possède vartot$ dans son compte en banque. `],
                     [`Elle dépense varnum$ pour acheter un chandail et reçoit varnum$ en allocation de ses parents. `,
                         `Elle gagne a un concours et le montant dans son compte est multiplié par vardiv. Elle divise après ses avoirs en vardiv pour donner de l'argent à ses parents. `,
