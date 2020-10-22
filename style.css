@@ -75,6 +75,18 @@ textarea:focus, input:focus{
 
 }
 
+.inputbar3 {
+    font-family: arial;
+    background-color: #white;
+    color: black;
+    text-align: center;
+    font-size: 1.5vw;
+    cursor: pointer;
+    outline: none;
+    width: 90%;
+
+}
+
 .button1 {
     font-family: arial;
     background-color: #4CAF50;
