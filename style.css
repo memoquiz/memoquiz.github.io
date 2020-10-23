@@ -132,6 +132,21 @@ textarea:focus, input:focus{
     width: 13%;
 }
 
+.button4 {
+    font-family: arial;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.5vw;
+    margin: 2px 2px;
+    cursor: pointer;
+    width: 97%;
+}
+
 .button1:hover {
     background-color: rgb(64, 211, 69); /* Green */
 }
@@ -144,6 +159,11 @@ table{
     table-layout:fixed;
 }
 
+table.table1, tr.tr1, td.td1 {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  
 input {
     -webkit-appearance: none;
     -moz-appearance: none;
