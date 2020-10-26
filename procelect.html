@@ -33,12 +33,12 @@
             nouvelleQ = function () {
 
                 rand = Math.floor(Math.random() * qarr.length);
-                rand = 3;
-                var question = qlib[qarr[rand]];
+                //rand = 3;
+                question = qlib[qarr[rand]];
+                table = [[question.table[0][0]], [question.table[1][0]]];
                 var variabtext = question.variables;
                 var textrand = Math.floor(Math.random() * question.texte.length);
                 var qtable = question.table;
-                var table = [[question.table[0][0]], [question.table[1][0]]];
                 var lenq = Math.floor(Math.random() * (qtable[0].length - 3)) + 3;
 
                 for (i of variabtext) {
@@ -73,8 +73,9 @@
             }
 
             soum = function (repEleve) {
+                console.log(repEleve)
+                var succes = question.testSoum(table);
                 var button = document.getElementById(repEleve)
-                var succes = repEleve == reponse;
 
                 if (succes == true) {
                     if (nbEssais == 0) {
@@ -117,6 +118,22 @@
                 document.getElementById('reussi').value = reussi
                 document.getElementById('erreurs').value = erreurs
                 document.getElementById('total').value = total
+            }
+
+            function arraysEqual(a, b) {
+                if (a === b) return true;
+                if (a == null || b == null) return false;
+                if (a.length !== b.length) return false;
+
+                // If you don't care about the order of the elements inside
+                // the array, you should sort both arrays here.
+                // Please note that calling sort on an array will modify that array.
+                // you might want to clone your array first.
+
+                for (var i = 0; i < a.length; ++i) {
+                    if (a[i] !== b[i]) return false;
+                }
+                return true;
             }
 
             resetquestion = function () {
@@ -199,6 +216,7 @@
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [25, 200, 8],
+                    varmin: [],
                     varnum: function (max) {
                         return (shuffle(Array.from(Array(max).keys())))
                     },
@@ -229,6 +247,7 @@
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [25, 200, 8],
+                    varmin: [],
                     varnum: function (max) {
                         return (shuffle(Array.from(Array(max).keys())))
                     },
@@ -259,6 +278,7 @@
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [25, 200, 8],
+                    varmin: [],
                     varnum: function (max) {
                         return (shuffle(Array.from(Array(max).keys())))
                     },
@@ -308,15 +328,23 @@
                         quest.texte[textrand] = quest.texte[textrand].replace("ndiv", quest.ndiv)
                         tab.push(quest.reponseInput(quest, tab[0], textrand));
                         document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        document.getElementById('tableRep').innerHTML = `<input type="button" class="button1" value="Soumettre" id="bouttonSoum" onclick="setTimeout(function(){soum('bouttonSoum')},100)">`
                         quest.repSoum(tab, quest);
                     },
-                    reponseInput: function creerbouton(quest, bouttons, textrand) {
+                    reponseInput: function creerbouton(quest, tab, textrand) {
                         var mat = [];
-                        for (let z = 0; z < bouttons.length - 1; z++) {
-                            mat[z] = `<input type="text" class="inputbar1" id="${bouttons[z + 1]}" />`
+                        for (let z = 0; z < tab.length - 1; z++) {
+                            mat[z] = `<input type="text" class="inputbar1" id="${tab[z + 1]}" />`
                         }
                         mat.unshift(quest.vardiv[textrand])
                         return mat
+                    },
+                    testSoum: function testSoum(tab) {
+                        var repEleve = [];
+                        for (let z = 0; z < tab[0].length - 1; z++) {
+                            repEleve[z] = Number(document.getElementById(tab[0][z + 1]).value);
+                        }
+                        return (arraysEqual(repEleve, reponse))
                     },
                     repSoum: function repSoum(mat, quest) {
                         var reponses = [];
@@ -329,8 +357,6 @@
                         }
                         entiers.shift()
                         restes.shift()
-                        console.log(sum(entiers))
-                        console.log(sum(restes))
 
                         for (let z = 0; z <= Math.round(sum(restes)); z++) {
                             var maxresteInd = restes.findIndex(function (x) { return x == max(restes) })
@@ -349,7 +375,7 @@
 
             resetquestion()
 
-            var total = 3;
+            var total = 4;
             var erreurs = 0;
             var reussi = 0;
             var nbEssais = 0;
@@ -358,6 +384,8 @@
             var qpretty = null;
             var rand;
             var reponse = null;
+            var question = null;
+            var table = null;
 
 
             document.getElementById('reussi').value = reussi
