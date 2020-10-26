@@ -22,18 +22,6 @@
         <h2 id="prob"></h2>
         <h2 id="table"></h2>
     </div>
-    <h2>
-        <table align="center">
-            <tr>
-                <td align="center" width=100px>
-                    <input class=inputbar3 type="text" id="reponse"></td>
-                <td align="left" width=5px>
-                    <h2 id="unite"></h2>
-                </td>
-                </div>
-            </tr>
-        </table>
-    </h2>
     <h2 id=tableRep></h2>
     <h3 id="expr1"></h3>
     <h2>
@@ -42,24 +30,25 @@
 
         <script>
 
-            function nouvelleQ() {
+            nouvelleQ = function () {
 
                 rand = Math.floor(Math.random() * qarr.length);
+                rand = 3;
                 var question = qlib[qarr[rand]];
                 var variabtext = question.variables;
                 var textrand = Math.floor(Math.random() * question.texte.length);
-                var qtexte = question.texte[textrand];
                 var qtable = question.table;
+                var table = [[question.table[0][0]], [question.table[1][0]]];
+                var lenq = Math.floor(Math.random() * (qtable[0].length - 3)) + 3;
 
                 for (i of variabtext) {
                     var regex = RegExp(i[0], i[1]);
                     var remplarr = [];
-                    console.log(i)
                     try {
                         var varlen = question[i[0]][textrand].length
                         var varib = question[i[0]][textrand]
                     } catch {
-                        var varib = question[i[0]](question.varmax[textrand])
+                        var varib = question[i[0]](question.varmax[textrand], question.varmin[textrand])
                         var varlen = varib.length
                     }
 
@@ -68,65 +57,53 @@
                     }
 
                     for (let z = 0; z < qtable.length; z++) {
-                        for (let w = 0; w < qtable[z].length; w++) {
+                        for (let w = 0; w < lenq; w++) {
                             if (qtable[z][w].match(regex)) {
                                 var rand2 = Math.floor(Math.random() * remplarr.length);
                                 var rempl = varib[remplarr[rand2]];
                                 remplarr.splice(rand2, 1);
-                                qtable[z][w] = qtable[z][w].replace(regex, rempl);
+                                table[z][w] = qtable[z][w].replace(regex, rempl);
                             }
                         }
                     }
                 }
-
-                document.getElementById('prob').innerHTML = qtexte;
-                document.getElementById('table').innerHTML = makeTableHTML(question.table)
-                question.reponseInput(question.options[textrand])
-
+                question.createTable(question, table, textrand)
+                document.getElementById('prob').innerHTML = question.texte[textrand];
                 update()
             }
 
-            soum = function () {
-                var repEleve = document.getElementById('reponse').value.toString()
-                repEleve = repEleve.replace(/,/g, ".")
-                repEleve = repEleve.replace(/\$/g, "")
-                if (repEleve != "") {
-                    document.getElementById('reponse').value = null
+            soum = function (repEleve) {
+                var button = document.getElementById(repEleve)
+                var succes = repEleve == reponse;
 
-                    var succes = (repEleve - reponse) / reponse < 0.1;
-
-                    if (succes == true) {
-                        if (nbEssais == 0) {
-                            reussi++
-                            qarr.splice(rand, 1)
-                        }
-                        nbEssais = 0
-                        if (reussi < total) {
-                            nouvelleQ()
-                            button.style.backgroundColor = "#4CAF50"
-                            button.value = "Soumettre"
-
-                        } else {
-                            if (reussi / total > 0.8) {
-                                document.getElementById('expr1').innerHTML = 'Bravo!'
-                            } else {
-                                document.getElementById('expr1').innerHTML = 'Tu as besoin de plus de pratique on dirait'
-                            }
-                            button.style.backgroundColor = "#4CAF50"
-                            button.value = "Recommencer ?"
-                            button.onclick = recommencer
-                            update()
-                            diff(val)
-                        }
-                    } else {
-                        nbEssais = 1
-                        button.style.backgroundColor = "red"
-                        button.value = "Réessaie !"
-                        erreurs++
-                        update()
-
+                if (succes == true) {
+                    if (nbEssais == 0) {
+                        reussi++
+                        //qarr.splice(rand, 1)
                     }
+                    nbEssais = 0
+                    if (reussi < total) {
+                        nouvelleQ()
+                        button.style.backgroundColor = "#4CAF50"
+                        button.value = "Soumettre"
+
+                    } else {
+                        if (reussi / total > 0.8) {
+                            document.getElementById('prob').innerHTML = 'Bravo!'
+                        } else {
+                            document.getElementById('prob').innerHTML = 'Tu as besoin de plus de pratique on dirait'
+                        }
+                        document.getElementById('tableRep').innerHTML = '<input type="button" class="button3" value="Recommancer?" id="Recommencer" style.backgroundColor = "#4CAF50" onclick="setTimeout(function(){recommencer()},100)">'
+                        update()
+                    }
+                } else {
+                    nbEssais = 1
+                    button.style.backgroundColor = "red"
+                    erreurs++
+                    update()
+
                 }
+
             }
 
             recommencer = function () {
@@ -134,9 +111,6 @@
                 erreurs = 0
                 resetquestion()
                 nouvelleQ()
-                button.value = "Soumettre"
-                button.onclick = soum
-
             }
 
             update = function () {
@@ -145,35 +119,12 @@
                 document.getElementById('total').value = total
             }
 
-            var qlib = [
-                {
-                    variables: [["options", 'g'], ["varnum", '']],
-                    varnom: [""],
-                    varmax: [25, 200, 8],
-                    varnum: function (max) {
-                        return ([...Array(10)].map(() => Math.floor(Math.random() * max)))
-                    },
-                    reponseInput: function creerbouton(bouttons) {
-                        var mat = [];
-                        for (let z = 0; z < bouttons.length; z++) {
-                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id="bouttonSoum" onclick="setTimeout(function(){soum(${bouttons[z]})},100)">`
-                        }
-                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
-                    },
-                    texte: [`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote à majorité. Détermine l'option gagnante.`,
-                        `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à majorité. Détermine l'option gagnante.`,
-                        `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à majorité. Détermine l'option gagnante.`],
-                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
-                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
-                }
-            ]
-            var qarr = [];
-
-            function resetquestion() {
+            resetquestion = function () {
                 for (let i = 0; i < qlib.length; i++) {
                     qarr[i] = i
                 }
             }
+
             function makeTableHTML(myArray) {
                 var result = "<table class=\"table1\" align=center>";
                 for (var i = 0; i < myArray.length; i++) {
@@ -188,6 +139,30 @@
                 return result;
             }
 
+            function max(bob) {
+                var par = [];
+                var mat = [];
+                for (var i = 0; i < bob.length; i++) {
+                    mat[i] = Number(bob[i])
+                    if (!isNaN(mat[i])) {
+                        par.push(mat[i]);
+                    }
+                }
+                return Math.max.apply(Math, par);
+            }
+
+            function sum(bob) {
+                var par = [];
+                var mat = [];
+                for (var i = 0; i < bob.length; i++) {
+                    mat[i] = Number(bob[i])
+                    if (!isNaN(mat[i])) {
+                        par.push(mat[i]);
+                    }
+                }
+                return math.sum(par);
+            }
+
             function makeTableHTMLRep(myArray) {
                 var result = "<table align=center>";
                 result += "<tr>";
@@ -200,9 +175,181 @@
                 return result;
             }
 
+            function shuffle(array) {
+                var m = array.length, t, i;
+
+                // While there remain elements to shuffle…
+                while (m) {
+
+                    // Pick a remaining element…
+                    i = Math.floor(Math.random() * m--);
+
+                    // And swap it with the current element.
+                    t = array[m];
+                    array[m] = array[i];
+                    array[i] = t;
+                }
+
+                return array;
+            }
+
+            var qlib = [
+                {
+                    type: "pluralité",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [25, 200, 8],
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys())))
+                    },
+                    createTable: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length - 1; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    repSoum: function repSoum(mat) {
+                        reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        console.log(reponse)
+                    },
+                    texte: [`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote à pluralité. Détermine le ou la gagnante.`,
+                        `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à pluralité. Détermine la chanson gagnante.`,
+                        `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à pluralité. Détermine la destination gagnante.`],
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                },
+                {
+                    type: "assentiment",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [25, 200, 8],
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys())))
+                    },
+                    createTable: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length - 1; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    repSoum: function repSoum(mat) {
+                        reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        console.log(reponse)
+                    },
+                    texte: [`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote par assentiement. Détermine le ou la gagnante.`,
+                        `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote par assentiement. Détermine la chanson gagnante.`,
+                        `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote par assentiement. Détermine la destination gagnante.`],
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                },
+                {
+                    type: "majorité",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [25, 200, 8],
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys())))
+                    },
+                    createTable: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        bouttons.shift()
+                        bouttons.unshift("Aucun gagnant")
+                        console.log(bouttons)
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    repSoum: function repSoum(mat) {
+                        var valmax = max(mat[1])
+                        var tot = sum(mat[1])
+                        if (valmax / tot > 0.5) {
+                            reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        } else {
+                            reponse = "Aucun gagnant";
+                        }
+                    },
+                    texte: [`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote à majorité. Détermine le ou la gagnante.`,
+                        `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à majorité. Détermine la chanson gagnante.`,
+                        `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à majorité. Détermine la destination gagnante.`],
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                },
+                {
+                    type: "proportionnel",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [1000],
+                    varmin: [100],
+                    vardiv: ["Nombre de sièges"],
+                    ndiv: null,
+                    varnum: function (max, min) {
+                        return (shuffle(Array.from(Array(max).keys())).splice(0, min))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        quest.ndiv = Math.floor(Math.random() * 101 + 7);
+                        quest.texte[textrand] = quest.texte[textrand].replace("ndiv", quest.ndiv)
+                        tab.push(quest.reponseInput(quest, tab[0], textrand));
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab, quest);
+                    },
+                    reponseInput: function creerbouton(quest, bouttons, textrand) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length - 1; z++) {
+                            mat[z] = `<input type="text" class="inputbar1" id="${bouttons[z + 1]}" />`
+                        }
+                        mat.unshift(quest.vardiv[textrand])
+                        return mat
+                    },
+                    repSoum: function repSoum(mat, quest) {
+                        var reponses = [];
+                        var entiers = [];
+                        var restes = [];
+                        var valtot = sum(mat[1])
+                        for (let z = 1; z < mat[1].length; z++) {
+                            entiers[z] = Math.floor(mat[1][z] / valtot * quest.ndiv);
+                            restes[z] = mat[1][z] / valtot * quest.ndiv - Math.floor(mat[1][z] / valtot * quest.ndiv)
+                        }
+                        entiers.shift()
+                        restes.shift()
+                        console.log(sum(entiers))
+                        console.log(sum(restes))
+
+                        for (let z = 0; z <= Math.round(sum(restes)); z++) {
+                            var maxresteInd = restes.findIndex(function (x) { return x == max(restes) })
+                            entiers[maxresteInd] = entiers[maxresteInd] + 1
+                            restes[maxresteInd] = restes[maxresteInd] - 1
+                        }
+                        console.log(entiers)
+                        reponse = entiers;
+                    },
+                    texte: ["Voici les résultat de l'élection à la mairie de Saint-creux-les-profonds. Il y a ndiv postes à pourvoir. Détermine la distributions des sièges."],
+                    options: [["Saint-creux solidaire", "Profond et fier", "Parti creumuniste", "Parti Giraffe", "Alliance creuse", "Creuse!"]],
+                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                }
+            ]
+            var qarr = [];
+
             resetquestion()
 
-            var total = 5;
+            var total = 3;
             var erreurs = 0;
             var reussi = 0;
             var nbEssais = 0;
@@ -210,6 +357,8 @@
             var diffq = 0;
             var qpretty = null;
             var rand;
+            var reponse = null;
+
 
             document.getElementById('reussi').value = reussi
             document.getElementById('erreurs').value = erreurs
@@ -220,7 +369,6 @@
             const expr1 = []
             const expr2 = []
 
-            var reponse = null
             nouvelleQ()
 
             const result = []

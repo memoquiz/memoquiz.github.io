@@ -129,7 +129,7 @@ textarea:focus, input:focus{
     font-size: 2vw;
     margin: 2px;
     cursor: pointer;
-    width: 13%;
+    width: 17%;
 }
 
 .button4 {
@@ -137,14 +137,14 @@ textarea:focus, input:focus{
     background-color: #4CAF50;
     border: none;
     color: white;
-    padding: 5px 5px;
+    padding: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 1.5vw;
-    margin: 2px 2px;
+    margin: 2px;
     cursor: pointer;
-    width: 97%;
+    width: 100%;
 }
 
 .button1:hover {
@@ -162,6 +162,7 @@ table{
 table.table1, tr.tr1, td.td1 {
     border: 1px solid black;
     border-collapse: collapse;
+    padding: 5px;
   }
   
 input {
