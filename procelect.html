@@ -33,7 +33,7 @@
             nouvelleQ = function () {
 
                 rand = Math.floor(Math.random() * qarr.length);
-                //rand = 3;
+                //rand = 0;
                 question = qlib[qarr[rand]];
                 table = [[question.table[0][0]], [question.table[1][0]]];
                 var variabtext = question.variables;
@@ -73,8 +73,7 @@
             }
 
             soum = function (repEleve) {
-                console.log(repEleve)
-                var succes = question.testSoum(table);
+                var succes = question.testSoum(table, repEleve);
                 var button = document.getElementById(repEleve)
 
                 if (succes == true) {
@@ -232,6 +231,9 @@
                         }
                         document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
                     },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
                     repSoum: function repSoum(mat) {
                         reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
                         console.log(reponse)
@@ -262,6 +264,9 @@
                             mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
                         }
                         document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
                     },
                     repSoum: function repSoum(mat) {
                         reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
@@ -296,6 +301,9 @@
                             mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
                         }
                         document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
                     },
                     repSoum: function repSoum(mat) {
                         var valmax = max(mat[1])
