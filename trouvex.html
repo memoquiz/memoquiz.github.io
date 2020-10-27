@@ -21,12 +21,14 @@
     <h2>
         <div id="pretty">$$$$</div>
         <div class="tooltip"><input class=inputbar1 type="text" id="reponse">
-        <span class="tooltiptext"><h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de 2/3)</h5>
-        </span></div><br><br>
+            <span class="tooltiptext">
+                <h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de
+                    2/3)</h5>
+            </span></div><br><br>
         <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
             onclick="setTimeout(function(){soum()},100)"><br>
         <input type="button" class="button1" value="Sauter" id="sauter"
-                onclick="setTimeout(function(){sauter()},100)"><br>
+            onclick="setTimeout(function(){sauter()},100)"><br>
         </div>
     </h2>
     <h2>
@@ -49,10 +51,10 @@
             function diff(val) {
                 difficulte = val
                 if (val == 2) {
-                    eq1 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+varx)/(var)"]
+                    eq1 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+var)/(var)"]
                     eq1Pretty = ["var(x+var)-(varx+var)÷var", "var(varx+var)-\\frac{varx+var}{var}", "var(x+varx)-\\frac{var(varx+var)}{var}"]
 
-                    eq2 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+varx)/(var)"]
+                    eq2 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+var)/(var)"]
                     eq2Pretty = ["var(x+var)-(varx+var)÷var", "var(varx+var)-\\frac{varx+var}{var}", "var(x+varx)-\\frac{var(varx+var)}{var}"]
 
                     document.getElementById('button2').style.backgroundColor = "grey"
@@ -131,8 +133,13 @@
                 q1 = q1.replace(/÷/g, '/');
                 q2 = q2.replace(/÷/g, '/');
 
+                console.log(q1)
+                console.log(q2)
+
                 var q1Simp = Algebrite.run(q1)
+                console.log(q1Simp)
                 var q2Simp = Algebrite.run(q2)
+                console.log(q2Simp)
                 var qSimp = Algebrite.run(q1Simp.concat("-(").concat(q2Simp).concat(")"))
 
                 var constante = math.parse(qSimp).evaluate({ x: 0 })
@@ -158,7 +165,7 @@
                 }
                 return val;
             }
-            sauter = function(){
+            sauter = function () {
                 erreurs++
                 nouvelleQ()
                 update()
