@@ -33,13 +33,24 @@
             nouvelleQ = function () {
 
                 rand = Math.floor(Math.random() * qarr.length);
-                //rand = 0;
+                rand = 4;
                 question = qlib[qarr[rand]];
-                table = [[question.table[0][0]], [question.table[1][0]]];
+
+
                 var variabtext = question.variables;
                 var textrand = Math.floor(Math.random() * question.texte.length);
-                var qtable = question.table;
-                var lenq = Math.floor(Math.random() * (qtable[0].length - 3)) + 3;
+                var lenq = question.lenq(question.table);
+
+
+                for (let z = 0; z < question.table.length; z++) {
+                    var nrem = question.table[z];
+                    var lentab = Number(question.table[z].length)
+                    for (let y = 0; y < (lentab - lenq); y++) {
+                        nrem.pop();
+                    }
+                    table[z] = nrem;
+                }
+
 
                 for (i of variabtext) {
                     var regex = RegExp(i[0], i[1]);
@@ -56,13 +67,13 @@
                         remplarr[y] = y;
                     }
 
-                    for (let z = 0; z < qtable.length; z++) {
+                    for (let z = 0; z < question.table.length; z++) {
                         for (let w = 0; w < lenq; w++) {
-                            if (qtable[z][w].match(regex)) {
+                            if (question.table[z][w].match(regex)) {
                                 var rand2 = Math.floor(Math.random() * remplarr.length);
                                 var rempl = varib[remplarr[rand2]];
                                 remplarr.splice(rand2, 1);
-                                table[z][w] = qtable[z][w].replace(regex, rempl);
+                                table[z][w] = question.table[z][w].replace(regex, rempl);
                             }
                         }
                     }
@@ -216,6 +227,9 @@
                     varnom: [""],
                     varmax: [25, 200, 8],
                     varmin: [],
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
                     varnum: function (max) {
                         return (shuffle(Array.from(Array(max).keys())))
                     },
@@ -250,6 +264,9 @@
                     varnom: [""],
                     varmax: [25, 200, 8],
                     varmin: [],
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
                     varnum: function (max) {
                         return (shuffle(Array.from(Array(max).keys())))
                     },
@@ -284,6 +301,9 @@
                     varnom: [""],
                     varmax: [25, 200, 8],
                     varmin: [],
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
                     varnum: function (max) {
                         return (shuffle(Array.from(Array(max).keys())))
                     },
@@ -328,8 +348,13 @@
                     varmin: [100],
                     vardiv: ["Nombre de sièges"],
                     ndiv: null,
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
                     varnum: function (max, min) {
-                        return (shuffle(Array.from(Array(max).keys())).splice(0, min))
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
                     },
                     createTable: function (quest, tab, textrand) {
                         quest.ndiv = Math.floor(Math.random() * 101 + 7);
@@ -377,6 +402,55 @@
                     texte: ["Voici les résultat de l'élection à la mairie de Saint-creux-les-profonds. Il y a ndiv postes à pourvoir. Détermine la distributions des sièges."],
                     options: [["Saint-creux solidaire", "Profond et fier", "Parti creumuniste", "Parti Giraffe", "Alliance creuse", "Creuse!"]],
                     table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                },
+                {
+                    type: "condorcet",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [45],
+                    varmin: [5],
+                    vardiv: ["Nombre de sièges"],
+                    lenq: function () { return (4) },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        tab[0].sort(function (a, b) { return b - a });
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.reponseInput(quest.options[textrand]);
+                        quest.repSoum(tab, quest);
+
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab) {
+                        var repEleve = [];
+                        for (let z = 0; z < tab[0].length - 1; z++) {
+                            repEleve[z] = Number(document.getElementById(tab[0][z + 1]).value);
+                        }
+                        return (arraysEqual(repEleve, reponse))
+                    },
+                    repSoum: function repSoum(mat, quest) {
+                        var matclean = []
+                        for (i of mat) {
+                            i.shift(
+                                matclean.push(i))
+                        }
+                        for (i in quest.options) {
+                            for()
+                        }
+                        console.log(matclean)
+                    },
+                    texte: ["Les élèves de secondaire 5 doivent choisir une activité récompense. Détermine le choix gagnant à l'aide de la méthode de condorcet."],
+                    options: [["Bungee", "Ski alpin", "Paintball"]],
+                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Bungee", "Ski alpin", "Paintball"], ["Deuxième choix", "Ski alpin", "Bungee", "Bungee"], ["Troisième choix", "Paintball", "Paintball", "Ski alpin"]]
                 }
             ]
             var qarr = [];
@@ -393,7 +467,7 @@
             var rand;
             var reponse = null;
             var question = null;
-            var table = null;
+            var table = [];
 
 
             document.getElementById('reussi').value = reussi
