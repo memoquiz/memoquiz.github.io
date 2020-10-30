@@ -32,7 +32,7 @@
 
             nouvelleQ = function () {
                 rand = Math.floor(Math.random() * qarr.length);
-                rand = 6;
+                //rand = 6;
                 question = qlib[qarr[rand]];
                 table = [];
 
@@ -611,25 +611,27 @@
                             i.shift();
                             matclean.push(i);
                         }
-
-                        console.log(matclean)
-                        console.log(matcleantransp)
-                        //console.log(matclean[0][matclean[0].indexOf(String(min(matclean[0])))])
-                        while (score < 2) {
+                        while (score <= 0.5) {
                             matcleantransp = transpose(matclean)
                             res = []
                             for (y of quest.options[textrand]) {
                                 res.push(matclean[0][matclean[1].indexOf(y)])
                             }
-                            if (score < 5) {
+                            score = max(res) / sum(res)
+                            if (score <= 0.5) {
                                 var perd = matclean[1][matclean[0].indexOf(String(min(res)))]
-
-                                score++;
+                                for (let z = 0; z < matcleantransp.length; z++) {
+                                    var i = matcleantransp[z];
+                                    i.splice(i.indexOf(perd), 1);
+                                    i.push(NaN);
+                                }
+                                matclean = transpose(matcleantransp)
                             }
                         }
-                        reponse = quest.options[textrand][res.indexOf(max(res))]
+                        reponse = quest.options[textrand][res.indexOf(String(max(res)))]
+                        console.log(reponse)
                     },
-                    texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode de borda."],
+                    texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode par elimination."],
                     options: [["Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"]],
                     table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]
                 }
@@ -638,7 +640,7 @@
 
             resetquestion()
 
-            var total = 1;
+            var total = 6;
             var erreurs = 0;
             var reussi = 0;
             var nbEssais = 0;
