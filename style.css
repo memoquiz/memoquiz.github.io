@@ -220,3 +220,7 @@ canvas {
     margin-right: auto;
     display: block;
 }
+
+input[type="checkbox"]{
+    -webkit-appearance: radio;
+}
