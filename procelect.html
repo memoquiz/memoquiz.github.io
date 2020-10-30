@@ -31,16 +31,14 @@
         <script>
 
             nouvelleQ = function () {
-
                 rand = Math.floor(Math.random() * qarr.length);
-                rand = 4;
+                rand = 6;
                 question = qlib[qarr[rand]];
-
+                table = [];
 
                 var variabtext = question.variables;
                 var textrand = Math.floor(Math.random() * question.texte.length);
                 var lenq = question.lenq(question.table);
-
 
                 for (let z = 0; z < question.table.length; z++) {
                     var nrem = question.table[z];
@@ -86,11 +84,10 @@
             soum = function (repEleve) {
                 var succes = question.testSoum(table, repEleve);
                 var button = document.getElementById(repEleve)
-
                 if (succes == true) {
                     if (nbEssais == 0) {
                         reussi++
-                        //qarr.splice(rand, 1)
+                        qarr.splice(rand, 1)
                     }
                     nbEssais = 0
                     if (reussi < total) {
@@ -100,6 +97,7 @@
 
                     } else {
                         if (reussi / total > 0.8) {
+                            document.getElementById('table').innerHTML = '';
                             document.getElementById('prob').innerHTML = 'Bravo!'
                         } else {
                             document.getElementById('prob').innerHTML = 'Tu as besoin de plus de pratique on dirait'
@@ -118,10 +116,8 @@
             }
 
             recommencer = function () {
-                reussi = 0
-                erreurs = 0
-                resetquestion()
-                nouvelleQ()
+                location.reload();
+                return false;
             }
 
             update = function () {
@@ -178,6 +174,18 @@
                 return Math.max.apply(Math, par);
             }
 
+            function min(bob) {
+                var par = [];
+                var mat = [];
+                for (var i = 0; i < bob.length; i++) {
+                    mat[i] = Number(bob[i])
+                    if (!isNaN(mat[i])) {
+                        par.push(mat[i]);
+                    }
+                }
+                return Math.min.apply(Math, par);
+            }
+
             function sum(bob) {
                 var par = [];
                 var mat = [];
@@ -218,6 +226,17 @@
                 }
 
                 return array;
+            }
+
+            function transpose(array) {
+                var matcleantransp = [];
+                for (let i = 0; i < array.length; i++) {
+                    matcleantransp.push([]);
+                    for (let y = 0; y < array.length; y++) {
+                        matcleantransp[i][y] = array[y][i]
+                    }
+                }
+                return (matcleantransp);
             }
 
             var qlib = [
@@ -417,10 +436,96 @@
                         return (shuffle(arr))
                     },
                     createTable: function (quest, tab, textrand) {
-                        tab[0].sort(function (a, b) { return b - a });
+                        var bob = tab[0].shift()
+                        tab[0].sort(function (a, b) { return b - a })
+                        tab[0].unshift(bob)
                         document.getElementById('table').innerHTML = makeTableHTML(tab);
                         quest.reponseInput(quest.options[textrand]);
-                        quest.repSoum(tab, quest);
+                        quest.repSoum(tab, quest, textrand);
+
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        bouttons.unshift("Aucun gagnant")
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat, quest, textrand) {
+                        var matclean = [];
+                        var matcleantransp = [];
+                        var opt = [];
+                        var res = [];
+                        var cont = 0;
+                        for (i of mat) {
+                            i.shift();
+                            matclean.push(i);
+                        }
+                        for (let i = 0; i < matclean[0].length; i++) {
+                            matcleantransp.push([]);
+                            for (let y = 0; y < matclean.length; y++) {
+                                matcleantransp[i][y] = matclean[y][i]
+                            }
+                        }
+                        for (i in quest.options[textrand]) {
+                            res[i] = opt[i] = quest.options[textrand][i];
+                        }
+                        for (let i = 0; i < opt.length; i++) {
+                            var elem1 = opt[i];
+                            for (let y = i + 1; y < opt.length; y++) {
+                                var elem2 = opt[y];
+                                var scoreElem1 = 0;
+                                var scoreElem2 = 0;
+                                for (let w = 0; w < matcleantransp.length; w++) {
+                                    if (matcleantransp[w].indexOf(elem1) < matcleantransp[w].indexOf(elem2)) {
+                                        scoreElem1 = scoreElem1 + Number(matcleantransp[w][0])
+                                    } else {
+                                        scoreElem2 = scoreElem2 + Number(matcleantransp[w][0])
+                                    }
+                                }
+                                if (scoreElem1 > scoreElem2) {
+                                    res = res.filter(e => e !== elem2);
+                                } else {
+                                    res = res.filter(e => e !== elem1);
+                                }
+                                cont++
+                            }
+                        }
+                        if (res.length == 0) {
+                            reponse = "Aucun gagnant"
+                        } else {
+                            reponse = res[0];
+                        }
+                        console.log(reponse)
+                    },
+                    texte: ["Les élèves de secondaire 5 doivent choisir une activité récompense. Détermine le choix gagnant à l'aide de la méthode de condorcet."],
+                    options: [["Bungee", "Ski alpin", "Paintball"]],
+                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Bungee", "Ski alpin", "Paintball"], ["Deuxième choix", "Paintball", "Bungee", "Ski alpin"], ["Troisième choix", "Ski alpin", "Paintball", "Bungee"]]
+                },
+                {
+                    type: "borda",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [45],
+                    varmin: [5],
+                    vardiv: ["Nombre de sièges"],
+                    lenq: function () { return (4) },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        var bob = tab[0].shift()
+                        tab[0].sort(function (a, b) { return b - a })
+                        tab[0].unshift(bob)
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.reponseInput(quest.options[textrand]);
+                        quest.repSoum(tab, quest, textrand);
 
                     },
                     reponseInput: function creerbouton(bouttons) {
@@ -430,45 +535,123 @@
                         }
                         document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
                     },
-                    testSoum: function testSoum(tab) {
-                        var repEleve = [];
-                        for (let z = 0; z < tab[0].length - 1; z++) {
-                            repEleve[z] = Number(document.getElementById(tab[0][z + 1]).value);
-                        }
-                        return (arraysEqual(repEleve, reponse))
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
                     },
-                    repSoum: function repSoum(mat, quest) {
-                        var matclean = []
+                    repSoum: function repSoum(mat, quest, textrand) {
+                        var matclean = [];
+                        var matcleantransp = [];
+                        var res = [];
+                        var cont = 0;
                         for (i of mat) {
-                            i.shift(
-                                matclean.push(i))
+                            i.shift();
+                            matclean.push(i);
                         }
-                        for (i in quest.options) {
-                            for()
+                        for (let i = 0; i < matclean[0].length; i++) {
+                            matcleantransp.push([]);
+                            for (let y = 0; y < matclean.length; y++) {
+                                matcleantransp[i][y] = matclean[y][i]
+                            }
                         }
-                        console.log(matclean)
+                        for (y in quest.options[textrand]) {
+                            res.push(0)
+                        }
+
+                        console.log(matcleantransp)
+                        for (let i = 0; i < matcleantransp.length; i++) {
+                            for (y of quest.options[textrand]) {
+                                res[quest.options[textrand].indexOf(y)] += ((4 - (matcleantransp[i].indexOf(y))) * Number(matcleantransp[i][0]))
+                            }
+                        }
+                        reponse = quest.options[textrand][res.indexOf(max(res))]
                     },
-                    texte: ["Les élèves de secondaire 5 doivent choisir une activité récompense. Détermine le choix gagnant à l'aide de la méthode de condorcet."],
-                    options: [["Bungee", "Ski alpin", "Paintball"]],
-                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Bungee", "Ski alpin", "Paintball"], ["Deuxième choix", "Ski alpin", "Bungee", "Bungee"], ["Troisième choix", "Paintball", "Paintball", "Ski alpin"]]
+                    texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode de borda."],
+                    options: [["Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"]],
+                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]
+                },
+                {
+                    type: "élimination",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [45],
+                    varmin: [5],
+                    vardiv: ["Nombre de sièges"],
+                    lenq: function () { return (4) },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        var bob = tab[0].shift()
+                        tab[0].sort(function (a, b) { return b - a })
+                        tab[0].unshift(bob)
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.reponseInput(quest.options[textrand]);
+                        quest.repSoum(tab, quest, textrand);
+
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat, quest, textrand) {
+                        var matclean = [];
+                        var matcleantransp = [];
+                        var res = [];
+                        var cont = 0;
+                        score = 0;
+                        for (i of mat) {
+                            i.shift();
+                            matclean.push(i);
+                        }
+
+                        matcleantransp = transpose(matclean);
+                        console.log(matclean)
+                        console.log(matcleantransp)
+
+                        //console.log(matclean[0][matclean[0].indexOf(String(min(matclean[0])))])
+                        while (score < 2) {
+                            matcleantransp = transpose(matclean)
+                            for (y of quest.options[textrand]) {
+                                res.push(matclean[0][matclean[1].indexOf(y)])
+                            }
+                            if (score < 5) {
+                                var index = matclean[0].indexOf(String(min(res)))
+                                matcleantransp[index].splice(1, 1)
+                                matclean = transpose(matcleantransp)
+                            }
+                            console.log(matclean)
+                            console.log(matcleantransp)
+                            score++;
+                        }
+
+                        reponse = quest.options[textrand][res.indexOf(max(res))]
+                    },
+                    texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode de borda."],
+                    options: [["Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"]],
+                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]
                 }
             ]
             var qarr = [];
 
             resetquestion()
 
-            var total = 4;
+            var total = 1;
             var erreurs = 0;
             var reussi = 0;
             var nbEssais = 0;
             var qtexte = null;
-            var diffq = 0;
-            var qpretty = null;
             var rand;
             var reponse = null;
             var question = null;
             var table = [];
-
 
             document.getElementById('reussi').value = reussi
             document.getElementById('erreurs').value = erreurs
@@ -476,14 +659,7 @@
 
             button = document.getElementById('bouttonSoum')
 
-            const expr1 = []
-            const expr2 = []
-
             nouvelleQ()
-
-            const result = []
-            let parenthesis = 'keep'
-            let implicit = 'hide'
 
         </script>
 
