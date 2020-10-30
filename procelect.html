@@ -230,7 +230,7 @@
 
             function transpose(array) {
                 var matcleantransp = [];
-                for (let i = 0; i < array.length; i++) {
+                for (let i = 0; i < array[0].length; i++) {
                     matcleantransp.push([]);
                     for (let y = 0; y < array.length; y++) {
                         matcleantransp[i][y] = array[y][i]
@@ -612,26 +612,21 @@
                             matclean.push(i);
                         }
 
-                        matcleantransp = transpose(matclean);
                         console.log(matclean)
                         console.log(matcleantransp)
-
                         //console.log(matclean[0][matclean[0].indexOf(String(min(matclean[0])))])
                         while (score < 2) {
                             matcleantransp = transpose(matclean)
+                            res = []
                             for (y of quest.options[textrand]) {
                                 res.push(matclean[0][matclean[1].indexOf(y)])
                             }
                             if (score < 5) {
-                                var index = matclean[0].indexOf(String(min(res)))
-                                matcleantransp[index].splice(1, 1)
-                                matclean = transpose(matcleantransp)
-                            }
-                            console.log(matclean)
-                            console.log(matcleantransp)
-                            score++;
-                        }
+                                var perd = matclean[1][matclean[0].indexOf(String(min(res)))]
 
+                                score++;
+                            }
+                        }
                         reponse = quest.options[textrand][res.indexOf(max(res))]
                     },
                     texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode de borda."],
