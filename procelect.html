@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Procédures électorales</title>
+    <title>Problèmes textuels</title>
 
     <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
     <script
@@ -22,15 +22,20 @@
         <h2 id="prob"></h2>
         <h2 id="table"></h2>
     </div>
-    <h2 id=tableRep></h2>
+    <h2 id="tableRep"></h2>
     <h3 id="expr1"></h3>
     <h2>
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
         <br>Erreurs : <output id="erreurs"></output>
+        <div>
+            <h2 id="radiobutton"></h2>
+        </div>
 
         <script>
 
             nouvelleQ = function () {
+                
+
                 rand = Math.floor(Math.random() * qarr.length);
                 //rand = 6;
                 question = qlib[qarr[rand]];
@@ -48,7 +53,6 @@
                     }
                     table[z] = nrem;
                 }
-
 
                 for (i of variabtext) {
                     var regex = RegExp(i[0], i[1]);
@@ -202,6 +206,7 @@
                 var result = "<table align=center>";
                 result += "<tr>";
                 for (var i = 0; i < myArray.length; i++) {
+                    console.log(myArray[i])
                     result += "<td>" + myArray[i] + "</td>";
                 }
                 result += "</tr>";
@@ -241,7 +246,7 @@
 
             var qlib = [
                 {
-                    type: "pluralité",
+                    type: "Pluralité",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [25, 200, 8],
@@ -278,7 +283,7 @@
                     table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
                 },
                 {
-                    type: "assentiment",
+                    type: "Assentiment",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [25, 200, 8],
@@ -315,7 +320,7 @@
                     table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
                 },
                 {
-                    type: "majorité",
+                    type: "Majorité",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [25, 200, 8],
@@ -360,7 +365,7 @@
                     table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
                 },
                 {
-                    type: "proportionnel",
+                    type: "Proportionnel",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [1000],
@@ -423,7 +428,7 @@
                     table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
                 },
                 {
-                    type: "condorcet",
+                    type: "Condorcet",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [45],
@@ -507,7 +512,7 @@
                     table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Bungee", "Ski alpin", "Paintball"], ["Deuxième choix", "Paintball", "Bungee", "Ski alpin"], ["Troisième choix", "Ski alpin", "Paintball", "Bungee"]]
                 },
                 {
-                    type: "borda",
+                    type: "Borda",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [45],
@@ -570,7 +575,7 @@
                     table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]
                 },
                 {
-                    type: "élimination",
+                    type: "Élimination",
                     variables: [["options", 'g'], ["varnum", '']],
                     varnom: [""],
                     varmax: [45],
@@ -631,9 +636,9 @@
                         reponse = quest.options[textrand][res.indexOf(String(max(res)))]
                         console.log(reponse)
                     },
-                    texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode par elimination."],
-                    options: [["Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"]],
-                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]
+                    texte: ["Un groupe d'élève veulent commander de la pizza. Détermine la sorte gagnante à l'aide de la méthode par elimination."],
+                    options: [["Pepperoni", "Hawaïenne", "Végétarienne"]],
+                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pepperoni", "Hawaïenne", "Végétarienne"], ["Deuxième choix", "Végétarienne", "Pepperoni", "Hawaïenne"], ["Troisième choix", "Hawaïenne", "Végétarienne", "Pepperoni"]]
                 }
             ]
             var qarr = [];
@@ -649,6 +654,13 @@
             var reponse = null;
             var question = null;
             var table = [];
+
+            var mat = [];
+            for (let z = 0; z < qlib.length; z++) {
+                mat[z] = `<input type="checkbox" name="${qlib[z].type}" id='${qlib[z].type}' checked = "checked">${qlib[z].type}`
+            }
+            console.log(mat.l)
+            document.getElementById('radiobutton').innerHTML = makeTableHTMLRep(mat)
 
             document.getElementById('reussi').value = reussi
             document.getElementById('erreurs').value = erreurs
