@@ -25,6 +25,7 @@
     <h2 id="tableRep"></h2>
     <h3 id="expr1"></h3>
     <h2>
+        <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
         <br>Progression : <output id="reussi"></output> / <output id="total"></output>
         <br>Erreurs : <output id="erreurs"></output>
         <div>
@@ -56,10 +57,10 @@
                     }
                     table[z] = nrem;
                 }
-
                 for (i of variabtext) {
                     var regex = RegExp(i[0], i[1]);
                     var remplarr = [];
+
                     try {
                         var varlen = question[i[0]][textrand].length
                         var varib = question[i[0]][textrand]
@@ -278,7 +279,7 @@
                     varnom: [""],
                     varmax: [25, 200, 8],
                     varmin: [],
-                    qlen: 3,
+                    qlen: 2,
                     lenq: function (qtable) {
                         return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
                     },
@@ -309,7 +310,7 @@
                             `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à pluralité. Détermine la chanson gagnante.`,
                             `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à pluralité. Détermine la destination gagnante.`][textrand])
                     },
-                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
                     table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
@@ -318,7 +319,7 @@
                     varnom: [""],
                     varmax: [25, 200, 8],
                     varmin: [],
-                    qlen: 3,
+                    qlen: 2,
                     lenq: function (qtable) {
                         return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
                     },
@@ -349,7 +350,7 @@
                             `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote par assentiement. Détermine la chanson gagnante.`,
                             `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote par assentiement. Détermine la destination gagnante.`][textrand])
                     },
-                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
                     table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
@@ -358,7 +359,7 @@
                     varnom: [""],
                     varmax: [25, 200, 8],
                     varmin: [],
-                    qlen: 3,
+                    qlen: 2,
                     lenq: function (qtable) {
                         return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
                     },
@@ -397,7 +398,7 @@
                             `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à majorité. Détermine la chanson gagnante.`,
                             `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à majorité. Détermine la destination gagnante.`][textrand])
                     },
-                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
                     table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
@@ -528,10 +529,8 @@
                         }
                         for (let i = 0; i < opt.length; i++) {
                             var elem1 = opt[i];
-                            console.log(elem1)
                             for (let y = i + 1; y < opt.length; y++) {
                                 var elem2 = opt[y];
-                                console.log(elem2)
                                 var scoreElem1 = 0;
                                 var scoreElem2 = 0;
                                 for (let w = 0; w < matcleantransp.length; w++) {
@@ -541,12 +540,13 @@
                                         scoreElem2 = scoreElem2 + Number(matcleantransp[w][0])
                                     }
                                 }
-                                console.log(scoreElem1)
-                                console.log(scoreElem2)
                                 if (scoreElem1 > scoreElem2) {
                                     res = res.filter(e => e !== elem2);
+                                } else if (scoreElem2 > scoreElem1) {
+                                    res = res.filter(e => e !== elem1);
                                 } else {
                                     res = res.filter(e => e !== elem1);
+                                    res = res.filter(e => e !== elem2);
                                 }
                             }
                         }
@@ -582,7 +582,7 @@
                     varmax: [45, 3000],
                     varmin: [5, 1],
                     vardiv: ["Nombre de sièges"],
-                    qlen: 2,
+                    qlen: 1,
                     lenq: function () { return (4) },
                     varnum: function (max, min) {
                         var arr = Array.from(Array(max).keys())
