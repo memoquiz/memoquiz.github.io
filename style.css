@@ -147,12 +147,31 @@ textarea:focus, input:focus{
     width: 100%;
 }
 
+.button5 {
+    font-family: arial;
+    background-color: rgb(140, 140, 140);
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1vw;
+    margin: 2px;
+    cursor: pointer;
+    width: 100%;
+}
+
 .button1:hover {
     background-color: rgb(64, 211, 69); /* Green */
 }
 
 .button3:hover {
     background-color: rgb(64, 211, 69); /* Green */
+}
+
+.button5:hover {
+    background-color: rgb(50, 50, 50); 
 }
 
 table{
@@ -221,6 +240,3 @@ canvas {
     display: block;
 }
 
-input[type="checkbox"]{
-    -webkit-appearance: radio;
-}

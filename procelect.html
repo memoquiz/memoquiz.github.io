@@ -34,20 +34,30 @@
         <script>
 
             nouvelleQ = function () {
-                
-
-                rand = Math.floor(Math.random() * qarr.length);
-                //rand = 6;
-                question = qlib[qarr[rand]];
+                if (arguments.length == 1) {
+                    rand = arguments[0]
+                } else {
+                    rand = qarr[Math.floor(Math.random() * qarr.length)];
+                }
+                question = qlib[rand];
                 table = [];
 
                 var variabtext = question.variables;
                 var textrand = Math.floor(Math.random() * question.texte.length);
-                var lenq = question.lenq(question.table);
+                var qtab = question.table(question);
 
-                for (let z = 0; z < question.table.length; z++) {
-                    var nrem = question.table[z];
-                    var lentab = Number(question.table[z].length)
+                // for (let z = 0; z < question.table.length; z++) {
+                //     qtab.push([])
+                //     for (let i = 0; i < question.table[z].length; i++) {
+                //         qtab[z][i] = String(question.table[z][i]);
+                //     }
+                // }
+
+                var lenq = question.lenq(qtab);
+
+                for (let z = 0; z < qtab.length; z++) {
+                    var nrem = qtab[z];
+                    var lentab = qtab[z].length
                     for (let y = 0; y < (lentab - lenq); y++) {
                         nrem.pop();
                     }
@@ -64,18 +74,17 @@
                         var varib = question[i[0]](question.varmax[textrand], question.varmin[textrand])
                         var varlen = varib.length
                     }
-
                     for (let y = 0; y < varlen; y++) {
                         remplarr[y] = y;
                     }
 
-                    for (let z = 0; z < question.table.length; z++) {
+                    for (let z = 0; z < qtab.length; z++) {
                         for (let w = 0; w < lenq; w++) {
-                            if (question.table[z][w].match(regex)) {
+                            if (qtab[z][w].match(regex)) {
                                 var rand2 = Math.floor(Math.random() * remplarr.length);
                                 var rempl = varib[remplarr[rand2]];
                                 remplarr.splice(rand2, 1);
-                                table[z][w] = question.table[z][w].replace(regex, rempl);
+                                table[z][w] = qtab[z][w].replace(regex, rempl);
                             }
                         }
                     }
@@ -91,7 +100,11 @@
                 if (succes == true) {
                     if (nbEssais == 0) {
                         reussi++
-                        qarr.splice(rand, 1)
+                        qarr.splice(qarr.indexOf(rand), 1)
+                        if (qarr.length == 0) {
+                            resetquestion();
+                        }
+
                     }
                     nbEssais = 0
                     if (reussi < total) {
@@ -147,8 +160,8 @@
             }
 
             resetquestion = function () {
-                for (let i = 0; i < qlib.length; i++) {
-                    qarr[i] = i
+                for (let i = 0; i < qliste.length; i++) {
+                    qarr[i] = qliste[i]
                 }
             }
 
@@ -206,7 +219,6 @@
                 var result = "<table align=center>";
                 result += "<tr>";
                 for (var i = 0; i < myArray.length; i++) {
-                    console.log(myArray[i])
                     result += "<td>" + myArray[i] + "</td>";
                 }
                 result += "</tr>";
@@ -242,6 +254,29 @@
                     }
                 }
                 return (matcleantransp);
+            }
+
+            function enlever(z) {
+                console.log(qliste)
+                if (qarr.indexOf(z) != -1) {
+                    qarr.splice(qarr.indexOf(z), 1);
+                } else {
+                    qarr.push(z);
+                    qarr.sort()
+                }
+                if (qliste.indexOf(z) != -1) {
+                    document.getElementById(qlib[z].type).style.backgroundColor = "rgb(50, 50, 50)";
+                    qliste.splice(qliste.indexOf(z), 1);
+                    if (rand == z) {
+                        nouvelleQ();
+                    }
+                } else {
+                    document.getElementById(qlib[z].type).style.backgroundColor = "rgb(140, 140, 140)";
+                    qliste.push(z);
+                    qliste.sort()
+                    console.log(qliste)
+                    nouvelleQ(z);
+                }
             }
 
             var qlib = [
@@ -280,7 +315,7 @@
                         `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à pluralité. Détermine la chanson gagnante.`,
                         `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à pluralité. Détermine la destination gagnante.`],
                     options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
-                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
                     type: "Assentiment",
@@ -313,11 +348,11 @@
                         reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
                         console.log(reponse)
                     },
-                    texte: [`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote par assentiement. Détermine le ou la gagnante.`,
+                    texte: [`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote par assentiment. Détermine le ou la gagnante.`,
                         `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote par assentiement. Détermine la chanson gagnante.`,
                         `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote par assentiement. Détermine la destination gagnante.`],
                     options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
-                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
                     type: "Majorité",
@@ -362,7 +397,7 @@
                         `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à majorité. Détermine la chanson gagnante.`,
                         `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à majorité. Détermine la destination gagnante.`],
                     options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "L'hymne à la joie"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
-                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
                     type: "Proportionnel",
@@ -425,7 +460,7 @@
                     },
                     texte: ["Voici les résultat de l'élection à la mairie de Saint-creux-les-profonds. Il y a ndiv postes à pourvoir. Détermine la distributions des sièges."],
                     options: [["Saint-creux solidaire", "Profond et fier", "Parti creumuniste", "Parti Giraffe", "Alliance creuse", "Creuse!"]],
-                    table: [["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
                 },
                 {
                     type: "Condorcet",
@@ -509,7 +544,7 @@
                     },
                     texte: ["Les élèves de secondaire 5 doivent choisir une activité récompense. Détermine le choix gagnant à l'aide de la méthode de condorcet."],
                     options: [["Bungee", "Ski alpin", "Paintball"]],
-                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Bungee", "Ski alpin", "Paintball"], ["Deuxième choix", "Paintball", "Bungee", "Ski alpin"], ["Troisième choix", "Ski alpin", "Paintball", "Bungee"]]
+                    table: function () { return ([["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Bungee", "Ski alpin", "Paintball"], ["Deuxième choix", "Paintball", "Bungee", "Ski alpin"], ["Troisième choix", "Ski alpin", "Paintball", "Bungee"]]) }
                 },
                 {
                     type: "Borda",
@@ -561,8 +596,6 @@
                         for (y in quest.options[textrand]) {
                             res.push(0)
                         }
-
-                        console.log(matcleantransp)
                         for (let i = 0; i < matcleantransp.length; i++) {
                             for (y of quest.options[textrand]) {
                                 res[quest.options[textrand].indexOf(y)] += ((4 - (matcleantransp[i].indexOf(y))) * Number(matcleantransp[i][0]))
@@ -572,7 +605,7 @@
                     },
                     texte: ["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode de borda."],
                     options: [["Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"]],
-                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]
+                    table: function () { return ([["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Deuxième choix", "Roger Junior", "Pénélope Chanteclair", "Yvan Ducash"], ["Troisième choix", "Yvan Ducash", "Roger Junior", "Pénélope Chanteclair"]]) }
                 },
                 {
                     type: "Élimination",
@@ -618,9 +651,13 @@
                         }
                         while (score <= 0.5) {
                             matcleantransp = transpose(matclean)
-                            res = []
+                            res = [0, 0, 0]
                             for (y of quest.options[textrand]) {
-                                res.push(matclean[0][matclean[1].indexOf(y)])
+                                for (let z = 0; z < matclean[1].length; z++) {
+                                    if (matclean[1][z] == y) {
+                                        res[quest.options[textrand].indexOf(y)] += Number(matclean[0][z])
+                                    }
+                                }
                             }
                             score = max(res) / sum(res)
                             if (score <= 0.5) {
@@ -633,39 +670,56 @@
                                 matclean = transpose(matcleantransp)
                             }
                         }
-                        reponse = quest.options[textrand][res.indexOf(String(max(res)))]
+                        console.log(res)
+                        reponse = quest.options[textrand][res.indexOf((max(res)))]
                         console.log(reponse)
                     },
                     texte: ["Un groupe d'élève veulent commander de la pizza. Détermine la sorte gagnante à l'aide de la méthode par elimination."],
                     options: [["Pepperoni", "Hawaïenne", "Végétarienne"]],
-                    table: [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix", "Pepperoni", "Hawaïenne", "Végétarienne"], ["Deuxième choix", "Végétarienne", "Pepperoni", "Hawaïenne"], ["Troisième choix", "Hawaïenne", "Végétarienne", "Pepperoni"]]
+                    table: function (question) {
+                        var opts = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 1, 0], [2, 0, 1]]
+                        var opts = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 1, 0], [2, 0, 1]]
+                        var tab = [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix"], ["Deuxième choix"], ["Troisième choix"]]
+                        while (opts.length > tab.length - 1) {
+                            opts.splice([Math.floor(Math.random() * opts.length)], 1)
+                        }
+                        for (let z = 1; z < tab.length; z++) {
+                            for (let u = 0; u < opts.length; u++) {
+                                tab[z][u + 1] = question.options[0][opts[u][z - 1]]
+                            }
+                        }
+                        return (tab)
+                    }
                 }
             ]
+
             var qarr = [];
-
-            resetquestion()
-
-            var total = 6;
+            var qliste = [];
+            var total = 30;
             var erreurs = 0;
             var reussi = 0;
             var nbEssais = 0;
             var qtexte = null;
             var rand;
             var reponse = null;
-            var question = null;
             var table = [];
-
             var mat = [];
-            for (let z = 0; z < qlib.length; z++) {
-                mat[z] = `<input type="checkbox" name="${qlib[z].type}" id='${qlib[z].type}' checked = "checked">${qlib[z].type}`
-            }
-            console.log(mat.l)
-            document.getElementById('radiobutton').innerHTML = makeTableHTMLRep(mat)
 
+
+            for (let i = 0; i < qlib.length; i++) {
+                qliste[i] = i;
+            }
+
+            resetquestion()
+
+            for (let z = 0; z < qlib.length; z++) {
+                mat[z] = `<input type="button" class="button5" value="${qlib[z].type}" id='${qlib[z].type}' onclick = "enlever(${z})">`
+            }
+
+            document.getElementById('radiobutton').innerHTML = makeTableHTMLRep(mat)
             document.getElementById('reussi').value = reussi
             document.getElementById('erreurs').value = erreurs
             document.getElementById('total').value = total
-
             button = document.getElementById('bouttonSoum')
 
             nouvelleQ()
