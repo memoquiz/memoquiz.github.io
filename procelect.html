@@ -466,7 +466,7 @@
                     },
                     texte: function (quest, textrand) {
                         quest.ndiv = Math.floor(Math.random() * 101 + 7);
-                        var texte = ["Voici les résultat de l'élection à la mairie de Saint-creux-les-profonds. Il y a ndiv postes à pourvoir. Détermine la distributions des sièges."]
+                        var texte = ["Voici les résultat de l'élection à la mairie de Saint-creux-les-profonds. Il y a ndiv postes à pourvoir. Détermine la distributions des sièges à l'aide du scrutin proportionnel."]
                         var bob = texte[textrand]
                         return (bob.replace("ndiv", quest.ndiv))
                     },
