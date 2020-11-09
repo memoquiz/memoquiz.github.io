@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+
+    </style>
+    <script src="/scripts/snippet-javascript-console.min.js?v=1"></script>
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <SCRIPT src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></SCRIPT>
+
+    <DIV id="graph_coords"></DIV>
+    <DIV class="chart-container" style="position: relative; height:40vh; width:80vw;">
+        <CANVAS id="graph_1" style="background-color: #CBCBCB;"></CANVAS>
+    </DIV>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ctx = $("#graph_1");
+            var dataArray = [];
+
+            var myChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: "test",
+                        fill: false,
+                        data: dataArray
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Test Graph'
+                    },
+                    animation: {
+                        duration: 0,
+                    }, // general animation time
+                    hover: {
+                        animationDuration: 0,
+                    }, // duration of animations when hovering an item
+                    responsiveAnimationDuration: 0, // animation duration after a resize
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            ticks: {
+                                min: -10,
+                                max: 10,
+                                stepSize: 1
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'x axis label'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            ticks: {
+                                min: -10,
+                                max: 10,
+                                stepSize: 1
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'y axis label'
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            // Use the footer callback to display the sum of the items showing in the tooltip
+                            footer: function (tooltipItems, data) {
+                                //return 'x:' + this._eventPosition.x + ' y:' + this._eventPosition.y;
+                            },
+                        },
+                        footerFontStyle: 'normal'
+                    },
+                }
+
+            });
+
+            ctx.click(function (evt) {
+                console.log("bob")
+                var ytop = myChart.chartArea.top;
+                var ybottom = myChart.chartArea.bottom;
+                var ymin = myChart.scales['y-axis-1'].min;
+                var ymax = myChart.scales['y-axis-1'].max;
+                var newy = '';
+                var showstuff = 0;
+                if (evt.offsetY <= ybottom && evt.offsetY >= ytop) {
+                    newy = Math.abs((evt.offsetY - ytop) / (ybottom - ytop));
+                    newy = (newy - 1) * -1;
+                    newy = newy * (Math.abs(ymax - ymin)) + ymin;
+                    showstuff = 1;
+                }
+                var xtop = myChart.chartArea.left;
+                var xbottom = myChart.chartArea.right;
+                var xmin = myChart.scales['x-axis-1'].min;
+                var xmax = myChart.scales['x-axis-1'].max;
+                var newx = '';
+                if (evt.offsetX <= xbottom && evt.offsetX >= xtop && showstuff == 1) {
+                    newx = Math.abs((evt.offsetX - xtop) / (xbottom - xtop));
+                    newx = newx * (Math.abs(xmax - xmin)) + xmin;
+                    dataArray.push({ x: newx, y: newy })
+                    myChart.update()
+                    console.log(dataArray)
+
+                }
+                if (newy != '' && newx != '') {
+                    //console.log(newx + ',' + newy);
+                    $("#graph_coords").html('Mouse Coordinates: ' + newx.toFixed(2) + ',' + newy.toFixed(2));
+                }
+            });
+        });
+
+
+
+    </script>
+</body>
+
+</html>
