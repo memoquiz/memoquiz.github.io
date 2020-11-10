@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Procédures électorales</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>
+        Résous le problème suivant
+    </h1>
+    <div>
+        <h2 id="prob"></h2>
+        <h2 id="table"></h2>
+    </div>
+    <h2 id="tableRep"></h2>
+    <h3 id="expr1"></h3>
+    <h2>
+        <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
+        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+        <br>Erreurs : <output id="erreurs"></output>
+        <div>
+            <h2 id="radiobutton"></h2>
+        </div>
+
+        <script>
+
+            nouvelleQ = function () {
+
+                question.createQuestion()
+                update()
+            }
+
+            soum = function (repEleve) {
+                var succes = question.testSoum(table, repEleve);
+                var button = document.getElementById(repEleve)
+                if (succes == true) {
+                    if (nbEssais == 0) {
+                        reussi++
+                    }
+                    nbEssais = 0
+                    if (reussi < total) {
+                        nouvelleQ()
+                        button.style.backgroundColor = "#4CAF50"
+                        button.value = "Soumettre"
+
+                    } else {
+                        if (reussi / total > 0.8) {
+                            document.getElementById('table').innerHTML = '';
+                            document.getElementById('prob').innerHTML = 'Bravo!'
+                        } else {
+                            document.getElementById('prob').innerHTML = 'Tu as besoin de plus de pratique on dirait'
+                        }
+                        document.getElementById('tableRep').innerHTML = '<input type="button" class="button3" value="Recommancer?" id="Recommencer" style.backgroundColor = "#4CAF50" onclick="setTimeout(function(){recommencer()},100)">'
+                        update()
+                    }
+                } else {
+                    nbEssais = 1
+                    button.style.backgroundColor = "red"
+                    erreurs++
+                    update()
+
+                }
+
+            }
+
+            recommencer = function () {
+                location.reload();
+                return false;
+            }
+
+            update = function () {
+                document.getElementById('reussi').value = reussi
+                document.getElementById('erreurs').value = erreurs
+                document.getElementById('total').value = total
+            }
+
+            function arraysEqual(a, b) {
+                if (a === b) return true;
+                if (a == null || b == null) return false;
+                if (a.length !== b.length) return false;
+
+                // If you don't care about the order of the elements inside
+                // the array, you should sort both arrays here.
+                // Please note that calling sort on an array will modify that array.
+                // you might want to clone your array first.
+
+                for (var i = 0; i < a.length; ++i) {
+                    if (a[i] !== b[i]) return false;
+                }
+                return true;
+            }
+
+
+            var qlib = [
+                {
+                    type: "Pluralité",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varmax: [25],
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys()) + 1))
+                    },
+                    createQuestion: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length - 1; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat) {
+                        reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        console.log(reponse)
+                    },
+                    texte: function (quest, textrand) {
+                        return ([`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote à pluralité. Détermine le ou la gagnante.`,
+                            `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à pluralité. Détermine la chanson gagnante.`,
+                            `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à pluralité. Détermine la destination gagnante.`][textrand])
+                    },
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
+                }
+            ]
+
+            var qarr = [];
+            var qliste = [];
+            var total = 30;
+            var erreurs = 0;
+            var reussi = 0;
+            var nbEssais = 0;
+            var qtexte = null;
+            var rand;
+            var reponse = null;
+            var table = [];
+            var mat = [];
+
+            for (let i = 0; i < qlib.length; i++) {
+                qliste[i] = i;
+            }
+
+            resetquestion()
+
+            for (let z = 0; z < qlib.length; z++) {
+                mat[z] = `<input type="button" class="button5" value="${qlib[z].type}" id='${qlib[z].type}' onclick = "enlever(${z})">`
+            }
+
+            document.getElementById('radiobutton').innerHTML = makeTableHTMLRep(mat)
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+            button = document.getElementById('bouttonSoum')
+
+            nouvelleQ()
+
+        </script>
+
+</body>
+
+</html>

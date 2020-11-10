@@ -13,13 +13,17 @@
     <SCRIPT src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></SCRIPT>
 
     <DIV id="graph_coords"></DIV>
-    <DIV class="chart-container" style="position: relative; height:40vh; width:80vw;">
+    <DIV class="chart-container" style="position: relative; height:50vh; width:50vw;">
         <CANVAS id="graph_1" style="background-color: #CBCBCB;"></CANVAS>
     </DIV>
     <script type="text/javascript">
         $(document).ready(function () {
             var ctx = $("#graph_1");
             var dataArray = [];
+            var dataArray2 = [];
+            var a = 0;
+            var b = 0;
+
 
             var myChart = new Chart(ctx, {
                 type: 'scatter',
@@ -28,12 +32,21 @@
                         label: "test",
                         fill: false,
                         data: dataArray
+                    }, {
+                        label: "test",
+                        borderColor: "blue",
+                        backgroundColor: "blue",
+                        fill: false,
+                        data: dataArray2
                     }]
                 },
                 options: {
                     title: {
                         display: true,
                         text: 'Test Graph'
+                    },
+                    legend: {
+                        display: false
                     },
                     animation: {
                         duration: 0,
@@ -84,7 +97,6 @@
             });
 
             ctx.click(function (evt) {
-                console.log("bob")
                 var ytop = myChart.chartArea.top;
                 var ybottom = myChart.chartArea.bottom;
                 var ymin = myChart.scales['y-axis-1'].min;
@@ -105,9 +117,19 @@
                 if (evt.offsetX <= xbottom && evt.offsetX >= xtop && showstuff == 1) {
                     newx = Math.abs((evt.offsetX - xtop) / (xbottom - xtop));
                     newx = newx * (Math.abs(xmax - xmin)) + xmin;
-                    dataArray.push({ x: newx, y: newy })
+                    if (dataArray.length < 2) {
+                        dataArray.push({ x: newx, y: newy })
+                    }
+                    if (dataArray.length == 2) {
+                        a = (dataArray[0].y - dataArray[1].y) / (dataArray[0].x - dataArray[1].x)
+                        b = dataArray[1].y - (dataArray[1].x * a)
+                        console.log(a, b)
+                        dataArray2.push({ x: -11, y: a * -11 + b })
+                        dataArray2.push({ x: 11, y: a * 11 + b })
+                    }
+
                     myChart.update()
-                    console.log(dataArray)
+                    console.log(dataArray2)
 
                 }
                 if (newy != '' && newx != '') {
