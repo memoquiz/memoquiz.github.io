@@ -254,3 +254,6 @@ canvas {
     display: block;
 }
 
+#chart1 {
+    margin: 0px auto;
+  }
