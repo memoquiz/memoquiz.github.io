@@ -21,17 +21,46 @@
         Résous le problème suivant
     </h1>
     <div>
-        <h2 id="prob"></h2>
-        <h2 id="table"></h2>
+        <h2 id="prob">Trace la droite suivante sur le plan cartésien suivant en plaçant 2 points.
+            <div id="pretty">$$$$</div>
+        </h2>
     </div>
-    <h2 id="tableRep"></h2>
-    <h3 id="expr1"></h3>
+    <div style="position: center; width:40vw;">
+        <CANVAS id="graph_1"
+            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 30vw; top:20vh; width:40vw;"></CANVAS>
+        <CANVAS id="poly"
+            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 30vw; top:20vh; width:40vw;"></CANVAS>
 
-    <DIV id="chart1" class="chart-container" style="position: center; height:340px; width:700px;">
-        <CANVAS id="graph_1" style="background-color: #CBCBCB;"></CANVAS>
-    </DIV>
+    </div>
+
     <h2>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <input type="button" class="button6" value="Ligne pleine" id='pleine' onclick="ligne(0)">
+        <input type="button" class="button6" value="Ligne pointilléee" id='pointilléee' onclick="ligne(1)"><br>
         <input type="button" class="button6" value="Soumettre" id='Soumettre' onclick="soum()">
+        <input type="button" class="button6" value="Effacer" id='Effacer'
+            onclick="setTimeout(function(){effacer()},200)">
         <br>
         <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
 
@@ -39,26 +68,54 @@
         <br>Erreurs : <output id="erreurs"></output>
     </h2>
     <script>
+        var ctx = $("#poly");
+        var qarr = [];
+        var qliste = [];
+        var total = 10;
+        var erreurs = 0;
+        var reussi = 0;
+        var nbEssais = 0;
+        var qtexte = null;
+        var rand;
+        var reponse = null;
+        var table = [];
+        var mat = [];
+        var arep = 0;
+        var brep = 0;
+        var a = 0;
+        var b = 0;
+        var dataArray = [];
+        var dataArray2 = [];
+        var dataArray3 = [];
+
+
+        var myChart;
+
+
+        canvas = document.getElementById('poly')
+        var poly = canvas.getContext('2d');
+
+        document.getElementById('reussi').value = reussi
+        document.getElementById('erreurs').value = erreurs
+        document.getElementById('total').value = total
+        var button = document.getElementById('Soumettre')
+
+
         $(document).ready(function () {
-            var ctx = $("#graph_1");
-            var dataArray = [];
-            var dataArray2 = [];
-            var a = 0;
-            var b = 0;
-
-
-            var myChart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: 'scatter',
                 data: {
                     datasets: [{
                         lineTension: 0,
                         backgroundColor: "black",
                         showline: false,
+                        borderDash: [0, 10],
                         fill: false,
                         data: dataArray
                     }, {
                         lineTension: 0,
                         borderColor: "grey",
+                        borderDash: [0, 0],
                         backgroundColor: "grey",
                         fill: false,
                         data: dataArray2
@@ -78,6 +135,8 @@
                         animationDuration: 0,
                     }, // duration of animations when hovering an item
                     responsiveAnimationDuration: 0, // animation duration after a resize
+                    maintainAspectRatio: true,
+                    aspectRatio: 1,
                     scales: {
                         xAxes: [{
                             display: true,
@@ -86,6 +145,7 @@
                                 max: 10,
                                 stepSize: 1
                             },
+
                             scaleLabel: {
                                 display: true,
                                 labelString: 'x'
@@ -113,59 +173,98 @@
                 }
 
             });
+        });
 
-            ctx.click(function (evt) {
-                var ytop = myChart.chartArea.top;
-                var ybottom = myChart.chartArea.bottom;
-                var ymin = myChart.scales['y-axis-1'].min;
-                var ymax = myChart.scales['y-axis-1'].max;
-                var newy = '';
-                var showstuff = 0;
-                if (evt.offsetY <= ybottom && evt.offsetY >= ytop) {
-                    newy = Math.abs((evt.offsetY - ytop) / (ybottom - ytop));
-                    newy = (newy - 1) * -1;
-                    newy = newy * (Math.abs(ymax - ymin)) + ymin;
-                    showstuff = 1;
+
+        ctx.click(function (evt) {
+            var ytop = myChart.chartArea.top;
+            var ybottom = myChart.chartArea.bottom;
+            var ymin = myChart.scales['y-axis-1'].min;
+            var ymax = myChart.scales['y-axis-1'].max;
+            var newy = '';
+            var showstuff = 0;
+            if (evt.offsetY <= ybottom && evt.offsetY >= ytop) {
+                newy = Math.abs((evt.offsetY - ytop) / (ybottom - ytop));
+                newy = (newy - 1) * -1;
+                newy = newy * (Math.abs(ymax - ymin)) + ymin;
+                showstuff = 1;
+
+            }
+
+            var xleft = myChart.chartArea.left;
+            var xright = myChart.chartArea.right;
+            var xmin = myChart.scales['x-axis-1'].min;
+            var xmax = myChart.scales['x-axis-1'].max;
+            var width = Math.abs(xright - xleft)
+            var newx = '';
+            if (evt.offsetX <= xright && evt.offsetX >= xleft && showstuff == 1) {
+                newx = Math.abs((evt.offsetX - xleft) / (xright - xleft));
+                newx = newx * (Math.abs(xmax - xmin)) + xmin;
+            }
+            if (dataArray.length < 2) {
+                dataArray.push({ x: newx, y: newy })
+            }
+
+            console.log(evt.offsetX, evt.offsetY)
+
+            if (dataArray.length == 2 & dataArray2.length == 0) {
+                a = (dataArray[0].y - dataArray[1].y) / (dataArray[0].x - dataArray[1].x)
+                var aper = 1 / -a
+                console.log(a, aper)
+                b = dataArray[1].y - (dataArray[1].x * a)
+                var dist = (Math.abs((500 - ytop) / (ybottom - ytop)) * (Math.abs(xmax - xmin)) + xmin) - (Math.abs((0 - ytop) / (ybottom - ytop)) * (Math.abs(xmax - xmin)) + xmin);
+                console.log(dist)
+                dataArray2.push({ x: -11, y: (a * -11) + b }, { x: 11, y: (a * 11) + b })
+                var y = 0;
+                var x1 = ((10 - b) / a)
+                var x2 = ((-10 - b) / a)
+                var distx = Math.abs(x1 - x2)
+                if (distx > 20) { distx = 20 }
+                while (y < 300) {
+                    var n = min([x1, x2]) + (y - 150) / 150 * distx * 1.1
+                    myChart.data.datasets.push({
+                        lineTension: 0,
+                        borderColor: 'rgba(0, 0, 250, 0.5)',
+                        borderDash: [0, 0],
+                        fill: false,
+                        pointRadius: 0,
+                        data: [{ x: n, y: (a * n) + b }, { x: -120 + n, y: (aper * -120 + n) + b }]
+                    })
+                    y++
                 }
-                var xtop = myChart.chartArea.left;
-                var xbottom = myChart.chartArea.right;
-                var xmin = myChart.scales['x-axis-1'].min;
-                var xmax = myChart.scales['x-axis-1'].max;
-                var newx = '';
-                if (evt.offsetX <= xbottom && evt.offsetX >= xtop && showstuff == 1) {
-                    newx = Math.abs((evt.offsetX - xtop) / (xbottom - xtop));
-                    newx = newx * (Math.abs(xmax - xmin)) + xmin;
-                    if (dataArray.length < 2) {
-                        dataArray.push({ x: newx, y: newy })
-                    }
-                    console.log(dataArray.length)
-                    if (dataArray.length == 2 & dataArray2.length == 0) {
-                        console.log(dataArray)
-                        a = (dataArray[0].y - dataArray[1].y) / (dataArray[0].x - dataArray[1].x)
-                        b = dataArray[1].y - (dataArray[1].x * a)
-                        console.log(a, b)
-                        dataArray2.push({ x: -11, y: (a * -11) + b }, { x: 11, y: (a * 11) + b })
-                    }
-                    console.log(dataArray2)
-                    myChart.update()
-                }
-            });
+            }
+            myChart.update()
+
         });
 
         nouvelleQ = function () {
             qlib.createQuestion(qlib)
-            // update()
+            document.getElementById("Soumettre").onclick = qlib.testSoum
+        }
+
+        function min(bob) {
+            var par = [];
+            var mat = [];
+            for (var i = 0; i < bob.length; i++) {
+                mat[i] = Number(bob[i])
+                if (!isNaN(mat[i])) {
+                    par.push(mat[i]);
+                }
+            }
+            return Math.min.apply(Math, par);
         }
 
         soum = function (repEleve) {
-            var succes = question.testSoum(table, repEleve);
-            if (succes == true) {
-                if (nbEssais == 0) {
-                    reussi++
-                }
-                nbEssais = 0
+            if (repEleve == true) {
+                dataArray = [];
+                dataArray2 = [];
+                myChart.update()
+                reussi++
+
                 if (reussi < total) {
+                    document.getElementById("Effacer").click();
                     nouvelleQ()
+                    update()
                     button.style.backgroundColor = "#4CAF50"
                     button.value = "Soumettre"
 
@@ -180,13 +279,33 @@
                     update()
                 }
             } else {
-                nbEssais = 1
                 button.style.backgroundColor = "red"
                 erreurs++
                 update()
-
             }
 
+        }
+
+        ligne = function (poly) {
+            if (poly == 1) {
+                myChart.data.datasets[1].borderDash = [10, 10];
+            } else {
+                myChart.data.datasets[1].borderDash = [0, 0];
+            }
+            myChart.update()
+
+        }
+
+        effacer = function () {
+            dataArray = [];
+            dataArray2 = [];
+            myChart.data.datasets[0].data = dataArray;
+            myChart.data.datasets[1].data = dataArray2;
+            console.log(myChart.data.datasets.length)
+            for (var i = 2; i < myChart.data.datasets.length; i++) {
+                myChart.data.datasets[i].data = null;
+            }
+            myChart.update();
         }
 
         recommencer = function () {
@@ -223,60 +342,43 @@
             varmax: [10],
             varmin: [1],
             varnum: function (max, min) {
-                return (shuffle(Array.from(Array(max).keys()) + min))
+                var arr = Array.from(Array(max).keys())
+                arr.splice(0, min)
+                for (i = 0; i < arr.length; i++) {
+                    if (Math.random() > 0.5) {
+                        arr[i] = -arr[i]
+                    }
+                }
+                return (shuffle(arr))
             },
             createQuestion: function (quest) {
                 var texte = quest.texte();
-                var varnums = quest.varnum(quest.varmax, quest.varmin)
+                var varnums = quest.varnum(quest.varmax[0], quest.varmin[0])
+                arep = varnums[0]
+                brep = varnums[1]
                 texte = texte.replace(/varpente/g, varnums[0])
                 texte = texte.replace(/ordor/g, varnums[1])
-                document.getElementById('prob').innerHTML = texte
+                texte = texte.replace(/\+\-/g, "-")
+                texte = texte.replace(/-1x/g, "-x")
+                document.getElementById('pretty').innerHTML = texte
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
             },
-            reponseInput: function creerbouton(bouttons) {
-                var mat = [];
-                for (let z = 0; z < bouttons.length - 1; z++) {
-                    mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
-                }
-                document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+            testSoum: function testSoum() {
+                soum(Math.abs((a - arep) / arep) < 0.2 && Math.abs((b - brep) / brep) < 0.2)
             },
-            testSoum: function testSoum(tab, repEleve) {
-                return (repEleve == reponse)
-            },
-            repSoum: function repSoum(mat) {
-                reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
-                console.log(reponse)
+            reussi: function reussi() {
+                dataArray = [];
+                dataArray2 = [];
+                myChart.update()
             },
             texte: function (quest, textrand) {
-                return ("Trace la droite suivante sur le plan cartésien suivant en plaçant 2 points.<br>y=varpentex+ordor")
+                return ("$$y=varpentex+ordor$$")
             },
         }
 
-        var qarr = [];
-        var qliste = [];
-        var total = 30;
-        var erreurs = 0;
-        var reussi = 0;
-        var nbEssais = 0;
-        var qtexte = null;
-        var rand;
-        var reponse = null;
-        var table = [];
-        var mat = [];
-
-        for (let i = 0; i < qlib.length; i++) {
-            qliste[i] = i;
-        }
-
-        for (let z = 0; z < qlib.length; z++) {
-            mat[z] = `<input type="button" class="button5" value="${qlib[z].type}" id='${qlib[z].type}' onclick = "enlever(${z})">`
-        }
-
-        document.getElementById('reussi').value = reussi
-        document.getElementById('erreurs').value = erreurs
-        document.getElementById('total').value = total
-        button = document.getElementById('bouttonSoum')
-
         nouvelleQ()
+
 
     </script>
 
