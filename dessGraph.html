@@ -175,6 +175,7 @@
             });
         });
 
+        var aper = null;
 
         ctx.click(function (evt) {
             var ytop = myChart.chartArea.top;
@@ -207,32 +208,53 @@
 
             console.log(evt.offsetX, evt.offsetY)
 
-            if (dataArray.length == 2 & dataArray2.length == 0) {
-                a = (dataArray[0].y - dataArray[1].y) / (dataArray[0].x - dataArray[1].x)
-                var aper = 1 / -a
-                console.log(a, aper)
-                b = dataArray[1].y - (dataArray[1].x * a)
-                var dist = (Math.abs((500 - ytop) / (ybottom - ytop)) * (Math.abs(xmax - xmin)) + xmin) - (Math.abs((0 - ytop) / (ybottom - ytop)) * (Math.abs(xmax - xmin)) + xmin);
-                console.log(dist)
-                dataArray2.push({ x: -11, y: (a * -11) + b }, { x: 11, y: (a * 11) + b })
+            if (dataArray2.length == 2) {
                 var y = 0;
-                var x1 = ((10 - b) / a)
-                var x2 = ((-10 - b) / a)
+                var x1 = ((10 - b) / a)     //val de x quand y = 10
+                var x2 = ((-10 - b) / a)    //val de x quand y = -10
+                var y1 = 10 * a + b         // val de y quand x = 10
+                var y2 = -10 * a + b        // val de y quand x = -10
+                var bounds = [x1, x2, y1, y2]
+                for (var i = 0; i < bounds.length; i++) {
+                    if (bounds[i] > 10) { bounds[i] = 10 }
+                    if (bounds[i] < -10) { bounds[i] = -10 }
+
+                }
+
+                var xmid = (bounds[0] + bounds[1]) / 2
+                var ymid = (bounds[2] + bounds[3]) / 2
+
+
                 var distx = Math.abs(x1 - x2)
-                if (distx > 20) { distx = 20 }
+                var val = null;
+
+                if (distx > 50) { distx = 50 }
+
+                if (newx * a + b > newy && (newy - b) / a > newx) { val = newx * 1000 } else { val = -120 }
                 while (y < 300) {
-                    var n = min([x1, x2]) + (y - 150) / 150 * distx * 1.1
+                    var n = min([bounds[0], bounds[1]]) - 2 + (y - 150) / 150 * distx * 2
                     myChart.data.datasets.push({
                         lineTension: 0,
                         borderColor: 'rgba(0, 0, 250, 0.5)',
                         borderDash: [0, 0],
+                        borderWidth: 3,
                         fill: false,
                         pointRadius: 0,
-                        data: [{ x: n, y: (a * n) + b }, { x: -120 + n, y: (aper * -120 + n) + b }]
+                        data: [{ x: n, y: (a * n) + b }, { x: val + n, y: (aper * val + n) + b }]
                     })
                     y++
                 }
             }
+
+            if (dataArray.length == 2 & dataArray2.length == 0) {
+                a = (dataArray[0].y - dataArray[1].y) / (dataArray[0].x - dataArray[1].x)
+                aper = 1 / -a
+                console.log(a, aper)
+                b = dataArray[1].y - (dataArray[1].x * a)
+                dataArray2.push({ x: -11, y: (a * -11) + b }, { x: 11, y: (a * 11) + b })
+            }
+
+
             myChart.update()
 
         });
