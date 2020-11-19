@@ -207,8 +207,9 @@
             }
 
             console.log(evt.offsetX, evt.offsetY)
-
-            if (dataArray2.length == 2) {
+            var draw = 0;
+            if (dataArray2.length == 2 && draw == 0) {
+                draw = 1;
                 var y = 0;
                 var x1 = ((10 - b) / a)     //val de x quand y = 10
                 var x2 = ((-10 - b) / a)    //val de x quand y = -10
@@ -223,6 +224,12 @@
 
                 var xmid = (bounds[0] + bounds[1]) / 2
                 var ymid = (bounds[2] + bounds[3]) / 2
+                var bper = ymid - aper * xmid
+                var xpointloin1 = (-Math.sqrt(aper ** 2 * (120 ** 2 - xmid ** 2) + bper * (2 * ymid - 2 * aper * xmid) + 2 * aper * xmid * ymid - bper ** 2 - ymid ** 2 + 120 ** 2) - aper * bper + aper * ymid + xmid) / (aper ** 2 + 1)
+                var ypointloin1 = aper * xpointloin1 + bper
+                var xpointloin2 = ((1 - aaper ** 2) * xpointloin + 2 * aper * ypointloin1 - 2 * aper * bper) / (aper ** 2 + 1)
+                var ypointloin1 = aper * xpointloin2 + bper
+
 
 
                 var distx = Math.abs(x1 - x2)
