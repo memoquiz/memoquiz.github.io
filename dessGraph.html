@@ -25,48 +25,28 @@
             <div id="pretty">$$$$</div>
         </h2>
     </div>
-    <div style="position: center; width:40vw;">
+    <div style="position: center; width:50vh;">
         <CANVAS id="graph_1"
-            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 30vw; top:20vh; width:40vw;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 37.5vw; top:20vh;"></CANVAS>
         <CANVAS id="poly"
-            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 30vw; top:20vh; width:40vw;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 37.5vw; top:20vh;"></CANVAS>
 
     </div>
+    <div style="position: absolute ;top:70vh; left: -10vw ;width: 80vw;">
+        <h2>
+            <input type="button" class="button6" value="Ligne pleine" id='pleine' onclick="ligne(0)">
+            <input type="button" class="button6" value="Ligne pointilléee" id='pointilléee' onclick="ligne(1)"><br>
+            <input type="button" class="button6" value="Soumettre" id='Soumettre' onclick="soum()">
+            <input type="button" class="button6" value="Effacer" id='Effacer'
+                onclick="setTimeout(function(){effacer()},200)">
+            <br>
+            <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
 
-    <h2>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <input type="button" class="button6" value="Ligne pleine" id='pleine' onclick="ligne(0)">
-        <input type="button" class="button6" value="Ligne pointilléee" id='pointilléee' onclick="ligne(1)"><br>
-        <input type="button" class="button6" value="Soumettre" id='Soumettre' onclick="soum()">
-        <input type="button" class="button6" value="Effacer" id='Effacer'
-            onclick="setTimeout(function(){effacer()},200)">
-        <br>
-        <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
+            <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+            <br>Erreurs : <output id="erreurs"></output>
+        </h2>
+    </div>
 
-        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
-        <br>Erreurs : <output id="erreurs"></output>
-    </h2>
     <script>
         var ctx = $("#poly");
         var qarr = [];
@@ -84,10 +64,13 @@
         var brep = 0;
         var a = 0;
         var b = 0;
+        var symbol;
         var dataArray = [];
         var dataArray2 = [];
         var dataArray3 = [];
-
+        var draw = 0;
+        var pointi = false;
+        var lowOrup;
 
         var myChart;
 
@@ -137,6 +120,7 @@
                     responsiveAnimationDuration: 0, // animation duration after a resize
                     maintainAspectRatio: true,
                     aspectRatio: 1,
+                    responsive: true,
                     scales: {
                         xAxes: [{
                             display: true,
@@ -206,40 +190,66 @@
                 dataArray.push({ x: newx, y: newy })
             }
 
-            console.log(evt.offsetX, evt.offsetY)
-            var draw = 0;
             if (dataArray2.length == 2 && draw == 0) {
                 draw = 1;
-                var y = 0;
+                var z = 0;
                 var x1 = ((10 - b) / a)     //val de x quand y = 10
-                var x2 = ((-10 - b) / a)    //val de x quand y = -10
                 var y1 = 10 * a + b         // val de y quand x = 10
+                var x2 = ((-10 - b) / a)    //val de x quand y = -10
                 var y2 = -10 * a + b        // val de y quand x = -10
-                var bounds = [x1, x2, y1, y2]
+
+                var bounds = [x1, y1, x2, y2]
                 for (var i = 0; i < bounds.length; i++) {
                     if (bounds[i] > 10) { bounds[i] = 10 }
                     if (bounds[i] < -10) { bounds[i] = -10 }
 
                 }
 
-                var xmid = (bounds[0] + bounds[1]) / 2
-                var ymid = (bounds[2] + bounds[3]) / 2
-                var bper = ymid - aper * xmid
-                var xpointloin1 = (-Math.sqrt(aper ** 2 * (120 ** 2 - xmid ** 2) + bper * (2 * ymid - 2 * aper * xmid) + 2 * aper * xmid * ymid - bper ** 2 - ymid ** 2 + 120 ** 2) - aper * bper + aper * ymid + xmid) / (aper ** 2 + 1)
-                var ypointloin1 = aper * xpointloin1 + bper
-                var xpointloin2 = ((1 - aaper ** 2) * xpointloin + 2 * aper * ypointloin1 - 2 * aper * bper) / (aper ** 2 + 1)
-                var ypointloin1 = aper * xpointloin2 + bper
 
+                if (a < 0) {
+                    var xmindraw = (b - (10 - aper * -10)) / (aper - a)
+                    var xmaxdraw = (b - (-10 - aper * 10)) / (aper - a)
+                } else {
+                    var xmindraw = (b - (-10 - aper * -10)) / (aper - a)
+                    var xmaxdraw = (b - (10 - aper * 10)) / (aper - a)
+                }
 
+                var distx = Math.abs(xmindraw - xmaxdraw)
+                var dist = Math.sqrt(distx ** 2 + (xmindraw * a + b - xmaxdraw * a + b) ** 2)
+                var numlign = Math.floor(dist * 2)
+                if (newy < newx * a + b) { lowOrup = 0 } else { lowOrup = 1 }
 
-                var distx = Math.abs(x1 - x2)
-                var val = null;
+                while (z < numlign) {
+                    var xl = min([xmindraw, xmaxdraw]) + distx / numlign * z;
+                    var yl = (a * xl) + b;
+                    var bper = yl - (aper * xl);
+                    var distdraw = 40;
 
-                if (distx > 50) { distx = 50 }
+                    var xl2p = xl + (40 / Math.sqrt(aper ** 2 + 1));
+                    var xl2n = xl - (40 / Math.sqrt(aper ** 2 + 1));
+                    var yl2p = aper * xl2p + bper;
+                    var yl2n = aper * xl2n + bper
 
-                if (newx * a + b > newy && (newy - b) / a > newx) { val = newx * 1000 } else { val = -120 }
-                while (y < 300) {
-                    var n = min([bounds[0], bounds[1]]) - 2 + (y - 150) / 150 * distx * 2
+                    var xl2;
+                    var yl2;
+                    if (a < 0) {
+                        if (lowOrup == 0) {
+                            xl2 = xl2n
+                            yl2 = yl2n
+                        } else {
+                            xl2 = xl2p
+                            yl2 = yl2p
+                        }
+                    } else {
+                        if (lowOrup == 0) {
+                            xl2 = xl2p
+                            yl2 = yl2p
+                        } else {
+                            xl2 = xl2n
+                            yl2 = yl2n
+                        }
+                    }
+
                     myChart.data.datasets.push({
                         lineTension: 0,
                         borderColor: 'rgba(0, 0, 250, 0.5)',
@@ -247,9 +257,9 @@
                         borderWidth: 3,
                         fill: false,
                         pointRadius: 0,
-                        data: [{ x: n, y: (a * n) + b }, { x: val + n, y: (aper * val + n) + b }]
+                        data: [{ x: xl, y: yl }, { x: xl2, y: yl2 }]
                     })
-                    y++
+                    z++
                 }
             }
 
@@ -318,16 +328,18 @@
         ligne = function (poly) {
             if (poly == 1) {
                 myChart.data.datasets[1].borderDash = [10, 10];
+                pointi = true;
             } else {
                 myChart.data.datasets[1].borderDash = [0, 0];
+                pointi = false;
             }
             myChart.update()
-
         }
 
         effacer = function () {
             dataArray = [];
             dataArray2 = [];
+            draw = 0;
             myChart.data.datasets[0].data = dataArray;
             myChart.data.datasets[1].data = dataArray2;
             console.log(myChart.data.datasets.length)
@@ -336,6 +348,11 @@
             }
             myChart.update();
         }
+
+        findpointdist = function (aper, bper, xmid, ymid, c) {
+            return (-Math.sqrt(aper ** 2 * c ** 2 - aper ** 2 * xmid ** 2 - 2 * aper * bper * xmid + 2 * aper * xmid * ymid - bper ** 2 + 2 * bper * ymid + c ** 2 - ymid ** 2) - aper * bper + aper * ymid + xmid) / (aper ** 2 + 1)
+        }
+
 
         recommencer = function () {
             location.reload();
@@ -368,7 +385,7 @@
 
 
         var qlib = {
-            varmax: [10],
+            varmax: [9],
             varmin: [1],
             varnum: function (max, min) {
                 var arr = Array.from(Array(max).keys())
@@ -381,6 +398,9 @@
                 return (shuffle(arr))
             },
             createQuestion: function (quest) {
+                var symbols = ["<", ">", "≥", "≤"]
+                symbol = symbols[Math.floor(Math.random() * symbols.length)]
+
                 var texte = quest.texte();
                 var varnums = quest.varnum(quest.varmax[0], quest.varmin[0])
                 arep = varnums[0]
@@ -389,12 +409,23 @@
                 texte = texte.replace(/ordor/g, varnums[1])
                 texte = texte.replace(/\+\-/g, "-")
                 texte = texte.replace(/-1x/g, "-x")
+                texte = texte.replace(/=/g, symbol)
                 document.getElementById('pretty').innerHTML = texte
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 
             },
             testSoum: function testSoum() {
-                soum(Math.abs((a - arep) / arep) < 0.2 && Math.abs((b - brep) / brep) < 0.2)
+                var repligne = false;
+                var lowOruprep = 1;
+                if (symbol == "<" | symbol == ">") { repligne = true }
+                if (symbol == "<" | symbol == "≤") { lowOruprep = 0 }
+
+                console.log(Math.abs((a - arep) / arep), a, arep)
+                console.log(Math.abs((b - brep) / brep), b, brep)
+                console.log(repligne == pointi, repligne, pointi)
+                console.log(lowOrup == lowOruprep, lowOrup, lowOruprep)
+
+                soum(Math.abs((a - arep) / arep) < 0.2 && Math.abs((b - brep) / brep) < 0.5 && repligne == pointi && lowOrup == lowOruprep)
             },
             reussi: function reussi() {
                 dataArray = [];

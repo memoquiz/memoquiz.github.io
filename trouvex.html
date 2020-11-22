@@ -63,11 +63,10 @@
                     recommencer()
                     nouvelleQ()
                 } else if (val == 1) {
-                    eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var"]
-                    eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}"]
+                    eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var", "x^2/(var)", "x^2+var"]
+                    eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}", "\\frac{x^2}{var}", "x^2+var"]
                     eq2 = ["var(x+var)", "var(varx+var)", "varx+varx"]
                     eq2Pretty = ["var(x+var)", "var(varx+var)", "varx+varx"]
-
 
                     document.getElementById('button1').style.backgroundColor = "grey"
                     document.getElementById('button0').style.backgroundColor = "black"
@@ -75,8 +74,8 @@
                     recommencer()
                     nouvelleQ()
                 } else {
-                    eq1 = ["var(x+var)", "var(varx+var)", "x^2/(var)", "(varx+var)/(var)", "x^2+var"]
-                    eq1Pretty = ["var(x+var)", "var(varx+var)", "\\frac{x^2}{var}", "\\frac{varx+var}{var}", "x^2+var"]
+                    eq1 = ["var(x+var)", "var(varx+var)", "(varx+var)/(var)"]
+                    eq1Pretty = ["var(x+var)", "var(varx+var)", "\\frac{varx+var}{var}"]
                     eq2 = ["var"]
                     eq2Pretty = ["var"]
 
