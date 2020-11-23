@@ -176,6 +176,22 @@ textarea:focus, input:focus{
     cursor: pointer;
     width: 17%;
 }
+
+.button7 {
+    font-family: arial;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.3vw;
+    margin: 2px 2px;
+    cursor: pointer;
+    width: 100%;
+}
+
 .button1:hover {
     background-color: rgb(64, 211, 69); /* Green */
 }
