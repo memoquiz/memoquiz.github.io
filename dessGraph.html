@@ -25,22 +25,22 @@
             <div id="pretty">$$$$</div>
         </h2>
     </div>
-    <div style="position: center; width:50vh;">
+    <div style="width:30vw;height:30vh;">
         <CANVAS id="graph_1"
-            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 37.5vw; top:20vh;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 15vw; top:20vh;"></CANVAS>
         <CANVAS id="poly"
-            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 37.5vw; top:20vh;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 15vw; top:20vh;"></CANVAS>
 
     </div>
-    <div style="position: absolute ;top:70vh; left: -10vw ;width: 80vw;">
+    <div style="position: absolute ;top:40vh; left: 30vw ;width: 15vw;">
         <h2>
-            <input type="button" class="button6" value="Ligne pleine" id='pleine' onclick="ligne(0)">
-            <input type="button" class="button6" value="Ligne pointilléee" id='pointillée' onclick="ligne(1)"><br>
-            <input type="button" class="button6" value="Soumettre" id='Soumettre' onclick="soum()">
-            <input type="button" class="button6" value="Effacer" id='Effacer'
-                onclick="setTimeout(function(){effacer()},200)">
-            <br>
-            <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
+            <input type="button" class="button7" value="Ligne pleine" id='pleine' onclick="ligne(0)"><br>
+            <input type="button" class="button7" value="Ligne pointilléee" id='pointillée' onclick="ligne(1)"><br>
+            <input type="button" class="button7" value="Effacer" id='Effacer'
+                onclick="setTimeout(function(){effacer()},200)"><br><br>
+            <input type="button" class="button7" value="Soumettre" id='Soumettre' onclick="soum()"><br>
+
+            <input type="button" class="button7" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
 
             <br>Progression : <output id="reussi"></output> / <output id="total"></output>
             <br>Erreurs : <output id="erreurs"></output>
@@ -90,17 +90,19 @@
                 data: {
                     datasets: [{
                         lineTension: 0,
-                        backgroundColor: "black",
+                        backgroundColor: "rgba(	58, 133, 61, 250)",
                         showline: false,
                         borderDash: [0, 10],
                         fill: false,
+                        pointRadius: 5,
                         data: dataArray
                     }, {
                         lineTension: 0,
-                        borderColor: "grey",
+                        borderColor: "black",
                         borderDash: [0, 0],
-                        backgroundColor: "grey",
+                        backgroundColor: "black",
                         fill: false,
+                        borderWidth: 5,
                         data: dataArray2
                     }]
                 },
@@ -123,11 +125,18 @@
                     responsive: true,
                     scales: {
                         xAxes: [{
+                            gridLines: {
+                                zeroLineWidth: 4,
+                                zeroLineColor: "rgba(87,87,87,250)",
+                                lineWidth: 2,
+                                color: "grey",
+                            },
                             display: true,
                             ticks: {
                                 min: -10,
                                 max: 10,
-                                stepSize: 1
+                                stepSize: 1,
+                                maxRotation: 0,
                             },
 
                             scaleLabel: {
@@ -136,6 +145,12 @@
                             }
                         }],
                         yAxes: [{
+                            gridLines: {
+                                zeroLineColor: "rgba(87,87,87,250)",
+                                zeroLineWidth: 4,
+                                lineWidth: 2,
+                                color: "grey",
+                            },
                             elements: {
                                 line: {
                                     tension: 0
