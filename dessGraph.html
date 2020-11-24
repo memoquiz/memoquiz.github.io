@@ -21,18 +21,19 @@
         Résous le problème suivant
     </h1>
     <div>
-        <h2 id="prob">Trace la droite suivante sur le plan cartésien suivant en plaçant 2 points.
-            <div id="pretty">$$$$</div>
-        </h2>
+        <h2 id="prob">Trace la droite suivante sur le plan cartésien suivant en plaçant 2 points.</h2>
     </div>
     <div style="width:30vw;height:30vh;">
         <CANVAS id="graph_1"
-            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 15vw; top:20vh;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 20vw; top:15vh;"></CANVAS>
         <CANVAS id="poly"
-            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 15vw; top:20vh;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 20vw; top:15vh;"></CANVAS>
 
     </div>
-    <div style="position: absolute ;top:40vh; left: 30vw ;width: 15vw;">
+    <h6>
+        <div id="pretty" style="position: absolute ;top:20vh; left: 35vw ;width: 15vw;">$$$$</div>
+    </h6>
+    <div style="position: absolute ;top:35vh; left: 35vw ;width: 15vw;">
         <h2>
             <input type="button" class="button7" value="Ligne pleine" id='pleine' onclick="ligne(0)"><br>
             <input type="button" class="button7" value="Ligne pointilléee" id='pointillée' onclick="ligne(1)"><br>
@@ -90,7 +91,7 @@
                 data: {
                     datasets: [{
                         lineTension: 0,
-                        backgroundColor: "rgba(	58, 133, 61, 250)",
+                        backgroundColor: "rgba(255, 5, 5, 250)",
                         showline: false,
                         borderDash: [0, 10],
                         fill: false,
@@ -133,10 +134,12 @@
                             },
                             display: true,
                             ticks: {
+                                padding: 2,
                                 min: -10,
                                 max: 10,
                                 stepSize: 1,
                                 maxRotation: 0,
+                                fontSize: 16
                             },
 
                             scaleLabel: {
@@ -160,7 +163,10 @@
                             ticks: {
                                 min: -10,
                                 max: 10,
-                                stepSize: 1
+                                stepSize: 1,
+                                padding: 2,
+                                fontSize: 16
+
                             },
                             scaleLabel: {
                                 display: true,

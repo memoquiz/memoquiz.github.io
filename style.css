@@ -27,6 +27,11 @@ h5 {
     text-align: center;
     font-size: 1.5vh;
     }
+
+h6 {
+    font-size: 2vw;
+    }
+
 p {
     text-align: center;
     font-size: 2vmin;
