@@ -21,19 +21,22 @@
         Résous le problème suivant
     </h1>
     <div>
-        <h2 id="prob">Trace la droite suivante sur le plan cartésien suivant en plaçant 2 points.</h2>
+        <h2 id="prob">Représente l'inéquation suivante sur le plan cartésien suivant en plaçant 2 points.<br> Ensuite,
+            clique
+            sur
+            l'ensemble solution.</h2>
     </div>
-    <div style="width:30vw;height:30vh;">
+    <div style="width:35vw;height:30vh;">
         <CANVAS id="graph_1"
-            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 20vw; top:15vh;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0); margin: 0px; position: absolute;left: 20vw; top:20vh;"></CANVAS>
         <CANVAS id="poly"
-            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 20vw; top:15vh;"></CANVAS>
+            style="background-color: rgba(0, 0, 0, 0);margin: 0px; position: absolute;left: 20vw; top:20vh;"></CANVAS>
 
     </div>
     <h6>
-        <div id="pretty" style="position: absolute ;top:20vh; left: 35vw ;width: 15vw;">$$$$</div>
+        <div id="pretty" style="position: absolute ;top:20vh; left: 40vw ;width: 15vw;">$$$$</div>
     </h6>
-    <div style="position: absolute ;top:35vh; left: 35vw ;width: 15vw;">
+    <div style="position: absolute ;top:35vh; left: 40vw ;width: 15vw;">
         <h2>
             <input type="button" class="button7" value="Ligne pleine" id='pleine' onclick="ligne(0)"><br>
             <input type="button" class="button7" value="Ligne pointilléee" id='pointillée' onclick="ligne(1)"><br>
@@ -42,7 +45,7 @@
             <input type="button" class="button7" value="Soumettre" id='Soumettre' onclick="soum()"><br>
 
             <input type="button" class="button7" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
-
+            <br>
             <br>Progression : <output id="reussi"></output> / <output id="total"></output>
             <br>Erreurs : <output id="erreurs"></output>
         </h2>
@@ -71,7 +74,7 @@
         var dataArray3 = [];
         var draw = 0;
         var pointi = false;
-        var lowOrup;
+        var lowOrup = 2;
 
         var myChart;
 
@@ -130,16 +133,16 @@
                                 zeroLineWidth: 4,
                                 zeroLineColor: "rgba(87,87,87,250)",
                                 lineWidth: 2,
-                                color: "grey",
+                                color: "grey"
                             },
                             display: true,
                             ticks: {
                                 padding: 2,
-                                min: -10,
-                                max: 10,
-                                stepSize: 1,
+                                min: -5,
+                                max: 5,
                                 maxRotation: 0,
-                                fontSize: 16
+                                fontSize: 16,
+                                stepSize: 1
                             },
 
                             scaleLabel: {
@@ -161,12 +164,10 @@
                             },
                             display: true,
                             ticks: {
-                                min: -10,
-                                max: 10,
-                                stepSize: 1,
+                                min: -5,
+                                max: 5,
                                 padding: 2,
                                 fontSize: 16
-
                             },
                             scaleLabel: {
                                 display: true,
@@ -181,13 +182,13 @@
         });
 
         var aper = null;
-
+        var newy = '';
+        var newx = '';
         ctx.click(function (evt) {
             var ytop = myChart.chartArea.top;
             var ybottom = myChart.chartArea.bottom;
             var ymin = myChart.scales['y-axis-1'].min;
             var ymax = myChart.scales['y-axis-1'].max;
-            var newy = '';
             var showstuff = 0;
             if (evt.offsetY <= ybottom && evt.offsetY >= ytop) {
                 newy = Math.abs((evt.offsetY - ytop) / (ybottom - ytop));
@@ -202,7 +203,6 @@
             var xmin = myChart.scales['x-axis-1'].min;
             var xmax = myChart.scales['x-axis-1'].max;
             var width = Math.abs(xright - xleft)
-            var newx = '';
             if (evt.offsetX <= xright && evt.offsetX >= xleft && showstuff == 1) {
                 newx = Math.abs((evt.offsetX - xleft) / (xright - xleft));
                 newx = newx * (Math.abs(xmax - xmin)) + xmin;
@@ -406,7 +406,7 @@
 
 
         var qlib = {
-            varmax: [9],
+            varmax: [5],
             varmin: [1],
             varnum: function (max, min) {
                 var arr = Array.from(Array(max).keys())
