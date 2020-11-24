@@ -34,7 +34,7 @@
 
     </div>
     <h6>
-        <div id="pretty" style="position: absolute ;top:20vh; left: 40vw ;width: 15vw;">$$$$</div>
+        <div id="pretty" style="position: absolute ;top:20vh; left: 40vw ;width: 15vw;"></div>
     </h6>
     <div style="position: absolute ;top:35vh; left: 40vw ;width: 15vw;">
         <h2>
@@ -55,7 +55,7 @@
         var ctx = $("#poly");
         var qarr = [];
         var qliste = [];
-        var total = 10;
+        var total = 1;
         var erreurs = 0;
         var reussi = 0;
         var nbEssais = 0;
@@ -329,13 +329,14 @@
                     button.value = "Soumettre"
 
                 } else {
+                    button.onclick = recommencer
+                    button.value = "Recommancer"
+
                     if (reussi / total > 0.8) {
-                        document.getElementById('table').innerHTML = '';
-                        document.getElementById('prob').innerHTML = 'Bravo!'
+                        document.getElementById('pretty').innerHTML = 'Bravo!'
                     } else {
-                        document.getElementById('prob').innerHTML = 'Tu as besoin de plus de pratique on dirait'
+                        document.getElementById('pretty').innerHTML = 'Plus de pratique ?'
                     }
-                    document.getElementById('tableRep').innerHTML = '<input type="button" class="button3" value="Recommancer?" id="Recommencer" style.backgroundColor = "#4CAF50" onclick="setTimeout(function(){recommencer()},100)">'
                     update()
                 }
             } else {
