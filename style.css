@@ -198,6 +198,21 @@ textarea:focus, input:focus{
     width: 100%;
 }
 
+.button8 {
+    font-family: arial;
+    background-color: rgb(46, 51, 47);
+    border: none;
+    color: white;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1vw;
+    margin: 2px;
+    cursor: pointer;
+    width: 100%;
+}
+
 .button1:hover {
     background-color: rgb(64, 211, 69); /* Green */
 }
