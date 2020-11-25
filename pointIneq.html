@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Représentation des inéquations</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+    <h6>
+        <div id="pretty"></div>
+    </h6>
+    <div style="width:15vw;margin: auto;">
+        <h2>
+            <table align="center">
+                <td> <input type="button" class="button7" value="Oui" id='1' onclick="soum(1)">
+                </td>
+                <td> <input type="button" class="button7" value="Non" id='0' onclick="soum(0)">
+                </td>
+                <td></td>
+            </table>
+            <input type="button" class="button7" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
+            <br>
+            <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+            <br>Erreurs : <output id="erreurs"></output>
+            <br>Niveau de difficulté<br>
+            <table align=center>
+                <tr>
+                    <td><input type="button" class="button8" value="Doux" id="button0" onclick="diff(0)"></td>
+                    <td><input type="button" class="button8" value="Medium" id="button1" onclick="diff(1)"></td>
+                    <td><input type="button" class="button8" value="Piquant" id="button2" onclick="diff(2)"></td>
+                </tr>
+            </table>
+        </h2>
+        </h2>
+    </div>
+
+    <script>
+        var qarr = [];
+        var qliste = [];
+        var total = 10;
+        var erreurs = 0;
+        var reussi = 0;
+        var nbEssais = 0;
+        var qtexte = null;
+        var reponse = 0;
+        var symbol;
+        var diffi = 0;
+
+        soum = function (repEleve) {
+            button = document.getElementById(repEleve)
+            if (repEleve == reponse) {
+                reussi++
+
+                if (reussi < total) {
+                    qlib.createQuestion(qlib, diffi)
+                    update()
+                    button.style.backgroundColor = "#4CAF50"
+
+                } else {
+                    button.onclick = recommencer
+                    document.getElementById("Sauter").value = "Recommancer"
+
+                    if (reussi / total > 0.8) {
+                        document.getElementById('pretty').innerHTML = 'Bravo!'
+                    } else {
+                        document.getElementById('pretty').innerHTML = 'Plus de pratique ?'
+                    }
+                    update()
+                }
+            } else {
+                button.style.backgroundColor = "red"
+                erreurs++
+                update()
+            }
+
+        }
+
+        diff = function (d) {
+            diffi = d;
+            qlib.createQuestion(qlib, diffi)
+        }
+
+        recommencer = function () {
+            location.reload();
+            return false;
+        }
+
+        update = function () {
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+        }
+
+        function shuffle(array) {
+            var m = array.length, t, i;
+
+            // While there remain elements to shuffle…
+            while (m) {
+
+                // Pick a remaining element…
+                i = Math.floor(Math.random() * m--);
+
+                // And swap it with the current element.
+                t = array[m];
+                array[m] = array[i];
+                array[i] = t;
+            }
+
+            return array;
+        }
+
+        var qlib = {
+            varmax: [17],
+            varmin: [2],
+            varnum: function (max, min, neg) {
+                var arr = Array.from(Array(max).keys())
+                arr.splice(0, min)
+                if (neg == true) {
+                    for (i = 0; i < arr.length; i++) {
+                        if (Math.random() > 0.5) {
+                            arr[i] = -arr[i]
+                        }
+                    }
+                }
+                return (shuffle(arr.concat(arr)))
+            },
+            createQuestion: function (quest, diffi) {
+                var symbols = ["<", ">", "≥", "≤"]
+                symbol = symbols[Math.floor(Math.random() * symbols.length)]
+                var texte = quest.texte(diffi);
+                varnums = quest.varnum(quest.varmax[0], quest.varmin[0], true)
+
+                if (diffi == 0) {
+                } else if (diffi == 1) {
+                    varnums[1] = Math.abs(varnums[1])
+                } else {
+                    varnums[1] = Math.abs(varnums[1])
+                    varnums[3] = Math.abs(varnums[3])
+                }
+
+                texte = texte.replace(/var1/g, varnums[0])
+                texte = texte.replace(/var2/g, varnums[1])
+                texte = texte.replace(/var3/g, varnums[2])
+                texte = texte.replace(/var4/g, varnums[3])
+                texte = texte.replace(/var5/g, varnums[4])
+                texte = texte.replace(/var4/g, varnums[5])
+                texte = texte.replace(/var5/g, varnums[6])
+
+                texte = texte.replace(/\+\-/g, "-")
+                texte = texte.replace(/-1x/g, "-x")
+                texte = texte.replace(/=/g, symbol)
+                document.getElementById('pretty').innerHTML = texte
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                qlib.testSoum()
+
+            },
+            testSoum: function testSoum() {
+                var arep;
+                var brep;
+                if (diffi == 0) {
+                    arep = varnums[2]
+                    brep = varnums[3]
+                } else if (diffi == 1) {
+                    varnums[3] = Math.abs(varnums[3])
+                    arep = varnums[2] / varnums[3]
+                    brep = varnums[4]
+                } else {
+                    varnums[3] = Math.abs(varnums[3])
+                    varnums[5] = Math.abs(varnums[5])
+                    arep = -varnums[3] * varnums[4] / varnums[2] / varnums[5]
+                    brep = -varnums[3] * varnums[6] / varnums[2]
+                }
+                if (symbol == ">") {
+                    if (varnums[1] > arep * varnums[0] + brep) {
+                        reponse = 1;
+                    }
+                } else if (symbol == "<") {
+                    if (varnums[1] < arep * varnums[0] + brep) {
+                        reponse = 1;
+                    }
+                } else if (symbol == "≥") {
+                    if (varnums[1] >= arep * varnums[0] + brep) {
+                        reponse = 1;
+                    }
+                } else {
+                    if (varnums[1] <= arep * varnums[0] + brep) {
+                        reponse = 1;
+                    }
+                }
+            },
+            texte: function (diffi) {
+                console.log(diffi)
+                if (diffi == 0) {
+                    var intro = "Est-ce que le point (var1;var2) fait parti de l'ensemble solution de l'inéquation suivante ? <br>"
+                    return (intro + "$$y=var3x+var4$$")
+                } else if (diffi == 1) {
+                    return (intro + "$$y=\\frac{var3x}{var4}+var5$$")
+                } else {
+                    return (intro + "$$\\frac{var3y}{var4}+\\frac{var5x}{var6}+var7=0$$")
+                }
+            },
+        }
+
+        qlib.createQuestion(qlib, diffi)
+        update()
+
+    </script>
+
+</body>
