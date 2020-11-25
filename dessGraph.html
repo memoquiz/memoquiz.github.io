@@ -86,6 +86,10 @@
         var lowOrup = 2;
         var diffi = 0;
         var varnum;
+        var aper = null;
+        var bper = null;
+        var newy = '';
+        var newx = '';
 
         var myChart;
 
@@ -194,9 +198,7 @@
             });
         });
 
-        var aper = null;
-        var newy = '';
-        var newx = '';
+
         ctx.click(function (evt) {
             var ytop = myChart.chartArea.top;
             var ybottom = myChart.chartArea.bottom;
@@ -208,7 +210,6 @@
                 newy = (newy - 1) * -1;
                 newy = newy * (Math.abs(ymax - ymin)) + ymin;
                 showstuff = 1;
-
             }
 
             var xleft = myChart.chartArea.left;
@@ -256,7 +257,7 @@
                 while (z < numlign) {
                     var xl = min([xmindraw, xmaxdraw]) + distx / numlign * z;
                     var yl = (a * xl) + b;
-                    var bper = yl - (aper * xl);
+                    bper = yl - (aper * xl);
                     var distdraw = 40;
 
                     var xl2p = xl + (40 / Math.sqrt(aper ** 2 + 1));
@@ -300,7 +301,6 @@
             if (dataArray.length == 2 & dataArray2.length == 0) {
                 a = (dataArray[0].y - dataArray[1].y) / (dataArray[0].x - dataArray[1].x)
                 aper = 1 / -a
-                console.log(a, aper)
                 b = dataArray[1].y - (dataArray[1].x * a)
                 dataArray2.push({ x: -11, y: (a * -11) + b }, { x: 11, y: (a * 11) + b })
             }
@@ -477,12 +477,22 @@
                 if (symbol == "<" | symbol == ">") { repligne = true }
                 if (symbol == "<" | symbol == "≤") { if (diffi == 2 & varnums[0] < 0) { lowOruprep = 1 } else { lowOruprep = 0 } }
 
-                console.log(Math.abs((a - arep) / arep), a, arep)
-                console.log(Math.abs((b - brep) / brep), b, brep)
-                console.log(repligne == pointi, repligne, pointi)
-                console.log(lowOrup == lowOruprep, lowOrup, lowOruprep)
+                var arepper = -1 / arep
+                var xr1 = dataArray[0].x
+                var yr1 = dataArray[0].y
+                var bper1 = yr1 - arepper * xr1
+                var xd1 = (brep - bper1) / (arepper - arep)
+                var yd1 = arep * xd1 + brep
+                var dist1 = Math.sqrt((xd1 - xr1) ** 2 + (yd1 - yr1) ** 2)
 
-                soum(Math.abs((a - arep) / arep) < 0.75 && Math.abs((b - brep) / brep) < 0.75 && repligne == pointi && lowOrup == lowOruprep)
+                var xr2 = dataArray[1].x
+                var yr2 = dataArray[1].y
+                var bper2 = yr2 - arepper * xr2
+                var xd2 = (brep - bper2) / (arepper - arep)
+                var yd2 = arep * xd2 + brep
+                var dist2 = Math.sqrt((xd2 - xr2) ** 2 + (yd2 - yr2) ** 2)
+
+                soum(Math.abs(Math.atan(a) - Math.atan(arep)) < 0.1 && Math.abs((b - brep) / brep) < 0.75 && repligne == pointi && lowOrup == lowOruprep)
             },
             reussi: function reussi() {
                 dataArray = [];
