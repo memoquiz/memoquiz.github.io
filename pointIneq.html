@@ -153,8 +153,8 @@
                 texte = texte.replace(/var3/g, varnums[2])
                 texte = texte.replace(/var4/g, varnums[3])
                 texte = texte.replace(/var5/g, varnums[4])
-                texte = texte.replace(/var4/g, varnums[5])
-                texte = texte.replace(/var5/g, varnums[6])
+                texte = texte.replace(/var6/g, varnums[5])
+                texte = texte.replace(/var7/g, varnums[6])
 
                 texte = texte.replace(/\+\-/g, "-")
                 texte = texte.replace(/-1x/g, "-x")
@@ -200,8 +200,9 @@
             },
             texte: function (diffi) {
                 console.log(diffi)
+                var intro = "Est-ce que le point (var1;var2) fait parti de l'ensemble solution de l'inéquation suivante ? <br>"
+
                 if (diffi == 0) {
-                    var intro = "Est-ce que le point (var1;var2) fait parti de l'ensemble solution de l'inéquation suivante ? <br>"
                     return (intro + "$$y=var3x+var4$$")
                 } else if (diffi == 1) {
                     return (intro + "$$y=\\frac{var3x}{var4}+var5$$")
