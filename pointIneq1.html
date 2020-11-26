@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Ensemble solution inéquations</title>
+    <title>Représentation des inéquations</title>
 
     <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
     <script
@@ -60,6 +60,8 @@
             button = document.getElementById(repEleve)
             if (repEleve == reponse) {
                 reussi++
+                document.getElementById(0).style.backgroundColor = "#4CAF50"
+                document.getElementById(1).style.backgroundColor = "#4CAF50"
 
                 if (reussi < total) {
                     qlib.createQuestion(qlib, diffi)
@@ -167,6 +169,7 @@
             testSoum: function testSoum() {
                 var arep;
                 var brep;
+                reponse = 0;
                 if (diffi == 0) {
                     arep = varnums[2]
                     brep = varnums[3]
