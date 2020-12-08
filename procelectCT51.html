@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Procédures électorales</title>
+
+    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>
+        Résous le problème suivant
+    </h1>
+    <div>
+        <h2 id="prob"></h2>
+        <h2 id="table"></h2>
+    </div>
+    <h2 id="tableRep"></h2>
+    <h3 id="expr1"></h3>
+    <h2>
+        <input type="button" class="button6" value="Sauter la question" id='Sauter' onclick="nouvelleQ()">
+        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+        <br>Erreurs : <output id="erreurs"></output>
+        <div>
+            <h2 id="radiobutton"></h2>
+        </div>
+
+        <script>
+            document.getElementById('Sauter').style.visibility = 'hidden'
+
+            nouvelleQ = function () {
+                document.getElementById('Sauter').style.visibility = 'visible'
+
+                if (arguments.length == 1) {
+                    rand = arguments[0]
+                } else {
+                    rand = qarr[Math.floor(Math.random() * qarr.length)];
+                }
+
+                question = qlib[rand];
+                table = [];
+
+                var variabtext = question.variables;
+                var textrand = Math.floor(Math.random() * question.qlen);
+                var qtab = question.table(question, textrand);
+
+                var lenq = question.lenq(qtab);
+
+                for (let z = 0; z < qtab.length; z++) {
+                    var nrem = qtab[z];
+                    var lentab = qtab[z].length
+                    for (let y = 0; y < (lentab - lenq); y++) {
+                        nrem.pop();
+                    }
+                    table[z] = nrem;
+                }
+                for (i of variabtext) {
+                    var regex = RegExp(i[0], i[1]);
+                    var remplarr = [];
+
+                    try {
+                        var varlen = question[i[0]][textrand].length
+                        var varib = question[i[0]][textrand]
+                    } catch {
+                        var varib = question[i[0]](question.varmax[textrand], question.varmin[textrand])
+                        var varlen = varib.length
+                    }
+                    for (let y = 0; y < varlen; y++) {
+                        remplarr[y] = y;
+                    }
+
+                    for (let z = 0; z < qtab.length; z++) {
+                        for (let w = 0; w < lenq; w++) {
+                            if (qtab[z][w].match(regex)) {
+                                var rand2 = Math.floor(Math.random() * remplarr.length);
+                                var rempl = varib[remplarr[rand2]];
+                                remplarr.splice(rand2, 1);
+                                table[z][w] = qtab[z][w].replace(regex, rempl);
+                            }
+                        }
+                    }
+                }
+                document.getElementById('prob').innerHTML = question.texte(question, textrand);
+                question.createTable(question, table, textrand)
+                update()
+            }
+
+            soum = function (repEleve) {
+                var succes = question.testSoum(table, repEleve);
+                var button = document.getElementById(repEleve)
+                if (succes == true) {
+                    if (nbEssais == 0) {
+                        reussi++
+                        qarr.splice(qarr.indexOf(rand), 1)
+                        if (qarr.length == 0) {
+                            resetquestion();
+                        }
+
+                    }
+                    nbEssais = 0
+                    if (reussi < total) {
+                        nouvelleQ()
+                        button.style.backgroundColor = "#4CAF50"
+                        button.value = "Soumettre"
+                    } else {
+                        document.getElementById('Sauter').style.visibility = 'hidden'
+                        document.getElementById('table').innerHTML = null;
+                        document.getElementById('tableRep').innerHTML = null;
+                        document.getElementById('prob').innerHTML = `Prend en note les chiffres suivant (garde tous les chiffres après la virgules), en additionant ceux-ci avec ceux des autres équipes, tu obtiendras le lieu où tu trouveras la récompense finale. George, Paul et Serge peuvent t'aider.<br><br>,  ${45.93870562479689 / 28 * eq},${-74.13711359837716 / 28 * eq}`
+                    }
+                } else {
+                    nbEssais = 1
+                    button.style.backgroundColor = "red"
+                    erreurs++
+                    update()
+                    45.93842453037047
+                }
+
+            }
+
+            recommencer = function () {
+                location.reload();
+                return false;
+            }
+
+            update = function () {
+                document.getElementById('reussi').value = reussi
+                document.getElementById('erreurs').value = erreurs
+                document.getElementById('total').value = total
+            }
+
+            function arraysEqual(a, b) {
+                if (a === b) return true;
+                if (a == null || b == null) return false;
+                if (a.length !== b.length) return false;
+
+                // If you don't care about the order of the elements inside
+                // the array, you should sort both arrays here.
+                // Please note that calling sort on an array will modify that array.
+                // you might want to clone your array first.
+
+                for (var i = 0; i < a.length; ++i) {
+                    if (a[i] !== b[i]) return false;
+                }
+                return true;
+            }
+
+            resetquestion = function () {
+                for (let i = 0; i < qliste.length; i++) {
+                    qarr[i] = qliste[i]
+                }
+            }
+
+            function makeTableHTML(myArray) {
+                var result = "<table class=\"table1\" align=center>";
+                for (var i = 0; i < myArray.length; i++) {
+                    result += "<tr class=\"tr1\">";
+                    for (var j = 0; j < myArray[i].length; j++) {
+                        result += "<td class=\"td1\">" + myArray[i][j] + "</td>";
+                    }
+                    result += "</tr>";
+                }
+                result += "</table>";
+
+                return result;
+            }
+
+            function max(bob) {
+                var par = [];
+                var mat = [];
+                for (var i = 0; i < bob.length; i++) {
+                    mat[i] = Number(bob[i])
+                    if (!isNaN(mat[i])) {
+                        par.push(mat[i]);
+                    }
+                }
+                return Math.max.apply(Math, par);
+            }
+
+            function min(bob) {
+                var par = [];
+                var mat = [];
+                for (var i = 0; i < bob.length; i++) {
+                    mat[i] = Number(bob[i])
+                    if (!isNaN(mat[i])) {
+                        par.push(mat[i]);
+                    }
+                }
+                return Math.min.apply(Math, par);
+            }
+
+            function sum(bob) {
+                var par = [];
+                var mat = [];
+                for (var i = 0; i < bob.length; i++) {
+                    mat[i] = Number(bob[i])
+                    if (!isNaN(mat[i])) {
+                        par.push(mat[i]);
+                    }
+                }
+                return math.sum(par);
+            }
+
+            function makeTableHTMLRep(myArray) {
+                var result = "<table align=center>";
+                result += "<tr>";
+                for (var i = 0; i < myArray.length; i++) {
+                    result += "<td>" + myArray[i] + "</td>";
+                }
+                result += "</tr>";
+                result += "</table>";
+
+                return result;
+            }
+
+            function shuffle(array) {
+                var m = array.length, t, i;
+
+                // While there remain elements to shuffle…
+                while (m) {
+
+                    // Pick a remaining element…
+                    i = Math.floor(Math.random() * m--);
+
+                    // And swap it with the current element.
+                    t = array[m];
+                    array[m] = array[i];
+                    array[i] = t;
+                }
+
+                return array;
+            }
+
+            function transpose(array) {
+                var matcleantransp = [];
+                for (let i = 0; i < array[0].length; i++) {
+                    matcleantransp.push([]);
+                    for (let y = 0; y < array.length; y++) {
+                        matcleantransp[i][y] = array[y][i]
+                    }
+                }
+                return (matcleantransp);
+            }
+
+            function enlever(z) {
+                if (qarr.indexOf(z) != -1) {
+                    qarr.splice(qarr.indexOf(z), 1);
+                } else {
+                    qarr.push(z);
+                    qarr.sort()
+                }
+                if (qliste.indexOf(z) != -1) {
+                    document.getElementById(qlib[z].type).style.backgroundColor = "rgb(50, 50, 50)";
+                    qliste.splice(qliste.indexOf(z), 1);
+                    if (rand == z) {
+                        nouvelleQ();
+                    }
+                } else {
+                    document.getElementById(qlib[z].type).style.backgroundColor = "rgb(140, 140, 140)";
+                    qliste.push(z);
+                    qliste.sort()
+                    console.log(qliste)
+                    nouvelleQ(z);
+                }
+            }
+
+            function equipeid() {
+                val = document.getElementById("eq").value
+                var mdp = document.getElementById("mdp").value
+
+                if (val.length == 1 && typeof parseInt(val) == "number" && val > 0 && val <= 7 && mdp == 4 * val - 1) {
+                    eq = val;
+                    nouvelleQ()
+                }
+            }
+
+            var qlib = [
+                {
+                    type: "Pluralité",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [25, 200, 8],
+                    varmin: [],
+                    qlen: 2,
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys())))
+                    },
+                    createTable: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length - 1; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat) {
+                        reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        console.log(reponse)
+                    },
+                    texte: function (quest, textrand) {
+                        return ([`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote à pluralité. Détermine le ou la gagnante.`,
+                            `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à pluralité. Détermine la chanson gagnante.`,
+                            `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à pluralité. Détermine la destination gagnante.`][textrand])
+                    },
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
+                },
+                {
+                    type: "Assentiment",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [25, 200, 8],
+                    varmin: [],
+                    qlen: 2,
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys())))
+                    },
+                    createTable: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length - 1; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z + 1]}" id='${bouttons[z + 1]}'' onclick="setTimeout(function(){soum('${bouttons[z + 1]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat) {
+                        reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        console.log(reponse)
+                    },
+                    texte: function (quest, textrand) {
+                        return ([`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote par assentiment. Détermine le ou la gagnante.`,
+                            `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote par assentiement. Détermine la chanson gagnante.`,
+                            `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote par assentiement. Détermine la destination gagnante.`][textrand])
+                    },
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
+                },
+                {
+                    type: "Majorité",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [25, 200, 8],
+                    varmin: [],
+                    qlen: 2,
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
+                    varnum: function (max) {
+                        return (shuffle(Array.from(Array(max).keys())))
+                    },
+                    createTable: function (quest, tab) {
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.repSoum(tab);
+                        quest.reponseInput(tab[0]);
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        bouttons.shift()
+                        bouttons.unshift("Aucun gagnant")
+                        console.log(bouttons)
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat) {
+                        var valmax = max(mat[1])
+                        var tot = sum(mat[1])
+                        if (valmax / tot > 0.5) {
+                            reponse = mat[0][mat[1].indexOf(String(max(mat[1])))];
+                        } else {
+                            reponse = "Aucun gagnant";
+                        }
+                    },
+                    texte: function (quest, textrand) {
+                        return ([`Un groupe d'élèves votent pour le représentant de classe à l'aide d'un vote à majorité. Détermine le ou la gagnante.`,
+                            `Les élèves de secondaire 5 votent pour la dernière chanson qui sera jouée au bal des finissants à l'aide d'un vote à majorité. Détermine la chanson gagnante.`,
+                            `Un groupe d'amis votent pour leur destination de road trip d'été à l'aide d'un vote à majorité. Détermine la destination gagnante.`][textrand])
+                    },
+                    options: [["Brad", "Flavien", "Bob", "Charles", "Valence", "Petrolia"], ["Let it be", "I Feel like a Woman", "Happy", "Le phoque en Alaska", "La rue principale", "La macarena"], ["Colombie-Brittanique", "Rawdon", "Floride", "Utah", "Drummondville", "Californie"]],
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
+                },
+                {
+                    type: "Proportionnel",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [1000],
+                    varmin: [100],
+                    vardiv: ["Nombre de sièges"],
+                    ndiv: null,
+                    qlen: 1,
+                    lenq: function (qtable) {
+                        return (Math.floor(Math.random() * (qtable[0].length - 3)) + 3);
+                    },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        tab.push(quest.reponseInput(quest, tab[0], textrand));
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        document.getElementById('tableRep').innerHTML = `<input type="button" class="button1" value="Soumettre" id="bouttonSoum" onclick="setTimeout(function(){soum('bouttonSoum')},100)">`
+                        quest.repSoum(tab, quest);
+                    },
+                    reponseInput: function creerbouton(quest, tab, textrand) {
+                        var mat = [];
+                        for (let z = 0; z < tab.length - 1; z++) {
+                            mat[z] = `<input type="text" class="inputbar1" id="${tab[z + 1]}" />`
+                        }
+                        mat.unshift(quest.vardiv[textrand])
+                        return mat
+                    },
+                    testSoum: function testSoum(tab) {
+                        var repEleve = [];
+                        for (let z = 0; z < tab[0].length - 1; z++) {
+                            repEleve[z] = Number(document.getElementById(tab[0][z + 1]).value);
+                        }
+                        return (arraysEqual(repEleve, reponse))
+                    },
+                    repSoum: function repSoum(mat, quest) {
+                        var reponses = [];
+                        var entiers = [];
+                        var restes = [];
+                        var valtot = sum(mat[1])
+                        for (let z = 1; z < mat[1].length; z++) {
+                            entiers[z] = Math.floor(mat[1][z] / valtot * quest.ndiv);
+                            restes[z] = mat[1][z] / valtot * quest.ndiv - Math.floor(mat[1][z] / valtot * quest.ndiv)
+                            console.log(restes[z])
+                        }
+                        entiers.shift()
+                        restes.shift()
+                        var nreste = Math.round(sum(restes))
+                        if (sum(restes) != 0) {
+                            for (let z = 0; z < nreste; z++) {
+                                var maxresteInd = restes.findIndex(function (x) { return x == max(restes) })
+                                console.log(z)
+                                entiers[maxresteInd] = entiers[maxresteInd] + 1
+                                restes[maxresteInd] = restes[maxresteInd] - 1
+                            }
+                        }
+                        console.log(entiers)
+                        console.log(sum(entiers))
+                        reponse = entiers;
+                    },
+                    texte: function (quest, textrand) {
+                        quest.ndiv = Math.floor(Math.random() * 101 + 7);
+                        var texte = ["Voici les résultat de l'élection à la mairie de Saint-creux-les-profonds. Il y a ndiv postes à pourvoir. Détermine la distributions des sièges à l'aide du scrutin proportionnel."]
+                        var bob = texte[textrand]
+                        return (bob.replace("ndiv", quest.ndiv))
+                    },
+                    options: [["Saint-creux solidaire", "Profond et fier", "Parti creumuniste", "Parti Giraffe", "Alliance creuse", "Creuse!"]],
+                    table: function () { return ([["", "options", "options", "options", "options", "options", "options"], ["Nombre de votes", "varnum", "varnum", "varnum", "varnum", "varnum", "varnum"]]) }
+                },
+                {
+                    type: "Condorcet",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [45, 500],
+                    varmin: [5, 450],
+                    vardiv: ["Nombre de sièges"],
+                    qlen: 2,
+                    lenq: function () { return (4) },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        var bob = tab[0].shift()
+                        tab[0].sort(function (a, b) { return b - a })
+                        tab[0].unshift(bob)
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.reponseInput(quest.options[textrand]);
+                        quest.repSoum(tab, quest, textrand);
+
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        bouttons.unshift("Aucun gagnant")
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                        bouttons.shift()
+
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat, quest, textrand) {
+                        var matclean = [];
+                        var matcleantransp = [];
+                        var opt = [];
+                        var res = [];
+                        for (i of mat) {
+                            i.shift();
+                            matclean.push(i);
+                        }
+                        for (let i = 0; i < matclean[0].length; i++) {
+                            matcleantransp.push([]);
+                            for (let y = 0; y < matclean.length; y++) {
+                                matcleantransp[i][y] = matclean[y][i]
+                            }
+                        }
+                        for (let i = 0; i < quest.options[textrand].length; i++) {
+                            res[i] = opt[i] = quest.options[textrand][i];
+                        }
+                        for (let i = 0; i < opt.length; i++) {
+                            var elem1 = opt[i];
+                            for (let y = i + 1; y < opt.length; y++) {
+                                var elem2 = opt[y];
+                                var scoreElem1 = 0;
+                                var scoreElem2 = 0;
+                                for (let w = 0; w < matcleantransp.length; w++) {
+                                    if (matcleantransp[w].indexOf(elem1) < matcleantransp[w].indexOf(elem2)) {
+                                        scoreElem1 = scoreElem1 + Number(matcleantransp[w][0])
+                                    } else {
+                                        scoreElem2 = scoreElem2 + Number(matcleantransp[w][0])
+                                    }
+                                }
+                                if (scoreElem1 > scoreElem2) {
+                                    res = res.filter(e => e !== elem2);
+                                } else if (scoreElem2 > scoreElem1) {
+                                    res = res.filter(e => e !== elem1);
+                                } else {
+                                    res = res.filter(e => e !== elem1);
+                                    res = res.filter(e => e !== elem2);
+                                }
+                            }
+                        }
+                        if (res.length == 0) {
+                            reponse = "Aucun gagnant"
+                        } else {
+                            reponse = res[0];
+                        }
+                        console.log(reponse)
+                    },
+                    texte: function (quest, textrand) {
+                        return (["Les élèves de secondaire 5 doivent choisir une activité récompense. Détermine le choix gagnant à l'aide de la méthode de condorcet.", "Le jury du prix littéraire des maternelles doivent choisir un gagnant pour le prix du choix du jury. Détermine le gagnant à l'aide de la méthode de Condorcet."][textrand])
+                    },
+                    options: [["Bungee", "Ski alpin", "Paintball"], ["Le monstre a croqué mon pied.", "Papa, je veux un tardigrade.", "Détresse dans la gouache."]],
+                    table: function (question, textrand) {
+                        var opts = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 1, 0], [2, 0, 1]]
+                        var tab = [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix"], ["Deuxième choix"], ["Troisième choix"]]
+                        while (opts.length > tab.length - 1) {
+                            opts.splice([Math.floor(Math.random() * opts.length)], 1)
+                        }
+                        for (let z = 1; z < tab.length; z++) {
+                            for (let u = 0; u < opts.length; u++) {
+                                tab[z][u + 1] = question.options[textrand][opts[u][z - 1]]
+                            }
+                        }
+                        return (tab)
+                    }
+                },
+                {
+                    type: "Borda",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [45, 3000],
+                    varmin: [5, 1],
+                    vardiv: ["Nombre de sièges"],
+                    qlen: 1,
+                    lenq: function () { return (4) },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        var bob = tab[0].shift()
+                        tab[0].sort(function (a, b) { return b - a })
+                        tab[0].unshift(bob)
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.reponseInput(quest.options[textrand]);
+                        quest.repSoum(tab, quest, textrand);
+
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat, quest, textrand) {
+                        var matclean = [];
+                        var matcleantransp = [];
+                        var res = [];
+                        for (i of mat) {
+                            i.shift();
+                            matclean.push(i);
+                        }
+                        for (let i = 0; i < matclean[0].length; i++) {
+                            matcleantransp.push([]);
+                            for (let y = 0; y < matclean.length; y++) {
+                                matcleantransp[i][y] = matclean[y][i]
+                            }
+                        }
+                        for (y in quest.options[textrand]) {
+                            res.push(0)
+                        }
+                        for (let i = 0; i < matcleantransp.length; i++) {
+                            for (y of quest.options[textrand]) {
+                                res[quest.options[textrand].indexOf(y)] += ((4 - (matcleantransp[i].indexOf(y))) * Number(matcleantransp[i][0]))
+                            }
+                        }
+                        reponse = quest.options[textrand][res.indexOf(max(res))]
+                        console.log(reponse)
+                    },
+                    texte: function (quest, textrand) {
+                        return (["La Voix tient un concours spécial. Détermine la personne gagnante à l'aide de la méthode de borda.", "Les habitants de Sainte-Vache désire choisir un nouveau nom pour leur ville. Détermine l'option gagnante à l'aide de la méthode de Borda."][textrand])
+                    },
+                    options: [["Pénélope Chanteclair", "Yvan Ducash", "Roger Junior"], ["Saint-Boeufs", "Sainte-Marie-les-roses", "Ploufville"]],
+                    table: function (question, textrand) {
+                        var opts = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 1, 0], [2, 0, 1]]
+                        var tab = [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix"], ["Deuxième choix"], ["Troisième choix"]]
+                        while (opts.length > tab.length - 1) {
+                            opts.splice([Math.floor(Math.random() * opts.length)], 1)
+                        }
+                        for (let z = 1; z < tab.length; z++) {
+                            for (let u = 0; u < opts.length; u++) {
+                                tab[z][u + 1] = question.options[textrand][opts[u][z - 1]]
+                            }
+                        }
+                        return (tab)
+                    }
+                },
+                {
+                    type: "Élimination",
+                    variables: [["options", 'g'], ["varnum", '']],
+                    varnom: [""],
+                    varmax: [45, 450],
+                    varmin: [5, 50],
+                    qlen: 2,
+                    lenq: function () { return (4) },
+                    varnum: function (max, min) {
+                        var arr = Array.from(Array(max).keys())
+                        arr.splice(0, min)
+                        return (shuffle(arr))
+                    },
+                    createTable: function (quest, tab, textrand) {
+                        var bob = tab[0].shift()
+                        tab[0].sort(function (a, b) { return b - a })
+                        tab[0].unshift(bob)
+                        document.getElementById('table').innerHTML = makeTableHTML(tab);
+                        quest.reponseInput(quest.options[textrand]);
+                        quest.repSoum(tab, quest, textrand);
+
+                    },
+                    reponseInput: function creerbouton(bouttons) {
+                        var mat = [];
+                        for (let z = 0; z < bouttons.length; z++) {
+                            mat[z] = `<input type="button" class="button4" value="${bouttons[z]}" id='${bouttons[z]}'' onclick="setTimeout(function(){soum('${bouttons[z]}')},100)">`
+                        }
+                        document.getElementById('tableRep').innerHTML = makeTableHTMLRep(mat)
+                    },
+                    testSoum: function testSoum(tab, repEleve) {
+                        return (repEleve == reponse)
+                    },
+                    repSoum: function repSoum(mat, quest, textrand) {
+                        var matclean = [];
+                        var matcleantransp = [];
+                        var res = [];
+                        score = 0;
+                        for (i of mat) {
+                            i.shift();
+                            matclean.push(i);
+                        }
+                        while (score <= 0.5) {
+                            matcleantransp = transpose(matclean)
+                            res = [0, 0, 0]
+                            for (y of quest.options[textrand]) {
+                                for (let z = 0; z < matclean[1].length; z++) {
+                                    if (matclean[1][z] == y) {
+                                        res[quest.options[textrand].indexOf(y)] += Number(matclean[0][z])
+                                    }
+                                }
+                            }
+                            score = max(res) / sum(res)
+                            if (score <= 0.5) {
+                                var perd = matclean[1][matclean[0].indexOf(String(min(res)))]
+                                for (let z = 0; z < matcleantransp.length; z++) {
+                                    var i = matcleantransp[z];
+                                    i.splice(i.indexOf(perd), 1);
+                                    i.push(NaN);
+                                }
+                                matclean = transpose(matcleantransp)
+                            }
+                        }
+                        reponse = quest.options[textrand][res.indexOf((max(res)))]
+                        console.log(reponse)
+                    },
+                    texte: function (quest, textrand) {
+                        return (["Un groupe d'élève veulent commander de la pizza. Détermine la sorte gagnante à l'aide de la méthode par elimination.", "Les membres de l'association des joueurs de pétanques de Saint-Calixe doivent choisir leur président. Détermine le gagnant à l'aide de la méthode par élimination."][textrand])
+                    },
+                    options: [["Pepperoni", "Hawaïenne", "Végétarienne"], ["Pierre Gravel", "Yvan Deschars", "Rose Lafleur"]],
+                    table: function (question, textrand) {
+                        var opts = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 1, 0], [2, 0, 1]]
+                        var tab = [["Nombre de votes", "varnum", "varnum", "varnum"], ["Premier choix"], ["Deuxième choix"], ["Troisième choix"]]
+                        while (opts.length > tab.length - 1) {
+                            opts.splice([Math.floor(Math.random() * opts.length)], 1)
+                        }
+                        for (let z = 1; z < tab.length; z++) {
+                            for (let u = 0; u < opts.length; u++) {
+                                tab[z][u + 1] = question.options[textrand][opts[u][z - 1]]
+                            }
+                        }
+                        return (tab)
+                    }
+                }
+            ]
+
+            var qarr = [];
+            var qliste = [];
+            var total = 7;
+            var erreurs = 0;
+            var reussi = 0;
+            var nbEssais = 0;
+            var qtexte = null;
+            var rand;
+            var reponse = null;
+            var table = [];
+            var mat = [];
+            var eq = null;
+
+
+            for (let i = 0; i < qlib.length; i++) {
+                qliste[i] = i;
+            }
+
+            resetquestion()
+
+
+            document.getElementById('reussi').value = reussi
+            document.getElementById('erreurs').value = erreurs
+            document.getElementById('total').value = total
+            button = document.getElementById('bouttonSoum')
+
+            document.getElementById('tableRep').innerHTML = `<input type="text" class="inputbar1" id="eq"><br><br>Mot de passe<br><br><input type="text" class="inputbar1" id="mdp"><br><br><input type="button" class="button1" value="Soumettre" id='soum' onclick="setTimeout(function(){equipeid()},100)">`
+            document.getElementById('prob').innerHTML = "Quel est le numéro de ton équipe ?";
+
+
+
+
+        </script>
+
+</body>
+
+</html>
