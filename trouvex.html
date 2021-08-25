@@ -62,8 +62,7 @@
                     recommencer()
                     nouvelleQ()
                 } else if (val == 1) {
-                    var expouinon = Math.floor(Math.random())
-                    var expouinon = 1
+                    expouinon = 1
                     if(expouinon == 0){
                         eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var", "x^2/(var)", "x^2+var"]
                         eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}", "\\frac{x^2}{var}", "x^2+var"]
@@ -97,9 +96,12 @@
             }
 
             function nouvelleQ() {
-
-                var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
+                var expouinon = Math.floor(Math.random())
+                if(expouinon == 0){
+                    var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                }else{
+                    var chiffres = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    }
                 var qi0 = Math.floor(Math.random() * eq1.length)
                 var qi1 = Math.floor(Math.random() * eq2.length)
 
