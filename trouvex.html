@@ -97,10 +97,11 @@
 
             function nouvelleQ() {
                 var expouinon = Math.floor(Math.random())
-                if(expouinon == 0){
-                    var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                }else{
+                var expouinon = 1
+                if(difficulte==1 & expouinon==1){
                     var chiffres = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                }else{
+                    var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                     }
                 var qi0 = Math.floor(Math.random() * eq1.length)
                 var qi1 = Math.floor(Math.random() * eq2.length)
