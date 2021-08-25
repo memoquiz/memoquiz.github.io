@@ -53,7 +53,6 @@
                 if (val == 2) {
                     eq1 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+var)/(var)"]
                     eq1Pretty = ["var(x+var)-(varx+var)÷var", "var(varx+var)-\\frac{varx+var}{var}", "var(x+varx)-\\frac{var(varx+var)}{var}"]
-
                     eq2 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+var)/(var)"]
                     eq2Pretty = ["var(x+var)-(varx+var)÷var", "var(varx+var)-\\frac{varx+var}{var}", "var(x+varx)-\\frac{var(varx+var)}{var}"]
 
@@ -63,11 +62,20 @@
                     recommencer()
                     nouvelleQ()
                 } else if (val == 1) {
-                    eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var", "x^2/(var)", "x^2+var"]
-                    eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}", "\\frac{x^2}{var}", "x^2+var"]
-                    eq2 = ["var(x+var)", "var(varx+var)", "varx+varx"]
-                    eq2Pretty = ["var(x+var)", "var(varx+var)", "varx+varx"]
-
+                    var expouinon = Math.floor(Math.random())
+                    var expouinon = 1
+                    if(expouinon == 0){
+                        eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var", "x^2/(var)", "x^2+var"]
+                        eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}", "\\frac{x^2}{var}", "x^2+var"]
+                        eq2 = ["var(x+var)", "var(varx+var)", "varx+varx"]
+                        eq2Pretty = ["var(x+var)", "var(varx+var)", "varx+varx"]
+                    }else{                
+                        eq1 = ["x^2/(var)", "x^2+var", "varx^2+var"]
+                        eq1Pretty = ["\\frac{x^2}{var}", "x^2+var","varx^2+var"]
+                        eq2 = ["var(x^2+var)", "var(varx^2+var)", "var"]
+                        eq2Pretty = ["var(x^2+var)", "var(varx^2+var)", "var"]
+                    }
+                    
                     document.getElementById('button1').style.backgroundColor = "grey"
                     document.getElementById('button0').style.backgroundColor = "black"
                     document.getElementById('button2').style.backgroundColor = "black"
