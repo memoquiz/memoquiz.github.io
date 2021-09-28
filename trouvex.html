@@ -1,270 +1,269 @@
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <title>Trouver x</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Trouver x</title>
 
-    <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
-    <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="https://unpkg.com/mathjs@6.5.0/dist/math.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+        <script src="https://memoquiz.github.io/algebrite.bundle-for-browser.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-    <h1>
-        Trouve la valeur de x
-    </h1>
-    <h2>
-        <div id="pretty">$$$$</div>
-        <div class="tooltip"><input class=inputbar1 type="text" id="reponse">
-            <span class="tooltiptext">
-                <h5>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de
-                    2/3)</h5>
-            </span></div><br><br>
-        <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
-            onclick="setTimeout(function(){soum()},100)"><br>
-        <input type="button" class="button1" value="Sauter" id="sauter"
-            onclick="setTimeout(function(){sauter()},100)"><br>
-        </div>
-    </h2>
-    <h2>
-        <br>Progression : <output id="reussi"></output> / <output id="total"></output>
-        <br>Erreurs : <output id="erreurs"></output>
-        <p id="codereussite">&nbsp</p>
-        <h2>Sélectionne le niveau de difficulté<br>
-            <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
-            <td><input type="button" class="button2" value="Moyen" id="button1" onclick="diff(1)"></td>
-            <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
-        </h2>
-        <script>
-            function toHex(str) {
-                var result = '';
-                for (var i = 0; i < str.length; i++) {
-                    result += str.charCodeAt(i).toString(16);
-                }
-                return result;
-            }
-            function diff(val) {
-                difficulte = val
-                if (val == 2) {
-                    eq1 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+var)/(var)"]
-                    eq1Pretty = ["var(x+var)-(varx+var)÷var", "var(varx+var)-\\frac{varx+var}{var}", "var(x+varx)-\\frac{var(varx+var)}{var}"]
-                    eq2 = ["var(x+var)-(varx+var)÷(var)", "var(varx+var)-(varx+var)/(var)", "var(x+varx)-var(varx+var)/(var)"]
-                    eq2Pretty = ["var(x+var)-(varx+var)÷var", "var(varx+var)-\\frac{varx+var}{var}", "var(x+varx)-\\frac{var(varx+var)}{var}"]
-
-                    document.getElementById('button2').style.backgroundColor = "grey"
-                    document.getElementById('button0').style.backgroundColor = "black"
-                    document.getElementById('button1').style.backgroundColor = "black"
-                    recommencer()
-                    nouvelleQ()
-                } else if (val == 1) {
-                    if(expouinon == 0){
-                        eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "(varx+var)/var", "x^2/(var)", "x^2+var"]
-                        eq1Pretty = ["var(varx+var)+varx", "var1(varx+var)-var4(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}", "\\frac{x^2}{var}", "x^2+var"]
-                        eq2 = ["var(x+var)", "var(varx+var)", "varx+varx"]
-                        eq2Pretty = ["var(x+var)", "var(varx+var)", "varx+varx"]
-                    }else{                
-                        eq1 = ["x^2/(var)", "x^2+var", "varx^2+var"]
-                        eq1Pretty = ["\\frac{x^2}{var}", "x^2+var","varx^2+var"]
-                        eq2 = ["var(x^2+var)", "var(varx^2+var)", "var"]
-                        eq2Pretty = ["var(x^2+var)", "var(varx^2+var)", "var"]
+        <h1>
+            Trouve la valeur de x
+        </h1>
+        <h1>
+            <div id="pretty">$$$$</div>
+            <div class="tooltip"><input class=inputbar1 type="text" id="reponse" autocomplete="off">
+                <span class="tooltiptext">
+                    <h2>Inscris ta réponse en format décimal, arrondie à 2 chiffres après la virgule (ex: 0,66 au lieu de
+                        2/3)</h2>
+                </span></div><br><br>
+            <input type="button" class="button1" value="Soumettre" id="bouttonSoum"
+                onclick="setTimeout(function(){soum()},100)"><br>
+            <input type="button" class="button1" value="Sauter" id="sauter"
+                onclick="setTimeout(function(){sauter()},100)"><br>
+            </div>
+        </h1>
+        <h2>
+            <br>Progression : <output id="reussi"></output> / <output id="total"></output>
+            <br>Erreurs : <output id="erreurs"></output>
+            <p id="codereussite">&nbsp</p>
+            <h2>Sélectionne le niveau de difficulté<br>
+                <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
+                <td><input type="button" class="button2" value="Moyen" id="button1" onclick="diff(1)"></td>
+                <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
+            </h2>
+            <script>
+                function toHex(str) {
+                    var result = '';
+                    for (var i = 0; i < str.length; i++) {
+                        result += str.charCodeAt(i).toString(16);
                     }
-                    
-                    document.getElementById('button1').style.backgroundColor = "grey"
-                    document.getElementById('button0').style.backgroundColor = "black"
-                    document.getElementById('button2').style.backgroundColor = "black"
-                    recommencer()
-                    nouvelleQ()
-                } else {
-                    eq1 = ["var(x+var)", "var(varx+var)", "(varx+var)/(var)"]
-                    eq1Pretty = ["var(x+var)", "var(varx+var)", "\\frac{varx+var}{var}"]
-                    eq2 = ["var"]
-                    eq2Pretty = ["var"]
-
-
-                    document.getElementById('button0').style.backgroundColor = "grey"
-                    document.getElementById('button2').style.backgroundColor = "black"
-                    document.getElementById('button1').style.backgroundColor = "black"
-                    recommencer()
-                    nouvelleQ()
+                    return result;
                 }
-            }
-
-            function nouvelleQ() {
-                var expouinon = Math.floor(Math.random())
-                var expouinon = 0
-                if(difficulte==1 & expouinon==1){
-                    var chiffres = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-                }else{
-                    var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                    }
-                var qi0 = Math.floor(Math.random() * eq1.length)
-                var qi1 = Math.floor(Math.random() * eq2.length)
-
-                q1 = eq1[qi0]
-                q1Pretty = eq1Pretty[qi0]
-                q2 = eq2[qi1]
-                q2Pretty = eq2Pretty[qi1]
-                var count = (q1.match(/var/g) || []).length;
-
-                while (q1.match(/var/)) {
-                    var ind = Math.floor(Math.random() * chiffres.length)
-                    var bob = chiffres[ind]
-                    q1 = q1.replace(/var/, chiffres[ind])
-                    q1Pretty = q1Pretty.replace(/var/, chiffres[ind])
-                    chiffres.splice(ind, 1)
-                }
-
-                while (q2.match(/var/)) {
-                    var ind = Math.floor(Math.random() * chiffres.length)
-                    var bob = chiffres[ind]
-                    q2 = q2.replace(/var/, chiffres[ind])
-                    q2Pretty = q2Pretty.replace(/var/, chiffres[ind])
-                    chiffres.splice(ind, 1)
-                }
-                q1 = q1.replace(/\+\-/g, '-');
-                q1 = q1.replace(/\-\-/g, '+');
-                q2 = q2.replace(/\+\-/g, '-');
-                q2 = q2.replace(/\-\-/g, '+');
-
-                q1Pretty = q1Pretty.replace(/\+\-/g, '-');
-                q1Pretty = q1Pretty.replace(/\-\-/g, '+');
-                q2Pretty = q2Pretty.replace(/\+\-/g, '-');
-                q2Pretty = q2Pretty.replace(/\-\-/g, '+');
-
-                expr1.value = q1.replace(/\(/, "\\left.").replace(/\)/, "\\right.")
-                expr2.value = q2
-
-                q1 = q1.replace(/÷/g, '/');
-                q2 = q2.replace(/÷/g, '/');
-
-                console.log(q1)
-                console.log(q2)
-
-                var q1Simp = Algebrite.run(q1)
-                console.log(q1Simp)
-                var q2Simp = Algebrite.run(q2)
-                console.log(q2Simp)
-                var qSimp = Algebrite.run(q1Simp.concat("-(").concat(q2Simp).concat(")"))
-
-                var constante = math.parse(qSimp).evaluate({ x: 0 })
-                var coeff = math.parse(qSimp.concat(`-${constante}`)).evaluate({ x: 1 })
-                reponse = -constante / coeff
-
-                if (q1.match(/\^2/g)) {
-                    if (reponse > 0) {
-                        reponse = Math.sqrt(reponse)
-                    } else {
-                        nouvelleQ()
-                    }
-                }
-                update()
-            }
-
-            function replaceZero(val) {
-                if (val <= 0) {
-                    val = val - 1;
-                }
-                if (val == 1) {
-                    val = val + 1;
-                }
-                return val;
-            }
-            sauter = function () {
-                erreurs++
-                nouvelleQ()
-                update()
-            }
-
-            soum = function () {
-                console.log(reponse)
-                var repEleve = document.getElementById('reponse').value.toString()
-                repEleve = repEleve.replace(/\,/, '.') // Remplace les , par des . pour les eleves francophones
-                document.getElementById('reponse').value = null
-
-                var succes = Math.abs(repEleve - reponse) < 0.1
-
-                nbEssais++
-
-                if (succes == true) {
-                    reussi++
-                    if (reussi < total) {
-                        nouvelleQ()
-                        button.style.backgroundColor = "#4CAF50"
-                        button.value = "Soumettre"
-
-                    } else {
-                        var code = (Math.random() * 1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random() * 1000).toPrecision(3))
-                        document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
-                        if (reussi / total > 0.8) {
-                            expr1.value = 'Bravo!'
-                            expr2.value = ''
-                        } else {
-                            expr1.value = 'Tu as besoin de plus de pratique on dirait'
-                            expr2.value = ''
-
+                function diff(val) {
+                    difficulte = val
+                    if (val == 2) {
+                        if(expouinon == 0){
+                            eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷(var)", "(varx+var)/(var)"]
+                            eq1Pretty = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}"]
+                            eq2 = ["var", "varx+var"]
+                            eq2Pretty = ["var", "varx+var"]
+                        }else{                
+                            eq1 = ["x^2/(var)", "x^2+var", "varx^2+var"]
+                            eq1Pretty = ["\\frac{x^2}{var}", "x^2+var","varx^2+var"]
+                            eq2 = ["var(x^2+var)", "var(varx^2+var)", "var"]
+                            eq2Pretty = ["var(x^2+var)", "var(varx^2+var)", "var"]
                         }
-                        button.value = "Recommencer ?"
-                        button.onclick = recommencer
-                        update()
+
+                        document.getElementById('button2').style.backgroundColor = "grey"
+                        document.getElementById('button0').style.backgroundColor = "black"
+                        document.getElementById('button1').style.backgroundColor = "black"
+                        recommencer()
+                        nouvelleQ()
+                    } else if (val == 1) {
+                        eq1 = ["varx+var", "varx-var", "(varx)/(var)+var", "(x)/(var)","(varx+var)÷(var)"]
+                        eq1Pretty = ["varx+var", "varx-var", "\\frac{varx}{var}+var", "\\frac{x}{var}", "(varx+var)÷var"]
+                        eq2 = ["varx+var", "varx-var"]
+                        eq2Pretty = ["varx+var", "varx-var"]
+
+                        document.getElementById('button1').style.backgroundColor = "grey"
+                        document.getElementById('button0').style.backgroundColor = "black"
+                        document.getElementById('button2').style.backgroundColor = "black"
+                        recommencer()
+                        nouvelleQ()
+                    } else {
+                        eq1 = ["x+var", "x-var", "(x)/(var)+var"]
+                        eq1Pretty = ["x+var", "x-var", "\\frac{x}{var}+var"]
+                        eq2 = ["var"]
+                        eq2Pretty = ["var"]
+
+
+                        document.getElementById('button0').style.backgroundColor = "grey"
+                        document.getElementById('button2').style.backgroundColor = "black"
+                        document.getElementById('button1').style.backgroundColor = "black"
+                        recommencer()
+                        nouvelleQ()
                     }
-                } else {
-                    button.style.backgroundColor = "red"
-                    button.value = "Réessaie !"
-                    erreurs++
+                }
+
+                function nouvelleQ() {
+                    if(difficulte==1 & expouinon==1){
+                        var chiffres = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    }else{
+                        var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    var qi0 = Math.floor(Math.random() * eq1.length)
+                    var qi1 = Math.floor(Math.random() * eq2.length)
+                    q1 = eq1[qi0]
+                    q1Pretty = eq1Pretty[qi0]
+                    q2 = eq2[qi1]
+                    q2Pretty = eq2Pretty[qi1]
+                    var count = (q1.match(/var/g) || []).length;
+
+                    while (q1.match(/var/)) {
+                        var ind = Math.floor(Math.random() * chiffres.length)
+                        var bob = chiffres[ind]
+                        q1 = q1.replace(/var/, chiffres[ind])
+                        q1Pretty = q1Pretty.replace(/var/, chiffres[ind])
+                        chiffres.splice(ind, 1)
+                    }
+
+                    while (q2.match(/var/)) {
+                        var ind = Math.floor(Math.random() * chiffres.length)
+                        var bob = chiffres[ind]
+                        q2 = q2.replace(/var/, chiffres[ind])
+                        q2Pretty = q2Pretty.replace(/var/, chiffres[ind])
+                        chiffres.splice(ind, 1)
+                    }
+                    q1 = q1.replace(/\+\-/g, '-');
+                    q1 = q1.replace(/\-\-/g, '+');
+                    q2 = q2.replace(/\+\-/g, '-');
+                    q2 = q2.replace(/\-\-/g, '+');
+
+                    q1Pretty = q1Pretty.replace(/\+\-/g, '-');
+                    q1Pretty = q1Pretty.replace(/\-\-/g, '+');
+                    q2Pretty = q2Pretty.replace(/\+\-/g, '-');
+                    q2Pretty = q2Pretty.replace(/\-\-/g, '+');
+
+                    expr1.value = q1.replace(/\(/, "\\left.").replace(/\)/, "\\right.")
+                    expr2.value = q2
+
+                    q1 = q1.replace(/÷/g, '/');
+                    q2 = q2.replace(/÷/g, '/');
+
+                    console.log(q1)
+                    console.log(q2)
+
+                    var q1Simp = Algebrite.run(q1)
+                    console.log(q1Simp)
+                    var q2Simp = Algebrite.run(q2)
+                    console.log(q2Simp)
+                    var qSimp = Algebrite.run(q1Simp.concat("-(").concat(q2Simp).concat(")"))
+
+                    var constante = math.parse(qSimp).evaluate({ x: 0 })
+                    var coeff = math.parse(qSimp.concat(`-${constante}`)).evaluate({ x: 1 })
+                    reponse = -constante / coeff
+
+                    if (q1.match(/\^2/g)) {
+                        if (reponse > 0) {
+                            reponse = Math.sqrt(reponse)
+                        } else {
+                            nouvelleQ()
+                        }
+                    }
                     update()
                 }
-            }
 
-            recommencer = function () {
-                reussi = 0
-                erreurs = 0
-                nouvelleQ()
-            }
+                function replaceZero(val) {
+                    if (val <= 0) {
+                        val = val - 1;
+                    }
+                    if (val == 1) {
+                        val = val + 1;
+                    }
+                    return val;
+                }
+                sauter = function () {
+                    erreurs++
+                    nouvelleQ()
+                    update()
+                }
 
-            update = function () {
+                soum = function () {
+                    console.log(reponse)
+                    var repEleve = document.getElementById('reponse').value.toString()
+                    repEleve = repEleve.replace(/\,/, '.') // Remplace les , par des . pour les eleves francophones
+                    document.getElementById('reponse').value = null
+
+                    var succes = Math.abs(repEleve - reponse) < 0.1
+
+                    nbEssais++
+
+                    if (succes == true) {
+                        reussi++
+                        if (reussi < total) {
+                            nouvelleQ()
+                            button.style.backgroundColor = "#4CAF50"
+                            button.value = "Soumettre"
+
+                        } else {
+                            var code = (Math.random() * 1000).toPrecision(3).concat(`-TroX-D${difficulte}R${reussi}E${erreurs}-`).concat((Math.random() * 1000).toPrecision(3))
+                            document.getElementById('codereussite').innerHTML = "Code : ".concat(toHex(code))
+                            if (reussi / total > 0.8) {
+                                expr1.value = 'Bravo!'
+                                expr2.value = ''
+                            } else {
+                                expr1.value = 'Tu as besoin de plus de pratique on dirait'
+                                expr2.value = ''
+
+                            }
+                            button.value = "Recommencer ?"
+                            button.onclick = recommencer
+                            update()
+                        }
+                    } else {
+                        button.style.backgroundColor = "red"
+                        button.value = "Réessaie !"
+                        erreurs++
+                        update()
+                    }
+                }
+
+                recommencer = function () {
+                    reussi = 0
+                    erreurs = 0
+                    nouvelleQ()
+                }
+
+                update = function () {
+                    document.getElementById('reussi').value = reussi
+                    document.getElementById('erreurs').value = erreurs
+                    document.getElementById('total').value = total
+                    pretty.innerHTML = '$$' + q1Pretty + "=" + q2Pretty + '$$'
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                }
+
+                var total = 10
+                var erreurs = 0
+                var reussi = 0
+                var nbEssais = 0
+                var eq1 = null
+                var eq2 = null
+                var q1 = null
+                var q1Pretty = null
+                var q2 = null
+                var q2Pretty = null
+                var expouinon = 0
+
+
                 document.getElementById('reussi').value = reussi
                 document.getElementById('erreurs').value = erreurs
                 document.getElementById('total').value = total
-                pretty.innerHTML = '$$' + q1Pretty + "=" + q2Pretty + '$$'
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }
 
-            var total = 10
-            var erreurs = 0
-            var reussi = 0
-            var nbEssais = 0
-            var eq1 = null
-            var eq2 = null
-            var q1 = null
-            var q1Pretty = null
-            var q2 = null
-            var q2Pretty = null
+                button = document.getElementById('bouttonSoum')
 
-            document.getElementById('reussi').value = reussi
-            document.getElementById('erreurs').value = erreurs
-            document.getElementById('total').value = total
+                const expr1 = []
+                const expr2 = []
 
-            button = document.getElementById('bouttonSoum')
+                var reponse = null
 
-            const expr1 = []
-            const expr2 = []
+                const pretty = document.getElementById('pretty')
+                const result = []
+                let parenthesis = 'keep'
+                let implicit = 'hide'
+                var difficulte = 0
 
-            var reponse = null
+                diff(difficulte)
+            </script>
 
-            const pretty = document.getElementById('pretty')
-            const result = []
-            let parenthesis = 'keep'
-            let implicit = 'hide'
-            var difficulte = 0
+    </body>
 
-            diff(difficulte)
-        </script>
-
-</body>
-
-</html>
+    </html>
