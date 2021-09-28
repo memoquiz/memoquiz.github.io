@@ -39,6 +39,8 @@
                 <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
                 <td><input type="button" class="button2" value="Moyen" id="button1" onclick="diff(1)"></td>
                 <td><input type="button" class="button2" value="Piquant" id="button2" onclick="diff(2)"></td>
+                <td><input type="button" class="button2" value="Exposants" id="button3" onclick="diff(3)"></td>
+
             </h2>
             <script>
                 function toHex(str) {
@@ -48,58 +50,70 @@
                     }
                     return result;
                 }
+                
                 function diff(val) {
                     difficulte = val
-                    if (val == 2) {
-                        if(expouinon == 0){
-                            eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷(var)", "(varx+var)/(var)"]
-                            eq1Pretty = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷var", "\\frac{varx+var}{var}"]
+                    if (val == 3) {    
+                            eq1 = ["x^2/(pos)", "x^2+pos", "posx^2+pos"]
+                            eq1Pretty = ["\\frac{x^2}{pos}", "x^2+pos","posx^2+var"]
+                            eq2 = ["var"]
+                            eq2Pretty = ["var"]
+                        
+                        document.getElementById('button3').style.backgroundColor = "grey"
+                        document.getElementById('button0').style.backgroundColor = "black"
+                        document.getElementById('button1').style.backgroundColor = "black"
+                        document.getElementById('button1').style.backgroundColor = "black"
+
+                        recommencer()
+                        nouvelleQ()
+
+                    }else if (val == 2) {
+                            eq1 = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷(pos)", "(varx+var)/(pos)"]
+                            eq1Pretty = ["var(varx+var)+varx", "var(varx+var)-var(varx)", "(varx+var)÷pos", "\\frac{varx+var}{pos}"]
                             eq2 = ["var", "varx+var"]
                             eq2Pretty = ["var", "varx+var"]
-                        }else{                
-                            eq1 = ["x^2/(var)", "x^2+var", "varx^2+var"]
-                            eq1Pretty = ["\\frac{x^2}{var}", "x^2+var","varx^2+var"]
-                            eq2 = ["var(x^2+var)", "var(varx^2+var)", "var"]
-                            eq2Pretty = ["var(x^2+var)", "var(varx^2+var)", "var"]
-                        }
+              
 
                         document.getElementById('button2').style.backgroundColor = "grey"
                         document.getElementById('button0').style.backgroundColor = "black"
                         document.getElementById('button1').style.backgroundColor = "black"
+                        document.getElementById('button3').style.backgroundColor = "black"
+
                         recommencer()
                         nouvelleQ()
                     } else if (val == 1) {
-                        eq1 = ["varx+var", "varx-var", "(varx)/(var)+var", "(x)/(var)","(varx+var)÷(var)"]
-                        eq1Pretty = ["varx+var", "varx-var", "\\frac{varx}{var}+var", "\\frac{x}{var}", "(varx+var)÷var"]
+                        eq1 = ["varx+var", "varx-var", "(varx)/(var)+var", "(x)/(pos)","(varx+var)÷(pos)"]
+                        eq1Pretty = ["varx+var", "varx-var", "\\frac{varx}{var}+var", "\\frac{x}{pos}", "(varx+var)÷pos"]
                         eq2 = ["varx+var", "varx-var"]
                         eq2Pretty = ["varx+var", "varx-var"]
 
                         document.getElementById('button1').style.backgroundColor = "grey"
                         document.getElementById('button0').style.backgroundColor = "black"
                         document.getElementById('button2').style.backgroundColor = "black"
+                        document.getElementById('button3').style.backgroundColor = "black"
+
                         recommencer()
                         nouvelleQ()
                     } else {
-                        eq1 = ["x+var", "x-var", "(x)/(var)+var"]
-                        eq1Pretty = ["x+var", "x-var", "\\frac{x}{var}+var"]
+                        eq1 = ["x+var", "x-var", "(x)/(pos)+var"]
+                        eq1Pretty = ["x+var", "x-var", "\\frac{x}{pos}+var"]
                         eq2 = ["var"]
                         eq2Pretty = ["var"]
-
 
                         document.getElementById('button0').style.backgroundColor = "grey"
                         document.getElementById('button2').style.backgroundColor = "black"
                         document.getElementById('button1').style.backgroundColor = "black"
+                        document.getElementById('button3').style.backgroundColor = "black"
+
                         recommencer()
                         nouvelleQ()
                     }
                 }
 
                 function nouvelleQ() {
-                    if(difficulte==1 & expouinon==1){
-                        var chiffres = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-                    }else{
-                        var chiffres = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                        }
+                    var negnombre = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    var posnombre = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    
                     var qi0 = Math.floor(Math.random() * eq1.length)
                     var qi1 = Math.floor(Math.random() * eq2.length)
                     q1 = eq1[qi0]
@@ -109,21 +123,38 @@
                     var count = (q1.match(/var/g) || []).length;
 
                     while (q1.match(/var/)) {
-                        var ind = Math.floor(Math.random() * chiffres.length)
-                        var bob = chiffres[ind]
-                        q1 = q1.replace(/var/, chiffres[ind])
-                        q1Pretty = q1Pretty.replace(/var/, chiffres[ind])
-                        chiffres.splice(ind, 1)
+                        var ind = Math.floor(Math.random() * negnombre.length)
+                        var bob = negnombre[ind]
+                        q1 = q1.replace(/var/, negnombre[ind])
+                        q1Pretty = q1Pretty.replace(/var/, negnombre[ind])
+                        negnombre.splice(ind, 1)
                     }
 
                     while (q2.match(/var/)) {
-                        var ind = Math.floor(Math.random() * chiffres.length)
-                        var bob = chiffres[ind]
-                        q2 = q2.replace(/var/, chiffres[ind])
-                        q2Pretty = q2Pretty.replace(/var/, chiffres[ind])
-                        chiffres.splice(ind, 1)
+                        var ind = Math.floor(Math.random() * negnombre.length)
+                        var bob = negnombre[ind]
+                        q2 = q2.replace(/var/, negnombre[ind])
+                        q2Pretty = q2Pretty.replace(/var/, negnombre[ind])
+                        negnombre.splice(ind, 1)
                     }
-                    q1 = q1.replace(/\+\-/g, '-');
+                    
+                        while (q1.match(/pos/)) {
+                        var ind = Math.floor(Math.random() * chiffres.length)
+                        var bob = posnombre[ind]
+                        q1 = q1.replace(/pos/, posnombre[ind])
+                        q1Pretty = q1Pretty.replace(/pos/, posnombre[ind])
+                        posnombre.splice(ind, 1)
+                    }
+
+                    while (q2.match(/pos/)) {
+                        var ind = Math.floor(Math.random() * posnombre.length)
+                        var bob = posnombre[ind]
+                        q2 = q2.replace(/pos/, posnombre[ind])
+                        q2Pretty = q2Pretty.replace(/pos/, posnombre[ind])
+                        posnombre.splice(ind, 1)
+                    }
+                    
+                     q1 = q1.replace(/\+\-/g, '-');
                     q1 = q1.replace(/\-\-/g, '+');
                     q2 = q2.replace(/\+\-/g, '-');
                     q2 = q2.replace(/\-\-/g, '+');
