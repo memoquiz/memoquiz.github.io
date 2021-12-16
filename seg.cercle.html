@@ -202,10 +202,10 @@
 
             if (varDep == "la circonférence" || varInd[0] == "la circonférence" || varInd[1] == "la circonférence") {
                 if (varDep == "la circonférence") {
-                    draw.text('C = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('C = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                     rep = circ
                 } else {
-                    draw.text('C = '.concat(circ.toPrecision(3).toString()).concat(' ').concat(unit)).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('C = '.concat(circ.toPrecision(3).toString()).concat(' ').concat(unit)).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 }
             }
 
@@ -221,11 +221,11 @@
                 draw.text('P ').font({ family: 'sans', size: font }).center(pointx[2] * 195 + center.x, pointy[2] * 190 + center.y)
 
                 if (varDep == "la longeur de l'arc APB") {
-                    draw.text('mAPB = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('mAPB = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                     rep = arc
 
                 } else {
-                    draw.text('mAPB = '.concat(arc.toPrecision(3).toString()).concat(' ').concat(unit)).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('mAPB = '.concat(arc.toPrecision(3).toString()).concat(' ').concat(unit)).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 }
             }
 
@@ -233,9 +233,9 @@
                 drawSec = true
                 if (varDep == "l'aire du cercle") {
                     rep = aire
-                    draw.text('A = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('A = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 } else {
-                    draw.text('A = '.concat(aire.toPrecision(3).toString()).concat(' ').concat(unit).concat('²')).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('A = '.concat(aire.toPrecision(3).toString()).concat(' ').concat(unit).concat('²')).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 }
             }
 
@@ -243,9 +243,9 @@
                 drawSec = true
                 if (varDep == "l'aire du secteur") {
                     rep = sect
-                    draw.text('Asec = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('Asec = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 } else {
-                    draw.text('Asec = '.concat(sect.toPrecision(3).toString()).concat(' ').concat(unit).concat('²')).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('Asec = '.concat(sect.toPrecision(3).toString()).concat(' ').concat(unit).concat('²')).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 }
             }
 
@@ -264,9 +264,9 @@
                 draw.text('θ').font({ family: 'sans', size: font }).center(pointx[2] * 30 + center.x, pointy[2] * 30 + center.y)
                 if (varDep == "l'angle de l'arc APB (θ)") {
                     rep = angle
-                    draw.text('θ = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('θ = ?').font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 } else {
-                    draw.text('θ = '.concat(angle.toPrecision(3).toString()).concat('°')).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 20)
+                    draw.text('θ = '.concat(angle.toPrecision(3).toString()).concat('°')).font({ family: 'sans', size: font }).center(center.x + 280, center.y + nligne++ * 25)
                 }
             }
 
@@ -295,7 +295,7 @@
         var nbEssais = 0
 
         var brep
-        var font = 18
+        var font = 24
         var ndiff
         var varDep
         var varInd
