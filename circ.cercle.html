@@ -52,8 +52,7 @@
         <h2>Sélectionne le niveau de difficulté<br>
             <td><input type="button" class="button2" value="Doux" id="button0" onclick="diff(0)"></td>
             <td><input type="button" class="button2" value="Moyen" id="button1" onclick="diff(1)"></td>
-            <td><input type="button" class="button2" value="Piquant" background-color="red" id="button2"
-                    onclick="diff(2)"></td>
+            <!--<td><input type="button" class="button2" value="Piquant" background-color="red" id="button2" onclick="diff(2)"></td>-->
         </h2>
         <script>
 
@@ -64,7 +63,7 @@
                     varInd = vars.splice(Math.round(Math.random() * (vars.length - 1)), 1)
                     varDep = vars.splice(Math.round(Math.random() * (vars.length - 2)), 1)
                     ndiff = ["var1(var2 + var3x)", "var1(var2x + var3)", "var1(x+var2)-(var5x)"]
-                    document.getElementById('button2').style.backgroundColor = "grey"
+                  //  document.getElementById('button2').style.backgroundColor = "grey"
                     document.getElementById('button0').style.backgroundColor = "black"
                     document.getElementById('button1').style.backgroundColor = "black"
                     nouvelleQ()
@@ -75,7 +74,7 @@
                     ndiff = ["var1"]
                     document.getElementById('button1').style.backgroundColor = "grey"
                     document.getElementById('button0').style.backgroundColor = "black"
-                    document.getElementById('button2').style.backgroundColor = "black"
+                  //  document.getElementById('button2').style.backgroundColor = "black"
                     nouvelleQ()
                 } else {
                     var rayDiam = ["le rayon", "le diamètre"][Math.round(Math.random())]
@@ -86,7 +85,7 @@
 
                     ndiff = ["var1"]
                     document.getElementById('button0').style.backgroundColor = "grey"
-                    document.getElementById('button2').style.backgroundColor = "black"
+                   // document.getElementById('button2').style.backgroundColor = "black"
                     document.getElementById('button1').style.backgroundColor = "black"
                     nouvelleQ()
 
