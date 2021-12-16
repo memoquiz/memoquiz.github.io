@@ -79,7 +79,7 @@
                     nouvelleQ()
                 } else {
                     var rayDiam = ["le rayon", "le diamètre"][Math.round(Math.random())]
-                    var cirAre = ["l'aire", "la circonférence"][Math.round(Math.random())]
+                    var cirAre = ["l'aire", "la circonférence"][0]
                     var vars = [rayDiam, cirAre]
                     varInd = vars.splice(Math.round(Math.random()), 1)
                     varDep = vars
@@ -162,11 +162,11 @@
 
                 var unit = ['mm', 'cm', 'm', 'dm', 'hm', 'km'][Math.floor(Math.random() * 5)]
                 if (varDep == "l'aire") {
-                    document.getElementById('units').innerHTML = unit + "<sup>2</sup> "
-                    unit = unit + "²"
+                    document.getElementById('units').innerHTML = unit + "²"
                 }else{
-                    document.getElementById('units').innerHTML = unit
+                    document.getElementById('units').innerHTML = unit 
                 }
+
                 var qi = Math.floor(Math.random() * ndiff.length)
                 var q = ndiff[qi]
                 q = q.replace(/var1/g, var1)
@@ -193,7 +193,7 @@
                     } else if (varDep == "le rayon") {
                         var text = draw.text('r = ?').font({ family: 'sans', size: font }).center(390, 180)
                         if (varInd == "l'aire") {
-                            var text = draw.text('a = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
+                            var text = draw.text('a = '.concat(qLetter.toString()).concat(unit + "²")).font({ family: 'sans', size: font }).center(300, 220)
                             var rep = "((".concat(q.concat(')/3.1415926)^0.5'))
                         } else if (varInd == "la circonférence") {
                             var text = draw.text('c = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
@@ -212,7 +212,7 @@
                     } else if (varDep == "le diamètre") {
                         var text = draw.text('d = ?').font({ family: 'sans', size: font }).center(300, 180)
                         if (varInd == "l'aire") {
-                            var text = draw.text('a = '.concat(qLetter.toString()) + unit).font({ family: 'sans', size: font }).center(300, 220)
+                            var text = draw.text('a = '.concat(qLetter.toString()) + unit + "²").font({ family: 'sans', size: font }).center(300, 220)
                             var rep = "((".concat(q.concat(')*4/3.1415926)^0.5'))
                         } else if (varInd == "la circonférence") {
                             var text = draw.text('c = '.concat(qLetter.toString()).concat(unit)).font({ family: 'sans', size: font }).center(300, 220)
